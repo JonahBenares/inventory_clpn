@@ -145,7 +145,7 @@
         <table class = "table-main " style = "width:100%">
             <tr>
                 <td style="padding:10px;border-bottom: 2px solid #000" width="15%">
-                    <img src="<?php echo base_url(); ?>assets/default/logo_cpgc.png" width="100%" height="auto">
+                    <img src="<?php echo base_url(); ?>assets/default/logo_cenpri.png" width="100%" height="auto">
                 </td>
                 <td style="padding:10px;border-bottom: 2px solid #000;"  width="35%" >
                     <p id="head" style="margin: 0px"> <strong>STA. ISABEL CPGC POWER CORP.</strong></p>
