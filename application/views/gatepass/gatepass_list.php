@@ -2,7 +2,7 @@
 <script src="<?php echo base_url(); ?>assets/js/item.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/request.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/gatepass.js"></script>
 <style type="text/css">
 	.label-info {
     background-color: #5bc0de;
@@ -69,7 +69,9 @@
 									<td align="center"><?php echo $gp['date_issued'];?></td>
 									<td align="center"><?php echo $gp['date_returned'];?></td>
 									<td align="center">
-										<a  href="<?php echo base_url();?>index.php/gatepass/add_gatepass/<?php echo $gp['gatepassid'];?>" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
+
+										<a  href="<?php echo base_url();?>index.php/gatepass/view_gatepass/<?php echo $gp['gatepassid'];?>" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
+
 									</td>
 								</tr>
 								<?php $x++; } ?>
