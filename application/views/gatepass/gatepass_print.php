@@ -200,7 +200,7 @@
 </div>
 <page size="A4">
     <div class="p-t-20 m-l-20 m-r-20">
-        <table width="100%">
+        <table class="nobor-all" width="100%">
             <tr>
                 <td align="center">
                     <br>
@@ -211,7 +211,7 @@
                 </td>
             </tr>
         </table>
-        <table class="table-bordsered" style="border: 0px;" width="100%">
+        <table class="table-bordsered nobor-all" width="100%">
             <tr>
                 <td width="8%"><strong><h6 class="nomarg">TO</h6></strong></td>
                 <td width="44%"style="border-bottom: 1px solid #999"> <label class="nomarg">: Sample</label></td>
@@ -268,7 +268,7 @@
         </table>
         <br>
         <form method='POST' id='mreqfsign'>            
-            <table width="100%">
+            <table class="nobor-all" width="100%">
                 <tr>
                     <td width="30%">Prepared By:</td>
                     <td width="5%"></td>                    
@@ -296,7 +296,7 @@
                 </tr>
             </table>
             <br>
-            <table width="100%">
+            <table class="nobor-all" width="100%">
                 <tr>
                     <td width="30%">Noted by:</td>
                     <td width="5%"></td>                    
@@ -327,7 +327,7 @@
                 </tr>
             </table>
             <br>
-            <table width="100%">
+            <table class="nobor-all" width="100%">
                 <tr>
                     <td width="30%">Approved by:</td>
                     <td width="5%"></td>                    
@@ -358,7 +358,7 @@
             </table>
             <br>
             <br>
-            <table width="100%">
+            <table class="nobor-all" width="100%">
                 <tr>
                     <td width="30%">Received By:</td>
                     <td width="5%"></td>                    
