@@ -91,7 +91,7 @@
 								</div>
 								<div class="col-lg-3">
 									<p>				
-										<textarea placeholder="Remarks" type="text" name="borrowfrom" id="borrowfrom" class="form-control" rows="1" ></textarea> 
+										<textarea placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" rows="1" ></textarea> 
 									</p>
 								</div>
 								<div class="col-lg-1">

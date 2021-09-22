@@ -140,6 +140,7 @@ class Gatepass extends CI_Controller {
                     'itemid'=>$gp->request_id,
                     'item'=>$item,
                     'quantity'=>$gp->quantity,
+                    'remarks'=>$gp->remarks,
                     'unit_id'=>$unit,
                 );
         }else{
@@ -162,6 +163,7 @@ class Gatepass extends CI_Controller {
             'item'=>$this->input->post('item'),
             //'item_name'=>$item,
             'count'=>$this->input->post('count'),
+            'remarks'=>$this->input->post('remarks'),
         );
             
         $this->load->view('gatepass/row_item',$data);
@@ -178,6 +180,7 @@ class Gatepass extends CI_Controller {
                     'item_name'=>$this->input->post('item['.$a.']'),
                     'quantity'=>$this->input->post('quantity['.$a.']'),
                     'unit_id'=>$this->input->post('unit['.$a.']'),
+                    'remarks'=>$this->input->post('remarks['.$a.']'),
                 );
                 $this->super_model->insert_into("gatepass_details", $data); 
             }

@@ -69,7 +69,7 @@
 									<td align="center"><?php echo $gp['date_issued'];?></td>
 									<td align="center"><?php echo $gp['date_returned'];?></td>
 									<td align="center">
-										<a  href="<?php echo base_url();?>index.php/gatepass/add_gatepass" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
+										<a  href="<?php echo base_url();?>index.php/gatepass/add_gatepass/<?php echo $gp['gatepassid'];?>" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 									</td>
 								</tr>
 								<?php $x++; } ?>

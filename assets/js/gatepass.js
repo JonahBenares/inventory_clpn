@@ -5,6 +5,7 @@ function add_item(){
     var item =$('#item').val();
     var unit =$('#unit').val();
     var quantity =parseFloat($('#quantity').val());
+    var remarks =$('#remarks').val();
     
     var i = item.replace(/&/gi,"and");
     var i = i.replace(/#/gi,"");
@@ -20,7 +21,7 @@ function add_item(){
           $.ajax({
                 type: "POST",
                 url:redirect,
-                data: "&item="+item+"&unit="+unit+"&quantity="+quantity+"&count="+count,
+                data: "&item="+item+"&unit="+unit+"&quantity="+quantity+"&remarks="+remarks+"&count="+count,
                 beforeSend: function(){
                     document.getElementById('alrt').innerHTML='<b>Please wait, Loading Data...</b>'; 
                     $("#submit").hide(); 
@@ -37,6 +38,7 @@ function add_item(){
                     document.getElementById("item").value = '';
                     document.getElementById("unit").value = '';
                     document.getElementById("quantity").value = '';
+                    document.getElementById("remarks").value = '';
                     document.getElementById("counter").value = count;
                 }
            });
