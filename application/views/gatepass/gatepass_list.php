@@ -50,8 +50,7 @@
 							<thead>
 								<tr>
 									<td width="1%" align="center">#</td>
-									<td width="29%" align="center"><strong>To</strong></td>
-									<td width="15%" align="center"><strong>Company</strong></td>
+									<td width="29%" align="center"><strong>To Company</strong></td>
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="15%" align="center"><strong>Vehicle No.</strong></td>
 									<td width="15%" align="center"><strong>Date Issued</strong></td>
@@ -61,18 +60,19 @@
 							
 							</thead>
 							<tbody>
+								<?php $x=1; foreach($gatepass as $gp){ ?>
 								<tr>
-									<td align="center"></td>
-									<td align="center"></td>
-									<td align="center"></td>
-									<td align="center"></td>
-									<td align="center"></td>
-									<td align="center"></td>
-									<td align="center"></td>
+									<td align="center"><?php echo $x; ?></td>
+									<td align="center"><?php echo $gp['supplier'];?></td>
+									<td align="center"><?php echo $gp['destination'];?></td>
+									<td align="center"><?php echo $gp['vehicle_no'];?></td>
+									<td align="center"><?php echo $gp['date_issued'];?></td>
+									<td align="center"><?php echo $gp['date_returned'];?></td>
 									<td align="center">
 										<a  href="<?php echo base_url();?>index.php/gatepass/add_gatepass" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 									</td>
 								</tr>
+								<?php $x++; } ?>
 							</tbody>
 						</table>
 					</div>

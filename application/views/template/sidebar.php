@@ -347,82 +347,100 @@
 					<h4 class="modal-title" id="myModalLabel">Add Gate Pass</h4>
 				</div>
 				<div class="modal-body" style="padding:30px 20px 30px 20px">
-					<form method="POST" action = "<?php echo base_url();?>index.php/Request/insert_request_head">
+					<form method="POST" action = "<?php echo base_url();?>index.php/Gatepass/insert_gatepass_head">
 						<table width="100%">
-							<tr>
+							<!--<tr>
 								<td width="20%"><label>To:</label></td>
 								<td colspan="2" >
 									<select name = "type" class = "form-control type" style="margin:4px">
 										<option value="" selected="">-Select -</option>
 									</select>
 								</td>
+							</tr>-->
+							<?php
+							$now=date('Y');
+        					$year = substr( $now, -2);
+        					$rows=$this->super_model->count_custom_where("gatepass_head","date_created LIKE '$year%'");
+        					if($rows==0){
+            					$mgp_no= $year."-001";
+        					} else {
+            					$maxmgpno=$this->super_model->get_max_where("gatepass_head", "mgp_no","date_created LIKE '$year%'");
+            					$mgpno = explode('-',$maxmgpno);
+            					$series = $mgpno[2]+1;
+            					$mgp_no = str_pad($series, 3, "0", STR_PAD_LEFT);
+            				} ?>
+							<tr>
+								<td width="20%" class = "t"><label>MGP No.:</label></td>
+								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
+									<input type="text" class="form-control" value="<?php echo $mgp_no; ?>" name="mgp_no" readonly>
+								</td>
 							</tr>
 							<tr>
-								<td width="20%"><label>Company:</label></td>
-								<td colspan="2" >
-									<select name = "type" class = "form-control type" style="margin:4px">
-										<option value="" selected="">-Select Company-</option>
-									</select>
-								</td>
+								<td width="20%"><label>To Company:</label></td>
+								<td style ="padding-bottom: 5px;padding-left: 4px;"><select class="form-control select2" style="margin:4px;width:100%" name="company" id="to_company">
+									<option selected="selected" >-Choose Company-</option>
+									<?php foreach($supplier AS $sup){ ?>
+										<option value="<?php echo $sup->supplier_id; ?>?"><?php echo $sup->supplier_name; ?></option>
+									<?php } ?>
+								</select></td>
 							</tr>
 							<tr>
 								<td width="20%" class = "t"><label>Destination:</label></td>
 								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
-									<input type="" class="form-control" name="">
+									<input type="" class="form-control" name="destination">
 								</td>
 							</tr>
 							<tr>
 								<td width="20%" class = "t"><label>Vehicle No.:</label></td>
 								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
-									<input type="" class="form-control" name="">
+									<input type="" class="form-control" name="vehicle_no">
 								</td>
 							</tr>
 							<tr>
 								<td width="20%" class = "t"><label>Date Issued:</label></td>
 								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
-									<input type="date" class="form-control" name="">
+									<input type="date" class="form-control" name="date_issued">
 								</td>
 							</tr>
 							<tr>
 								<td width="20%" class = "t"><label>Date Returned:</label></td>
 								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
-									<input type="date" class="form-control" name="">
-								</td>
-							</tr>
-							<tr>
-								<td width="20%" class = "t"><label>MGP No.:</label></td>
-								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
-									<input type="text" class="form-control" name="">
+									<input type="date" class="form-control" name="date_returned">
 								</td>
 							</tr>
 							<tr>
 								<td width="20%" class = "t"><label>Prepared by:</label></td>
-								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
-									<select name = "type" class = "form-control type" style="margin:4px">
-										<option value="" selected="">-Select Employee-</option>
-									</select>
-								</td>
+								<td style ="padding-bottom: 5px;padding-left: 4px;"><select class="form-control select2" style="margin:4px;width:100%" name="prepared" id="prepared_by">
+									<option selected="selected" >-Choose Employee-</option>
+									<?php foreach($employee AS $emp){ ?>
+										<option value="<?php echo $emp->employee_id; ?>?"><?php echo $emp->employee_name; ?></option>
+									<?php } ?>
+								</select></td>
 							</tr><tr>
 								<td width="20%" class = "t"><label>Noted by:</label></td>
-								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
-									<select name = "type" class = "form-control type" style="margin:4px">
-										<option value="" selected="">-Select Employee-</option>
-									</select>
-								</td>
+								<td style ="padding-bottom: 5px;padding-left: 4px;"><select class="form-control select2" style="margin:4px;width:100%" name="noted" id="noted_by">
+									<option selected="selected" >-Choose Employee-</option>
+									<?php foreach($employee AS $emp1){ ?>
+										<option value="<?php echo $emp1->employee_id; ?>?"><?php echo $emp1->employee_name; ?></option>
+									<?php } ?>
+								</select></td>
 							</tr><tr>
 								<td width="20%" class = "t"><label>Approved by:</label></td>
-								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
-									<select name = "type" class = "form-control type" style="margin:4px">
-										<option value="" selected="">-Select Employee-</option>
-									</select>
-								</td>
+								<td style ="padding-bottom: 5px;padding-left: 4px;"><select class="form-control select2" style="margin:4px;width:100%" name="approved" id="approve_by">
+									<option selected="selected" >-Choose Employee-</option>
+									<?php foreach($employee AS $emp2){ ?>
+										<option value="<?php echo $emp2->employee_id; ?>?"><?php echo $emp2->employee_name; ?></option>
+									<?php } ?>
+								</select></td>
 							</tr>
 						</table>
 						<div class="modal-footer">
 							<div id='alerts' style="font-weight:bold;text-align: center"></div>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<input type='submit' class="btn btn-warning" id = "proceeds" value='Proceed '> 	
-							<a href="<?php echo base_url();?>index.php/gatepass/add_gatepass">Proceed</a>				
+							<input type='submit' class="btn btn-warning" id = "proceeds" value='Proceed '>
+							<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+							<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>"> 	
+							<!--<a href="<?php echo base_url();?>index.php/gatepass/add_gatepass">Proceed</a>-->				
 						</div>
 					</form>
 				</div>
