@@ -567,7 +567,7 @@ class Request extends CI_Controller {
         $this->load->view('request/row_item',$data);
      }
 
-     public function printMReqF(){
+     public function printGatepass(){
         $id=$this->input->post('mreqfid');
 
         $data = array(

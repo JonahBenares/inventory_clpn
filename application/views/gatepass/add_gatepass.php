@@ -45,7 +45,7 @@
 									<td width="40%" ><label class="labelStyle"><?php echo $company; ?></label></td>
 									<td width="15%" ><p class="nomarg pull-right">Date Issued:</p></td>
 									<td width="50%" colspan="3"><label class="labelStyle">&nbsp; <?php echo date('F d, Y', strtotime($issued)); ?></label></td>
-									<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>
+									<!--<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>-->
 								</tr>
 								<tr>
 									<td><p class="nomarg">Destination: </p></td>
@@ -70,7 +70,7 @@
 										<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->item_name;?></option>
 										<?php } ?>
 									</select>
-									<input type='hidden' name='item' id='item'>
+									<!-- <input type='hidden' name='item' id='item'> -->
 									</p>
 								</div>
 								<div class="col-lg-2">
@@ -80,13 +80,12 @@
 								</div>
 								<div class="col-lg-2">
 									<p>				
-									<select name="unit" id='unit' class="form-control select2"">
+									<select name="unit" id='unit' class="form-control select2">
 										<option value = ""></option>
 										<?php foreach($unit AS $unit){ ?>
 										<option value = "<?php echo $unit->unit_id;?>"><?php echo $unit->unit_name;?></option>
 										<?php } ?>
 									</select>
-									<input type='hidden' name='unit' id='unit'>
 									</p>
 								</div>
 								<div class="col-lg-3">
@@ -114,7 +113,7 @@
 											<th width="5%" style='text-align: center;' width="1%">Action</th>
 										</tr>
 									<?php 
-									 if(!isset($gatepass)){
+									 if(!isset($gatepass_itm)){
 									?>
 									<tbody id="item_body"></tbody>
 									<?php } else { ?>
@@ -127,7 +126,7 @@
 												<td><?php echo $gp['item_name'];?></td>
 												<td><center><?php echo $gp['quantity'];?></center></td>
 												<td><center><?php echo $gp['unit'];?></center></td>
-												<td><center>Kg</center></td>
+												<td><center><?php echo $gp['remarks'];?></center></td>
 												<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
 											</tr>
 										<?php } ?>

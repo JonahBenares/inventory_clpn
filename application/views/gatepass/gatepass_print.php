@@ -191,7 +191,7 @@
 
 <div class="animated fadeInDown p-t-20" id="printbutton">
     <center>
-        <a href=".php" class="btn btn-warning text-white btn-w100 btn-round">Back</a>
+        <a href="<?php echo base_url();?>index.php/gatepass/gatepass_list" class="btn btn-warning text-white btn-w100 btn-round">Back</a>
         <!-- <a href='update_emp.php?id=<?php echo $id; ?>' class="btn btn-primary btn-w100 btn-round">Update</a>  -->
         <a href="" class="btn btn-success btn-w100 btn-round" onclick="window.print()">Print</a>
         <!-- <button class="btn btn-danger btn-fill"onclick="printDiv('printableArea')" style="margin-bottom:5px;width:80px;"></span> Print</button><br> -->
@@ -211,31 +211,38 @@
                 </td>
             </tr>
         </table>
+            <?php 
+                foreach($heads as $det){             
+                    $prepared= $det->prepared_by;
+                    $approved= $det->approved_by;
+                    $noted= $det->noted_by;
+            }?>
+            <?php foreach($pass as $p){ ?>
         <table class="table-bordsered nobor-all" width="100%">
             <tr>
-                <td width="8%"><strong><h6 class="nomarg">TO</h6></strong></td>
-                <td width="44%"style="border-bottom: 1px solid #999"> <label class="nomarg">: Sample</label></td>
+                <td width="8%"><strong><h6 class="nomarg">To Company</h6></strong></td>
+                <td width="44%"style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['to_company'];?></label></td>
                 <td width="5%"></td>
                 <td width="13%"><strong><h6 class="nomarg pull-right">Date Issued &nbsp;</h6></strong></td>
-                <td width="30%" style="border-bottom: 1px solid #999"> <label class="nomarg">: September 19, 2021</label></td>
+                <td width="30%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo date('F d, Y', strtotime($p['date_issued']));?></label></td>
             </tr>
             <tr>
-                <td><strong><h6 class="nomarg">Company</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: CENPRI</label></td>
-                <td></td>
+                <!--<td><strong><h6 class="nomarg">Company</h6></strong></td>
+                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['to_company'];?></label></td>
+                <td></td>-->
                 <td><strong><h6 class="nomarg pull-right">Date Returned &nbsp;</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: September 19, 2021</label></td>
+                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo date('F d, Y', strtotime($p['date_returned']));?></label></td>
             </tr>
             <tr>
                 <td><strong><h6 class="nomarg">Destination</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: Bacolod Sety</label></td>
+                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['destination'];?></label></td>
                 <td></td>
                 <td><strong><h6 class="nomarg pull-right">MGP No. &nbsp;</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: 1101-553</label></td>
+                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['mgp_no'];?></label></td>
             </tr>    
              <tr>
                 <td><strong><h6 class="nomarg">Vehicle No</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: AVEW44211</label></td>
+                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['vehicle_no'];?></label></td>
                 <td></td>
             </tr>
         </table>
@@ -249,25 +256,31 @@
                 <td width="35%" align="center"><strong>Remarks</strong></td>
             </tr>
             <tr>
+                    <?php 
+                    $x =1;
+                    if(!empty($gatepass_itm)){
+                        foreach($gatepass_itm as $pi){ 
+                    ?>
                 <tr>                        
-                    <td align="center">1</td>
-                    <td align="left">&nbsp; "Titanium" 6x19 Steel Core, IWRC Wire Rope, 12mm dia., Zinc Coated, T/S: 180kg/mm2</td>
-                    <td align="center">23</td>
-                    <td align="center">Kg</td>
-                    <td align="center">Sample</td>
+                    <td align="center"><?php echo $x; ?></td>
+                    <td align="left">&nbsp; <?php echo $pi['item'];?></td>
+                    <td align="center"><?php echo $pi['quantity'];?></td>
+                    <td align="center"><?php echo $pi['unit'];?></td>
+                    <td align="center"><?php echo $pi['remarks'];?></td>
                 </tr>
-               
-                <!-- <tr>
-                    <td align="center" colspan='10'><center>No Data Available.</center></td>
-                </tr>
-              -->
+                    <?php $x++; } } else { ?>
+                    <tr>
+                        <td align="center" colspan='10'><center>No Data Available.</center></td>
+                    </tr>
+                    <?php } ?>
             </tr>
             <tr>
                 <td colspan="6"><center>***nothing follows***</center></td>
             </tr>
         </table>
+        <?php }?>
         <br>
-        <form method='POST' id='mreqfsign'>            
+        <form method='POST' id='GatepassSign'>        
             <table class="nobor-all" width="100%">
                 <tr>
                     <td width="30%">Prepared By:</td>
@@ -276,9 +289,10 @@
                     <td width="5%"></td>
                     <td width="30%"></td>
                 </tr>
+                <?php foreach($signs AS $us) ?>
                 <tr>
                     <td style="border-bottom:1px solid #000">
-                        <input class="select" type="" name="" value="Glenn Paul">
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['prepared'];?>">
                     </td>   
                     <td></td>
                     <td></td>
@@ -287,7 +301,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input id="positionreq" class="select" style="pointer-events:none" value="Warehouse In-charge">
+                        <input id="" class="select" style="pointer-events:none" value="Warehouse In-charge">
                     </td>
                     <td></td>
                     <td></td>
@@ -306,11 +320,8 @@
                 </tr>
                 <tr>
                     <td style="border-bottom:1px solid #000">
-                        <select type="text" class="select" name="requested" id="requested" onchange="chooseEmpreq()">
-                            <option>Henelene Mae Tantanan</option>
-                            <option value = ""></option>
-                        </select>
-                    </td>
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['noted'];?>">
+                    </td> 
                     <td></td>
                     <td></td>   
                     <td></td>
@@ -318,7 +329,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input id="positionreq" class="select" style="pointer-events:none" value="Area Manager">
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['posnoted'];?>">
                     </td>
                     <td></td>
                     <td></td>
@@ -337,10 +348,8 @@
                 </tr>
                 <tr>
                     <td style="border-bottom:1px solid #000">
-                        <select type="text" class="select" name="reviewed" id="reviewed" onchange="chooseEmprev()">
-                            <option>David Stephany Severenity</option>
-                        </select>
-                    </td>   
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['approved'];?>">
+                    </td> 
                     <td></td>
                     <td></td>
                     <td></td>
@@ -348,7 +357,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input id="positionrev" class="select" style="pointer-events:none" value="Plant Superintendent">
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['posapproved'];?>">
                     </td>
                     <td></td>
                     <td></td>
@@ -368,21 +377,16 @@
                 </tr>
                 <tr>
                     <td style="border-bottom:1px solid #000">
-                        <input class="select" type="" name="" value="Glenn Paul">
-                    </td>   
+                        <input class="select" type="" name="" value="">
+                    </td>     
                     <td></td>
                     <td style="border-bottom:1px solid #000">
-                        <select type="text" class="select" name="requested" id="requested" onchange="chooseEmpreq()">
-                            <option>Henelene Mae Tantanan</option>
-                            <option value = ""></option>
-                        </select>
-                    </td>
+                        <input class="select" type="" name="" value="">
+                    </td>  
                     <td style="border-bottom:1px solid #000"></td>
                     <td style="border-bottom:1px solid #000">
-                        <select type="text" class="select" name="reviewed" id="reviewed" onchange="chooseEmprev()">
-                            <option>David Stephany Severenity</option>
-                        </select>
-                    </td>
+                        <input class="select" type="" name="" value="">
+                    </td>  
                 </tr>
                 <tr>
                     <td><!-- <input class="select animated headShake" type="" name="" placeholder="Type Designation Here.." > -->
@@ -402,6 +406,9 @@
                     </td>
                 </tr>
             </table>
+            <?php ?>
+        <!--<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+        <input type='hidden' name='passid' id='passid' value="<?php echo $id; ?>" >-->
         </form> 
     </div>
 </page>
@@ -409,11 +416,11 @@
 
 
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
 function printMReqF(){
-    var sign = $("#mreqfsign").serialize();
+    var sign = $("#GatepassSign").serialize();
     var loc= document.getElementById("baseurl").value;
-    var redirect = loc+'index.php/request/printMReqF';
+    var redirect = loc+'index.php/gatepass/printGatepass';
      $.ajax({
             type: "POST",
             url: redirect,
@@ -427,5 +434,5 @@ function printMReqF(){
             }
     });
 }
-</script>
+</script>-->
 </html>

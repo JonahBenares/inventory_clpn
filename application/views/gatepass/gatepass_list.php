@@ -34,10 +34,10 @@
 				<div class="panel-heading">
 					Gatepass
 					<div class="pull-right">
-						<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
+						<!--<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
 							<span class="fa fa-search"></span>
-						</a>
-						<a class="clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#requestModal">
+						</a>-->
+						<a class="clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#gatepassModal">
 							<span class="fa fa-plus"></span></span>
 						</a>
 					</div>
@@ -46,10 +46,11 @@
 					<div class="canvas-wrapper">
 						<div class="row" style="padding:0px 10px 0px 10px">
 						</div>
-						<table class="table-bordered table-hover" id="request_datatable" width="100%" style="font-size: 15px">
+						<table class="table-bordered table-hover" id="gatepass_datatable" width="100%" style="font-size: 15px">
 							<thead>
 								<tr>
-									<td width="1%" align="center">#</td>
+									<!--<td width="1%" align="center">#</td>-->
+									<td width="10%" align="center"><strong>MGP No</strong></td>
 									<td width="29%" align="center"><strong>To Company</strong></td>
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="15%" align="center"><strong>Vehicle No.</strong></td>
@@ -60,9 +61,10 @@
 							
 							</thead>
 							<tbody>
-								<?php $x=1; foreach($gatepass as $gp){ ?>
+								<?php foreach($gatepass as $gp){ ?>
 								<tr>
-									<td align="center"><?php echo $x; ?></td>
+									<!--<td align="center"><?php echo $x; ?></td>-->
+									<td align="center"><?php echo $gp['mgp_no'];?></td>
 									<td align="center"><?php echo $gp['supplier'];?></td>
 									<td align="center"><?php echo $gp['destination'];?></td>
 									<td align="center"><?php echo $gp['vehicle_no'];?></td>
@@ -74,7 +76,7 @@
 
 									</td>
 								</tr>
-								<?php $x++; } ?>
+								<?php } ?>
 							</tbody>
 						</table>
 					</div>
@@ -83,7 +85,7 @@
 		</div>
 	</div>
 	<!---MO-D-A-L-->
-	<div class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+	<!--<div class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
 		<div class="modal-dialog" role="document">
 			<div class="modal-content modbod">
 				<div class="modal-header">
@@ -112,12 +114,12 @@
 									<input type="text" name="po" class="form-control">
 								</td>
 							</tr>
-							<!-- <tr>
+							 <tr>
 								<td class="td-sclass"><label for="jo">JO No.:</label></td>
 								<td class="td-sclass">
 									<input type="text" name="jo" class="form-control">
 								</td>
-							</tr> -->
+							</tr> 
 							<tr>
 								<td class="td-sclass"><label for="si">SI No.:</label></td>
 								<td class="td-sclass">
@@ -165,7 +167,7 @@
 				</form>
 			</div>
 		</div>
-	</div>
+	</div>-->
 	<div class="modal fade" id="modal_delete_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="alert alert-danger">
