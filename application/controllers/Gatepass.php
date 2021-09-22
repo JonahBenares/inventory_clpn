@@ -14,6 +14,7 @@ class Gatepass extends CI_Controller {
         $this->dropdown['purpose'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
         $this->dropdown['enduse'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
         $this->dropdown['employee'] = $this->super_model->select_all_order_by('employees', 'employee_name', 'ASC');
+         $this->dropdown['supplier'] = $this->super_model->select_all_order_by('supplier', 'supplier_name', 'ASC');
         $this->dropdown['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         // $this->dropdown['prno'] = $this->super_model->select_join_where("receive_details","receive_head", "saved='1' AND create_date BETWEEN CURDATE() - INTERVAL 60 DAY AND CURDATE()","receive_id");
         //$this->dropdown['prno'] = $this->super_model->select_join_where_order("receive_details","receive_head", "saved='1'","receive_id", "receive_date", "DESC");
@@ -151,16 +152,15 @@ class Gatepass extends CI_Controller {
     }
 
     public function getitem(){
-             foreach($this->super_model->select_custom_where("items","item_id = 'item_id'") AS $it){
-                 $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
-        }
+        $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", 'unit_id');
+        //$item_name = $this->super_model->select_column_where("items", "item_name", "item_id", 'item_id');
 
        $data['list'] = array(
             'unit'=>$this->input->post('unit'),
             'unit_name'=>$unit,
-            'itemid'=>$this->input->post('itemid'),
             'quantity'=>$this->input->post('quantity'),
-            'item'=>$this->input->post('itemname'),
+            'item'=>$this->input->post('item'),
+            //'item_name'=>$item,
             'count'=>$this->input->post('count'),
         );
             
@@ -171,10 +171,11 @@ class Gatepass extends CI_Controller {
         $counter = $this->input->post('counter');
         $id=$this->input->post('gatepassid');
         for($a=0;$a<$counter;$a++){
-            if(!empty($this->input->post('item_id['.$a.']'))){
+            if(!empty($this->input->post('item_name['.$a.']'))){
                 $data = array(
                     'gatepass_id'=>$this->input->post('gatepassid'),
-                    'item_id'=>$this->input->post('item_id['.$a.']'),
+                    //'item_id'=>$this->input->post('item_id['.$a.']'),
+                    'item_name'=>$this->input->post('item['.$a.']'),
                     'quantity'=>$this->input->post('quantity['.$a.']'),
                     'unit_id'=>$this->input->post('unit['.$a.']'),
                 );

@@ -14,6 +14,7 @@ class Reports extends CI_Controller {
         $this->dropdown['purpose'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
         $this->dropdown['enduse'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
         $this->dropdown['employee'] = $this->super_model->select_all_order_by('employees', 'employee_name', 'ASC');
+        $this->dropdown['supplier'] = $this->super_model->select_all_order_by('supplier', 'supplier_name', 'ASC');
         $this->dropdown['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         $this->dropdown['pr_issue_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id, department_id FROM issuance_head WHERE saved='1' GROUP BY pr_no");
         $this->dropdown['pr_restock_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id, department_id FROM restock_head WHERE saved='1' GROUP BY pr_no");
