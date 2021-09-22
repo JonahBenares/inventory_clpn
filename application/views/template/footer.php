@@ -1,5 +1,5 @@
 		<div class="col-sm-12">
-				<p class="back-link">Warehouse Inventory System || <a href="http://www.cenpripower.com">CENPRI</a></p>
+				<p class="back-link">Warehouse Inventory System || <!-- <a href="http://www.cenpripower.com">CPGC</a> -->CPGC</p>
 			</div>
 		</div><!--/.row-->
 	</div>	<!--/.main-->

@@ -58,7 +58,7 @@
 						<table width="100%">
 							<tr>
 								<td ><p class="nomarg">Date:</p></td>
-								<td ><input type="date" name="receive_date" id="receive_date" value="<?php echo date('Y-m-d'); ?>" style="pointer-events: none;"></td>
+								<td ><input type="date" name="receive_date" id="receive_date" value="<?php echo date('Y-m-d'); ?>"></td>
 								<td><p class="nomarg">SI/OR No.:</p></td>
 								<td> <input type="text" name="si_no" id="si_no"></td>
 								<td >

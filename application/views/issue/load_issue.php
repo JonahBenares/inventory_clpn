@@ -86,9 +86,9 @@
 												<td><p class="nomarg">End Use:</p></td>
 												<td> <h5 class="nomarg"><?php echo $head[$x]['enduse']; ?></h5></td>
 												<td width="10%"><p class="nomarg pull-right">Date:</p></td>
-												<td width="10%"><h5 class="nomarg"> <input type='date' name='issue_date' id='issue_date' class='form-control' value='<?php echo $today; ?>' style="pointer-events: none;"></td>
+												<td width="10%"><h5 class="nomarg"> <input type='date' name='issue_date' id='issue_date' class='form-control' value='<?php echo $today; ?>'></td>
 												<td width="10%"><p class="nomarg">&nbsp; Time:</p></td>
-												<td > <h5 class="nomarg"><input type='text' name='issue_time' id='issue_time' class='form-control' value='<?php echo $time; ?>' style="pointer-events: none;"></td>
+												<td > <h5 class="nomarg"><input type='text' name='issue_time' id='issue_time' class='form-control' value='<?php echo $time; ?>'></td>
 											</tr>
 											<tr>
 												<td><p class="nomarg">JO / PR #:</p></td>
