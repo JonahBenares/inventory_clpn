@@ -1,5 +1,5 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/request.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/gatepass.js"></script>
 <link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
 <script src="<?php echo base_url(); ?>assets/js/select2.min.js"></script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -70,6 +70,7 @@
 										<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->item_name;?></option>
 										<?php } ?>
 									</select>
+									<input type='hidden' name='item' id='item'>
 									</p>
 								</div>
 								<div class="col-lg-2">
@@ -85,6 +86,7 @@
 										<option value = "<?php echo $unit->unit_id;?>"><?php echo $unit->unit_name;?></option>
 										<?php } ?>
 									</select>
+									<input type='hidden' name='unit' id='unit'>
 									</p>
 								</div>
 								<div class="col-lg-1">

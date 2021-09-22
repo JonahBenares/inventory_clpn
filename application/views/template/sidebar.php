@@ -360,15 +360,16 @@
 							<?php
 							$now=date('Y');
         					$year = substr( $now, -2);
-        					$rows=$this->super_model->count_custom_where("gatepass_head","date_created LIKE '$year%'");
+        					$rows=$this->super_model->count_custom_where("gatepass_head","date_created LIKE '%$year%'");
         					if($rows==0){
             					$mgp_no= $year."-001";
         					} else {
-            					$maxmgpno=$this->super_model->get_max_where("gatepass_head", "mgp_no","date_created LIKE '$year%'");
+            					$maxmgpno=$this->super_model->get_max_where("gatepass_head", "mgp_no","date_created LIKE '%$year%'");
             					$mgpno = explode('-',$maxmgpno);
-            					$series = $mgpno[2]+1;
-            					$mgp_no = str_pad($series, 3, "0", STR_PAD_LEFT);
-            				} ?>
+            					$series = $mgpno[1]+1;
+            					$mgp_no = $year."-".str_pad($series, 3, "0", STR_PAD_LEFT);
+
+            				}  ?>
 							<tr>
 								<td width="20%" class = "t"><label>MGP No.:</label></td>
 								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
