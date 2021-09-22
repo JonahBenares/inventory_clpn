@@ -195,6 +195,48 @@ class Gatepass extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function view_gatepass(){
+        $id=$this->uri->segment(3);
+        $data['gatepassid']= $id;
+        $data['gatepass']= $id;
+        $data['item_list']=$this->super_model->select_all_order_by("items","item_name","ASC");
+        $data['unit']=$this->super_model->select_all_order_by("uom","unit_name","ASC");
+        foreach($this->super_model->select_row_where("gatepass_head", "gatepass_id", $id) AS $pass){
+            $data['head'][]=array(
+                "mgp_no"=>$pass->mgp_no,
+                "to_company"=>$this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $pass->supplier_id),
+                "destination"=>$pass->destination,
+                "vehicle_no"=>$pass->vehicle_no,
+                "date_issued"=>$pass->date_issued,
+                "date_returned"=>$pass->date_returned,
+                "prepared_by"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $pass->prepared_by),
+                "noted_by"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $pass->noted_by),
+                "approved_by"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $pass->approved_by),
+                "saved"=>$pass->saved,
+            );
+        }
+        $row1=$this->super_model->count_rows_where("gatepass_details","gd_id",$id);
+        if($row1!=0){
+            foreach($this->super_model->select_row_where('request_items','request_id', $id) AS $gp){
+                $item = $this->super_model->select_column_where("items", "item_name", "item_id", $gp->item_id);
+                $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $gp->unit_id);
+                }
+                $data['gatepass_itm'][] = array(
+                    'itemid'=>$gp->request_id,
+                    'item'=>$item,
+                    'quantity'=>$gp->quantity,
+                    'unit_id'=>$unit,
+                );
+        }else{
+            $data['gatepass_itm'] = array();
+        }
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('gatepass/view_gatepass',$data);
+        $this->load->view('template/footer');
+    }
+
+
 }
 ?>
 
