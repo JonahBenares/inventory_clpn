@@ -192,7 +192,6 @@ class Gatepass extends CI_Controller {
 
     public function gatepass_print(){
         $this->load->view('template/header');
-        $this->load->view('template/print_head');
         $this->load->view('gatepass/gatepass_print');
         $this->load->view('template/footer');
     }

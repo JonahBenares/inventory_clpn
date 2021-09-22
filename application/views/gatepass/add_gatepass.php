@@ -62,7 +62,7 @@
 							</table>
 							<hr>
 							<div class="row">
-								<div class="col-lg-7">							
+								<div class="col-lg-4">							
 									<p>
 									<select name="item" id='item' class="form-control select2"">
 										<option value = ""></option>
@@ -89,6 +89,11 @@
 									<input type='hidden' name='unit' id='unit'>
 									</p>
 								</div>
+								<div class="col-lg-3">
+									<p>				
+										<textarea placeholder="Remarks" type="text" name="borrowfrom" id="borrowfrom" class="form-control" rows="1" ></textarea> 
+									</p>
+								</div>
 								<div class="col-lg-1">
 									<div id='alrt' style="font-weight:bold"></div>
 									<p>				
@@ -101,11 +106,12 @@
 								<div class="col-lg-12">
 									<table class="table table-bordered table-hover">
 										<tr>
-											<th style='text-align: center;'>#</th>
-											<th >Item Description</th>
-											<th style='text-align: center;'>Qty</th>
-											<th style='text-align: center;'>UOM</th>
-											<th style='text-align: center;' width="1%">Action</th>
+											<th width="2%" style='text-align: center;'>#</th>
+											<th width="48%">Item Description</th>
+											<th width="10%" style='text-align: center;'>Qty</th>
+											<th width="10%" style='text-align: center;'>UOM</th>
+											<th width="25%" style='text-align: center;'>Remarks</th>
+											<th width="5%" style='text-align: center;' width="1%">Action</th>
 										</tr>
 									<?php 
 									 if(!isset($gatepass)){
@@ -121,6 +127,7 @@
 												<td><?php echo $gp['item_name'];?></td>
 												<td><center><?php echo $gp['quantity'];?></center></td>
 												<td><center><?php echo $gp['unit'];?></center></td>
+												<td><center>Kg</center></td>
 												<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
 											</tr>
 										<?php } ?>
