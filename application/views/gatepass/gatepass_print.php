@@ -191,7 +191,7 @@
 
 <div class="animated fadeInDown p-t-20" id="printbutton">
     <center>
-        <a href=".php" class="btn btn-warning text-white btn-w100 btn-round">Back</a>
+        <a href="<?php echo base_url();?>index.php/gatepass/gatepass_print" class="btn btn-warning text-white btn-w100 btn-round">Back</a>
         <!-- <a href='update_emp.php?id=<?php echo $id; ?>' class="btn btn-primary btn-w100 btn-round">Update</a>  -->
         <a href="" class="btn btn-success btn-w100 btn-round" onclick="window.print()">Print</a>
         <!-- <button class="btn btn-danger btn-fill"onclick="printDiv('printableArea')" style="margin-bottom:5px;width:80px;"></span> Print</button><br> -->
