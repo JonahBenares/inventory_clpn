@@ -5,6 +5,7 @@ function add_item(){
     var item =$('#item').val();
     var unit =$('#unit').val();
     var quantity =parseFloat($('#quantity').val());
+    var remarks =$('#remarks').val();
     
     var i = item.replace(/&/gi,"and");
     var i = i.replace(/#/gi,"");
@@ -20,7 +21,7 @@ function add_item(){
           $.ajax({
                 type: "POST",
                 url:redirect,
-                data: "&item="+item+"&unit="+unit+"&quantity="+quantity+"&count="+count,
+                data: "item="+item+"&unit="+unit+"&quantity="+quantity+"&remarks="+remarks+"&count="+count,
                 beforeSend: function(){
                     document.getElementById('alrt').innerHTML='<b>Please wait, Loading Data...</b>'; 
                     $("#submit").hide(); 
@@ -30,13 +31,14 @@ function add_item(){
                     $('#item_body').append(html);
                     $('#itemtable').show();
                     $('#savebutton').show();
-                    $('#submit').hide();
+                    $('#submit').show();
                     $('#alrt').hide();
 
                     $('.select2-selection__rendered').empty();
                     document.getElementById("item").value = '';
                     document.getElementById("unit").value = '';
                     document.getElementById("quantity").value = '';
+                    document.getElementById("remarks").value = '';
                     document.getElementById("counter").value = count;
                 }
            });
@@ -45,7 +47,7 @@ function add_item(){
 }
 
 function saveGatepass(){
-    var req = $("#gatepassfrm").serialize();
+    var pass = $("#gatepassfrm").serialize();
     var loc= document.getElementById("baseurl").value;
     var conf = confirm('Are you sure you want to save this record?');
     if(conf==true){
@@ -56,7 +58,7 @@ function saveGatepass(){
      $.ajax({
             type: "POST",
             url: redirect,
-            data: req,
+            data: pass,
             beforeSend: function(){
                 document.getElementById('alt').innerHTML='<b>Please wait, Saving Data...</b>'; 
                 $("#savebutton").hide(); 
@@ -81,6 +83,7 @@ function remove_item(i){
     }
      
 }
+
 
 function readPic2(input) {
       if (input.files && input.files[0]) {

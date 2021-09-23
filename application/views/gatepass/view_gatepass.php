@@ -1,5 +1,5 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/request.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/gatepass.js"></script>
 <link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
 <script src="<?php echo base_url(); ?>assets/js/select2.min.js"></script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -9,7 +9,7 @@
 				<em class="fa fa-home"></em>
 			</a></li>
 			<li class=""><a href="<?php echo base_url(); ?>index.php/request/request_list">Gatepass </a></li>
-			<li class="active"> Add Gatepass</li>
+			<li class="active"> View Details</li>
 		</ol>
 	</div><!--/.row-->
 	
@@ -27,41 +27,38 @@
 				<div class="panel-body">
 					<form id='gatepassfrm' method = "POST">
 						<div class="canvas-wrapper">
-						<?php foreach($head AS $g){
-							$mgpno=$g['mgp_no'];
-							$company=$g['to_company'];
-							$destination=$g['destination'];
-							$issued=$g['date_issued'];
-							$returned=$g['date_returned'];
-							$vehicle_no=$g['vehicle_no'];
-							$prepared_by=$g['prepared_by'];
-							$noted_by=$g['noted_by'];
-							$approved_by=$g['approved_by'];
-							$saved=$g['saved'];
-						} ?>
+							<?php 
+							foreach($head AS $h){
+								$saved=$h->saved;
+							}
+							foreach($pass as $p){ ?>
 							<table width="100%" >
 								<tr>
 									<td width="10%" ><p class="nomarg">To Company:</p></td>
-									<td width="40%" ><label class="labelStyle"><?php echo $company; ?></label></td>
+									<td width="40%" ><label class="labelStyle"><?php echo $p['company'];?></label></td>
 									<td width="15%" ><p class="nomarg pull-right">Date Issued:</p></td>
-									<td width="50%" colspan="3"><label class="labelStyle">&nbsp; <?php echo date('F d, Y', strtotime($issued)); ?></label></td>
-									<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>
+									<td width="50%" colspan="3"><label class="labelStyle">&nbsp; <?php echo date('F d, Y', strtotime($p['date_issued'])); ?></label></td>
+									<?php if($saved=='0'){ ?>
+									<td width="5%" ><a href="<?php echo base_url(); ?>index.php/gatepass/add_gatepass/<?php echo $p['gatepassid'];?>" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td>
+									<?php } ?>
+									<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print/<?php echo $p['gatepassid'];?>" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>
 								</tr>
 								<tr>
 									<td><p class="nomarg">Destination: </p></td>
-									<td><h5 class="nomarg"><?php echo $destination; ?></h5></td>
+									<td><h5 class="nomarg"><?php echo $p['destination'];?></h5></td>
 									<td><p class="nomarg pull-right">Date Returned:</p></td>
-									<td><h5 class="nomarg">&nbsp; <?php echo date('F d, Y', strtotime($returned)); ?></h5></td>
+									<td><h5 class="nomarg">&nbsp; <?php echo date('F d, Y', strtotime($p['date_returned'])); ?></h5></td>
 								</tr>
 								<tr>
 									<td><p class="nomarg">Vehicle No:</p></td>
-									<td> <h5 class="nomarg"><?php echo $vehicle_no; ?></h5></td>
+									<td> <h5 class="nomarg"><?php echo $p['vehicle_no'];?></h5></td>
 									<td><p class="nomarg pull-right">MGP No.:</p></td>
-									<td><h5 class="nomarg">&nbsp; <?php echo $mgpno; ?></h5></td>
+									<td><h5 class="nomarg">&nbsp; <?php echo $p['mgp_no'];?></h5></td>
 								</tr>
+								<?php } ?>
 							</table>
 							<hr>
-							<div class="row">
+							<!--<div class="row">
 								<div class="col-lg-4">							
 									<p>
 									<select name="item" id='item' class="form-control select2">
@@ -99,7 +96,7 @@
 									</p>
 								</div>
 								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-							</div>
+							</div>-->
 							<div class="row">
 								<div class="col-lg-12">
 									<table class="table table-bordered table-hover">
@@ -109,37 +106,26 @@
 											<th width="10%" style='text-align: center;'>Qty</th>
 											<th width="10%" style='text-align: center;'>UOM</th>
 											<th width="25%" style='text-align: center;'>Remarks</th>
-											<th width="5%" style='text-align: center;' width="1%">Action</th>
+											<!--<th width="5%" style='text-align: center;' width="1%">Action</th>-->
 										</tr>
-									<?php 
-									 if(!isset($gatepass)){
-									?>
-									<tbody id="item_body"></tbody>
-									<?php } else { ?>
 									<tbody id="item_body">
 										<?php 
-											$x=1; foreach($gatepass_itm AS $gp) { 
-										?>
+										 $x=1; if(!empty($gatepass_itm)){
+											foreach($gatepass_itm as $gp){ ?>
 											<tr>
 												<td><center><?php echo $x; ?></center></td>
-												<td><?php echo $gp['item_name'];?></td>
+												<td><?php echo $gp['item'];?></td>
 												<td><center><?php echo $gp['quantity'];?></center></td>
 												<td><center><?php echo $gp['unit'];?></center></td>
-												<td><center>Kg</center></td>
-												<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
+												<td><center><?php echo $gp['remarks'];?></center></td>
+												<!--<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>-->
 											</tr>
+										<?php $x++; } } else { ?>
+										<tr>
+											<td align="center" colspan='9'><center>No Data Available.</center></td>
+										</tr>
 										<?php } ?>
-									</tbody>
-										<?php $x++; } ?>
 									</table>
-								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-								<input type='hidden' name='gatepassid' id='gatepassid' value='<?php echo $gatepassid; ?>'>
-								<input type='hidden' name='counter' id='counter'>
-								<input type='hidden' name='userid' id='userid' value="<?php echo $_SESSION['user_id']; ?>">
-								<?php if($saved==0){ ?>
-								<center><div id='alt' style="font-weight:bold"></div></center>
-								<input type='button' class="btn btn-md btn-warning" id='savebutton' onclick='saveGatepass()' style="width:100%;background: #ff5d00" value='Save and Print'>
-								<?php } ?>
 								</div>
 							</div>
 						</div>
@@ -148,6 +134,3 @@
 			</div>
 		</div>
 	</div>
-<script>
-    $('.select2').select2();
-</script>
