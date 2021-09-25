@@ -73,6 +73,10 @@
 		    	"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
 		    	"aaSorting": [[ 0, "desc" ], [ 1, "desc" ]]
 		    });
+		    $('#gatepass_datatable').DataTable({
+		    	"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+		    	"aaSorting": [[ 0, "desc" ], [ 1, "desc" ]]
+		    });
 		} );
 		function confirmationDelete(anchor){
 	        var conf = confirm('Are you sure you want to delete this record?');

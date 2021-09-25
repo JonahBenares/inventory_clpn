@@ -55,6 +55,28 @@
         height: 14.8cm;  
     }
     @media print {
+        .col-lg-6 {
+            width: 50%;
+        }
+        .thumbnail {
+            display: block;
+            padding: 4px;
+            margin-bottom: 20px;
+            line-height: 1.42857143;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            -webkit-transition: border .2s ease-in-out;
+            -o-transition: border .2s ease-in-out;
+            transition: border .2s ease-in-out;
+        }
+        .row {
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9 {
+    float: left;
+}
         body, page {
             margin: 0;
             box-shadow: 0;
@@ -119,7 +141,7 @@
         .table-bordered>thead>tr>td, 
         .table-bordered>thead>tr>th 
         {
-            border: 1px solid #000;
+            border: 1px solid #000!important;
         }   
         input, select{
             width: 100%;
@@ -154,7 +176,7 @@
         border: 1px solid #000;
     }
     .nobor-all{
-        border: 0px solid #fff!important;
+        border: 0px solid #000!important;
     }
     table td{
         font-size: 13px;
@@ -220,31 +242,26 @@
             <?php foreach($pass as $p){ ?>
         <table class="table-bordsered nobor-all" width="100%">
             <tr>
-                <td width="8%"><strong><h6 class="nomarg">To Company</h6></strong></td>
-                <td width="44%"style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['to_company'];?></label></td>
+                <td width="10%"><strong><h6 class="nomarg">To Company</h6></strong></td>
+                <td width="42%"style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['to_company'];?></label></td>
                 <td width="5%"></td>
                 <td width="13%"><strong><h6 class="nomarg pull-right">Date Issued &nbsp;</h6></strong></td>
                 <td width="30%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo date('F d, Y', strtotime($p['date_issued']));?></label></td>
             </tr>
             <tr>
-                <!--<td><strong><h6 class="nomarg">Company</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['to_company'];?></label></td>
-                <td></td>-->
+                <td><strong><h6 class="nomarg">Destination</h6></strong></td>
+                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['destination'];?></label></td>
+                <td></td>
                 <td><strong><h6 class="nomarg pull-right">Date Returned &nbsp;</h6></strong></td>
                 <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo date('F d, Y', strtotime($p['date_returned']));?></label></td>
             </tr>
             <tr>
-                <td><strong><h6 class="nomarg">Destination</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['destination'];?></label></td>
+                <td><strong><h6 class="nomarg">Vehicle No</h6></strong></td>
+                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['vehicle_no'];?></label></td>
                 <td></td>
                 <td><strong><h6 class="nomarg pull-right">MGP No. &nbsp;</h6></strong></td>
                 <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['mgp_no'];?></label></td>
             </tr>    
-             <tr>
-                <td><strong><h6 class="nomarg">Vehicle No</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['vehicle_no'];?></label></td>
-                <td></td>
-            </tr>
         </table>
         <br>    
         <table width="100%" class="table-bordered">
@@ -412,7 +429,34 @@
         </form> 
     </div>
 </page>
-
+<page size="A4">
+    <div class="p-t-20 m-l-20 m-r-20">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </div>
+            <div class="col-lg-6">
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </div>
+            <div class="col-lg-6">
+            </div>
+        </div>        
+    </div>
+</page>
 
 
 
