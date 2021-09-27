@@ -708,7 +708,7 @@
 				</a>
 				<ul class="children collapse" id="sub-gatepass">
 					<li>
-						<a class="" data-toggle="modal" data-target="#gatepass" >
+						<a class="" data-toggle="modal" data-target="#gatepassModal" >
 							<span class="fa fa-arrow-right">&nbsp;</span> Add New
 						</a>
 					</li>
