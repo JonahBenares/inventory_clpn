@@ -464,6 +464,53 @@
             </div>
         </div>         
     </div>
+
+    <table width="100%">
+        <tr>
+            <td>
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </td>
+            <td>
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </td>
+            <td>
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </td>
+            <td>
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </td>
+            <td>
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </td>
+            <td>
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </td>
+            <td>
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </td>
+        </tr>
+    </table>
 </page>
 
 
