@@ -57,7 +57,7 @@
 								</tr>
 								<?php } ?>
 							</table>
-							<hr>
+							<br>
 							<!--<div class="row">
 								<div class="col-lg-4">							
 									<p>
@@ -97,35 +97,60 @@
 								</div>
 								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 							</div>-->
-							<div class="row">
-								<div class="col-lg-12">
-									<table class="table table-bordered table-hover">
-										<tr>
-											<th width="2%" style='text-align: center;'>#</th>
-											<th width="48%">Item Description</th>
-											<th width="10%" style='text-align: center;'>Qty</th>
-											<th width="10%" style='text-align: center;'>UOM</th>
-											<th width="25%" style='text-align: center;'>Remarks</th>
-											<!--<th width="5%" style='text-align: center;' width="1%">Action</th>-->
-										</tr>
-									<tbody id="item_body">
-										<?php 
-										 $x=1; if(!empty($gatepass_itm)){
-											foreach($gatepass_itm as $gp){ ?>
+							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
+								<div class="row">
+									<div class="col-lg-12">
+										<table class="table table-bordered table-hover">
 											<tr>
-												<td><center><?php echo $x; ?></center></td>
-												<td><?php echo $gp['item'];?></td>
-												<td><center><?php echo $gp['quantity'];?></center></td>
-												<td><center><?php echo $gp['unit'];?></center></td>
-												<td><center><?php echo $gp['remarks'];?></center></td>
-												<!--<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>-->
+												<th width="2%" style='text-align: center;'>#</th>
+												<th width="48%">Item Description</th>
+												<th width="10%" style='text-align: center;'>Qty</th>
+												<th width="10%" style='text-align: center;'>UOM</th>
+												<th width="25%" style='text-align: center;'>Remarks</th>
+												<!--<th width="5%" style='text-align: center;' width="1%">Action</th>-->
 											</tr>
-										<?php $x++; } } else { ?>
-										<tr>
-											<td align="center" colspan='9'><center>No Data Available.</center></td>
-										</tr>
-										<?php } ?>
-									</table>
+										<tbody id="item_body">
+											<?php 
+											 $x=1; if(!empty($gatepass_itm)){
+												foreach($gatepass_itm as $gp){ ?>
+												<tr>
+													<td><center><?php echo $x; ?></center></td>
+													<td><?php echo $gp['item'];?></td>
+													<td><center><?php echo $gp['quantity'];?></center></td>
+													<td><center><?php echo $gp['unit'];?></center></td>
+													<td><center><?php echo $gp['remarks'];?></center></td>
+													<!--<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>-->
+												</tr>
+											<?php $x++; } } else { ?>
+											<tr>
+												<td align="center" colspan='9'><center>No Data Available.</center></td>
+											</tr>
+											<?php } ?>
+										</table>
+									</div>
+								</div>
+							</div>
+							<br>
+							<h6>Picture/s:</h6>
+							<div  class="row">
+								<div class="col-lg-4">
+									<div class="thumbnail" style="margin-bottom:5px">
+										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+									</div>
+									<center><p>Image Name</p></center>
+									<span id="img1-check" class='img-check'></span>
+								</div>
+								<div class="col-lg-4">
+									<div class="thumbnail" style="margin-bottom:5px">
+										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+									</div>
+									<center><p>Image Name</p></center>
+								</div>
+								<div class="col-lg-4">
+									<div class="thumbnail" style="margin-bottom:5px">
+										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+									</div>
+									<center><p>Image Name</p></center>
 								</div>
 							</div>
 						</div>

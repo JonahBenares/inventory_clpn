@@ -60,89 +60,121 @@
 									<td><h5 class="nomarg">&nbsp; <?php echo $mgpno; ?></h5></td>
 								</tr>
 							</table>
-							<hr>
-							<div class="row">
-								<div class="col-lg-4">							
-									<p>
-									<select name="item" id='item' class="form-control select2"">
-										<option value = ""></option>
-										<?php foreach($item_list AS $itm){ ?>
-										<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->item_name;?></option>
-										<?php } ?>
-									</select>
-									<!-- <input type='hidden' name='item' id='item'> -->
-									</p>
+							<br>
+							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
+								<div class="row">
+									<div class="col-lg-4">
+										<p>
+											<select name="item" id='item' class="form-control select2">
+												<option value = ""></option>
+												<?php foreach($item_list AS $itm){ ?>
+												<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->item_name;?></option>
+												<?php } ?>
+											</select>
+										<!-- <input type='hidden' name='item' id='item'> -->
+										</p>
+									</div>
+									<div class="col-lg-2">
+										<p>				
+											<input placeholder="Quantity" type="text" name="quantity" id="quantity" class="form-control" >
+										</p>
+									</div>
+									<div class="col-lg-2">
+										<p>				
+										<select name="unit" id='unit' class="form-control select2">
+											<option value = ""></option>
+											<?php foreach($unit AS $unit){ ?>
+											<option value = "<?php echo $unit->unit_id;?>"><?php echo $unit->unit_name;?></option>
+											<?php } ?>
+										</select>
+										</p>
+									</div>
+									<div class="col-lg-3">
+										<p>				
+											<textarea placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" rows="1" ></textarea> 
+										</p>
+									</div>
+									<div class="col-lg-1">
+										<div id='alrt' style="font-weight:bold"></div>
+										<p>				
+											<a type="button" onclick='add_item()' class="btn btn-warning btn-md" id = "submit"><span class="fa fa-plus"></span></a>
+										</p>
+									</div>
+									<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+								</div>							
+								<div class="row">
+									<div class="col-lg-12">
+										<table class="table table-bordered table-hover" style="margin-bottom:0px">
+											<tr>
+												<th width="2%" style='text-align: center;'>#</th>
+												<th width="48%">Item Description</th>
+												<th width="10%" style='text-align: center;'>Qty</th>
+												<th width="10%" style='text-align: center;'>UOM</th>
+												<th width="25%" style='text-align: center;'>Remarks</th>
+												<th width="5%" style='text-align: center;' width="1%">Action</th>
+											</tr>
+										<?php 
+										 if(!isset($gatepass_itm)){
+										?>
+										<tbody id="item_body"></tbody>
+										<?php } else { ?>
+										<tbody id="item_body">
+											<?php 
+												$x=1; foreach($gatepass_itm AS $gp) { 
+											?>
+												<tr>
+													<td><center><?php echo $x; ?></center></td>
+													<td><?php echo $gp['item_name'];?></td>
+													<td><center><?php echo $gp['quantity'];?></center></td>
+													<td><center><?php echo $gp['unit'];?></center></td>
+													<td><center><?php echo $gp['remarks'];?></center></td>
+													<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
+												</tr>
+											<?php } ?>
+										</tbody>
+											<?php $x++; } ?>
+										</table>
+									
+									</div>
+								</div>	
+							</div>	
+							<br>
+							<h6>Add Image/s:</h6>
+							<div  class="row">
+								<div class="col-lg-4">
+									<input type="file" class="form-control" name="">
+									<div class="thumbnail">
+										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+									</div>
+									<span id="img1-check" class='img-check'></span>
 								</div>
-								<div class="col-lg-2">
-									<p>				
-										<input placeholder="Quantity" type="text" name="quantity" id="quantity" class="form-control" >
-									</p>
+								<div class="col-lg-4">
+									<input type="file" class="form-control" name="">
+									<div class="thumbnail">
+										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+									</div>
 								</div>
-								<div class="col-lg-2">
-									<p>				
-									<select name="unit" id='unit' class="form-control select2">
-										<option value = ""></option>
-										<?php foreach($unit AS $unit){ ?>
-										<option value = "<?php echo $unit->unit_id;?>"><?php echo $unit->unit_name;?></option>
-										<?php } ?>
-									</select>
-									</p>
+								<div class="col-lg-4">
+									<input type="file" class="form-control" name="">
+									<div class="thumbnail">
+										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+									</div>
 								</div>
-								<div class="col-lg-3">
-									<p>				
-										<textarea placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" rows="1" ></textarea> 
-									</p>
-								</div>
-								<div class="col-lg-1">
-									<div id='alrt' style="font-weight:bold"></div>
-									<p>				
-										<a type="button" onclick='add_item()' class="btn btn-warning btn-md" id = "submit"><span class="fa fa-plus"></span></a>
-									</p>
-								</div>
-								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 							</div>
+							<br>
 							<div class="row">
 								<div class="col-lg-12">
-									<table class="table table-bordered table-hover">
-										<tr>
-											<th width="2%" style='text-align: center;'>#</th>
-											<th width="48%">Item Description</th>
-											<th width="10%" style='text-align: center;'>Qty</th>
-											<th width="10%" style='text-align: center;'>UOM</th>
-											<th width="25%" style='text-align: center;'>Remarks</th>
-											<th width="5%" style='text-align: center;' width="1%">Action</th>
-										</tr>
-									<?php 
-									 if(!isset($gatepass_itm)){
-									?>
-									<tbody id="item_body"></tbody>
-									<?php } else { ?>
-									<tbody id="item_body">
-										<?php 
-											$x=1; foreach($gatepass_itm AS $gp) { 
-										?>
-											<tr>
-												<td><center><?php echo $x; ?></center></td>
-												<td><?php echo $gp['item_name'];?></td>
-												<td><center><?php echo $gp['quantity'];?></center></td>
-												<td><center><?php echo $gp['unit'];?></center></td>
-												<td><center><?php echo $gp['remarks'];?></center></td>
-												<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
-											</tr>
-										<?php } ?>
-									</tbody>
-										<?php $x++; } ?>
-									</table>
-								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-								<input type='hidden' name='gatepassid' id='gatepassid' value='<?php echo $gatepassid; ?>'>
-								<input type='hidden' name='counter' id='counter'>
-								<input type='hidden' name='userid' id='userid' value="<?php echo $_SESSION['user_id']; ?>">
-								<?php if($saved==0){ ?>
-								<center><div id='alt' style="font-weight:bold"></div></center>
-								<input type='button' class="btn btn-md btn-warning" id='savebutton' onclick='saveGatepass()' style="width:100%;background: #ff5d00" value='Save and Print'>
-								<?php } ?>
+									<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+									<input type='hidden' name='gatepassid' id='gatepassid' value='<?php echo $gatepassid; ?>'>
+									<input type='hidden' name='counter' id='counter'>
+									<input type='hidden' name='userid' id='userid' value="<?php echo $_SESSION['user_id']; ?>">
+									<?php if($saved==0){ ?>
+									<center><div id='alt' style="font-weight:bold"></div></center>
+									<input type='button' class="btn btn-md btn-warning" id='savebutton' onclick='saveGatepass()' style="width:100%;background: #ff5d00" value='Save and Print'>
+									<?php } ?>
 								</div>
 							</div>
+							
 						</div>
 					</form>
 				</div>
