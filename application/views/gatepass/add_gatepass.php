@@ -63,7 +63,7 @@
 							<br>
 							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
 								<div class="row">
-									<div class="col-lg-4">
+									<div class="col-lg-3">
 										<p>
 											<select name="item" id='item' class="form-control select2">
 												<option value = ""></option>
@@ -74,7 +74,7 @@
 										<!-- <input type='hidden' name='item' id='item'> -->
 										</p>
 									</div>
-									<div class="col-lg-2">
+									<div class="col-lg-1">
 										<p>				
 											<input placeholder="Quantity" type="text" name="quantity" id="quantity" class="form-control" >
 										</p>
@@ -91,8 +91,12 @@
 									</div>
 									<div class="col-lg-3">
 										<p>				
-											<textarea placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" rows="1" ></textarea> 
+											<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control">
 										</p>
+									</div>
+									<div class="col-lg-2">
+									<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
+									<span id="img1-check" class='img-check'></span>
 									</div>
 									<div class="col-lg-1">
 										<div id='alrt' style="font-weight:bold"></div>
@@ -111,6 +115,7 @@
 												<th width="10%" style='text-align: center;'>Qty</th>
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
+												<th width="25%" style='text-align: center;'>Image</th>
 												<th width="5%" style='text-align: center;' width="1%">Action</th>
 											</tr>
 										<?php 
@@ -128,6 +133,9 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
+													<td style="width: 100px !important; height: 100px !important; border: 1px solid black;"><center><div style="width: auto; height: auto;"><img src="<?php if(!empty($gp['image'])) { echo base_url(); ?>uploads/<?php echo $gp['image']; 
+													} else { echo base_url(); ?>assets/default/default-img.jpg <?php } ?>" width="50%" height="100%" style="margin-left: 50px;" alt="your image" /></div></td>
+    												<td ><center>
 													<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
 												</tr>
 											<?php } ?>
@@ -139,7 +147,7 @@
 								</div>	
 							</div>	
 							<br>
-							<h6>Add Image/s:</h6>
+							<!--<h6>Add Image/s:</h6>
 							<div  class="row">
 								<div class="col-lg-4">
 									<input type="file" class="form-control" name="">
@@ -160,7 +168,7 @@
 										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
 									</div>
 								</div>
-							</div>
+							</div>-->
 							<br>
 							<div class="row">
 								<div class="col-lg-12">
