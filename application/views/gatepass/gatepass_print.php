@@ -432,29 +432,37 @@
 <page size="A4">
     <div class="p-t-20 m-l-20 m-r-20">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <div class="thumbnail" style="margin-bottom:5px">
                     <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
                 </div>
                 <center><p>Image Name</p></center>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <div class="thumbnail" style="margin-bottom:5px">
                     <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
                 </div>
                 <center><p>Image Name</p></center>
             </div>
-        </div>    
-        <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <div class="thumbnail" style="margin-bottom:5px">
                     <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
                 </div>
                 <center><p>Image Name</p></center>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-3">
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
             </div>
-        </div>        
+            <div class="col-lg-3">
+                <div class="thumbnail" style="margin-bottom:5px">
+                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                </div>
+                <center><p>Image Name</p></center>
+            </div>
+        </div>         
     </div>
 </page>
 
