@@ -1,3 +1,45 @@
+function storeTheImage() {
+    var imgCanvas = document.getElementById('canvas-element'),
+        imgContext = imgCanvas.getContext("2d");
+    
+    var img = document.getElementById('image-preview');
+    // Make sure canvas is as big as the picture BUT make it half size to the file size is small enough
+    imgCanvas.width = (img.width/4);
+    imgCanvas.height = (img.height/4);
+
+    // Draw image into canvas element
+    imgContext.drawImage(img, 0, 0, (img.width/4), (img.height/4));
+
+    // Get canvas contents as a data URL
+    var imgAsDataURL = imgCanvas.toDataURL("image/png");
+    
+    // Save image into localStorage
+    try {
+        window.localStorage.setItem("imageStore", imgAsDataURL);
+        $('.localstorage-output').html( window.localStorage.getItem('imageStore') );
+    }
+    catch (e) {
+        console.log("Storage failed: " + e);
+    }
+}
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#image-preview').attr('src', e.target.result);
+            storeTheImage(); 
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$('.file-input').on('change', function() {
+    readURL(this);
+});
+
+
 function add_item(){
     var loc= document.getElementById("baseurl").value;
     var redirect=loc+'/index.php/gatepass/getitem';
@@ -6,7 +48,9 @@ function add_item(){
     var unit =$('#unit').val();
     var quantity =parseFloat($('#quantity').val());
     var remarks =$('#remarks').val();
-    
+    var image = $('#image').val();
+
+
     var i = item.replace(/&/gi,"and");
     var i = i.replace(/#/gi,"");
     var itm = i.replace(/"/gi,"");
@@ -21,7 +65,7 @@ function add_item(){
           $.ajax({
                 type: "POST",
                 url:redirect,
-                data: "item="+item+"&unit="+unit+"&quantity="+quantity+"&remarks="+remarks+"&count="+count,
+                data: "item="+item+"&unit="+unit+"&quantity="+quantity+"&remarks="+remarks+"&image="+image+"&count="+count,
                 beforeSend: function(){
                     document.getElementById('alrt').innerHTML='<b>Please wait, Loading Data...</b>'; 
                     $("#submit").hide(); 
@@ -39,6 +83,7 @@ function add_item(){
                     document.getElementById("unit").value = '';
                     document.getElementById("quantity").value = '';
                     document.getElementById("remarks").value = '';
+                    document.getElementById("image").value = '';
                     document.getElementById("counter").value = count;
                 }
            });
@@ -85,24 +130,24 @@ function remove_item(i){
 }
 
 
-function readPic2(input) {
+function readImage(input) {
       if (input.files && input.files[0]) {
           var reader = new FileReader();
 
           reader.onload = function (e) {
-              $('#pic2')
+              $('#image')
                   .attr('src', e.target.result);
           };
         var size2 = input.files[0].size;
         if(size2 >= 6000000){
-          $("#img2-check").show();
-          $("#img2-check").html("Warning: Image too big. Upload images less than 5mb.");
+          $("#img1-check").show();
+          $("#img1-check").html("Warning: Image too big. Upload images less than 5mb.");
           $('input[type="button"]').attr('disabled','disabled');
-          $("#img3").attr('disabled','disabled');
+          //$("#img3").attr('disabled','disabled');
         } else {
-           $("#img2-check").hide();
+           $("#img1-check").hide();
            $('input[type="button"]').removeAttr('disabled');
-           $("#img3").removeAttr('disabled');
+           //$("#img3").removeAttr('disabled');
         }
 
           reader.readAsDataURL(input.files[0]);

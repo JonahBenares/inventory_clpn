@@ -146,6 +146,7 @@ class Gatepass extends CI_Controller {
                     'item_name'=>$item,
                     'quantity'=>$gp->quantity,
                     'remarks'=>$gp->remarks,
+                    'image'=>$gp->image,
                     'unit'=>$unit,
                 );
             }
@@ -163,7 +164,7 @@ class Gatepass extends CI_Controller {
         $unit_name = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $unit);
         $item=$this->input->post('item');
         $item_name = $this->super_model->select_column_where("items", "item_name", "item_id", $item);
-
+        
        $data['list'] = array(
             'unit_id'=>$unit,
             'unit'=>$unit_name,
@@ -172,6 +173,7 @@ class Gatepass extends CI_Controller {
             'item'=>$item_name,
             'count'=>$this->input->post('count'),
             'remarks'=>$this->input->post('remarks'),
+            'image'=>$this->input->post('image'),
         );
             
         $this->load->view('gatepass/row_item',$data);
@@ -188,6 +190,7 @@ class Gatepass extends CI_Controller {
                     'quantity'=>$this->input->post('quantity['.$a.']'),
                     'unit_id'=>$this->input->post('unit_id['.$a.']'),
                     'remarks'=>$this->input->post('remarks['.$a.']'),
+                    'image'=>$this->input->post('image['.$a.']'),
                 );
                 $this->super_model->insert_into("gatepass_details", $data); 
             }
