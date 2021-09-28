@@ -133,9 +133,13 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
-													<td style="width: 100px !important; height: 100px !important; border: 1px solid black;"><center><div style="width: auto; height: auto;"><img src="<?php if(!empty($gp['image'])) { echo base_url(); ?>uploads/<?php echo $gp['image']; 
-													} else { echo base_url(); ?>assets/default/default-img.jpg <?php } ?>" width="50%" height="100%" style="margin-left: 50px;" alt="your image" /></div></td>
-    												<td ><center>
+   													<td style="width: 100px !important; height: 100px !important; border: 1px"><center>
+   														<div class="thumbnail" style="padding:10px">
+															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
+																echo base_url(); ?>uploads/<?php echo $gp['image']; 
+																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" alt="your image" width="50%" height="100%" />
+															</div>
+   													</td><center>
 													<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
 												</tr>
 											<?php } ?>

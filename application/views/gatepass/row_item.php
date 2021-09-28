@@ -1,15 +1,13 @@
-
- <tr id='item_row<?php echo $list['count']; ?>'> 
+<tr id='item_row<?php echo $list['count']; ?>'> 
     <td style="padding: 0px "><center><?php echo $list['count']; ?></center></td>
     <td style="padding: 0px "><textarea  type = "text" name = "item[]" style = "text-align:center;width:100%;border:1px transparent;"><?php echo $list['item']?></textarea></td>
     <td style="padding: 0px; width:50px; "><input type = "text" name = "quantity[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['quantity']; ?>"></td>
     <td style="padding: 0px; width:80px;"><input type = "hidden"  name = "unit[]" value="<?php echo $list['unit']; ?>"><input type = "text" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['unit']?>" readonly></td>
    <td style="padding: 0px; width:50px; "><input type = "text" name = "remarks[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['remarks']; ?>"></td>
    
-   	<td style="width: 100px !important; height: 100px !important; border: 1px"><center>
-   		<div name = "image[]" style="width: auto; height: auto;">
-   			<img src="<?php echo base_url('uploads/'.$list['image']); ?>" 
-   				width="50%" height="100%" style="margin-left: 50px;" /><center>
+   	<td style="padding: 0px width: 50px; border: 1px"><center>
+   		<div style="width: auto; height: auto;">
+   			<img id="images" name="image[]" width="50%" height="50%" src="<?php echo $list['image'];?>"/><center>
    		</div>
    	</td>
     <td ><center>

@@ -107,6 +107,7 @@
 												<th width="10%" style='text-align: center;'>Qty</th>
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
+												<th width="25%" style='text-align: center;'>Image</th>
 												<!--<th width="5%" style='text-align: center;' width="1%">Action</th>-->
 											</tr>
 										<tbody id="item_body">
@@ -119,6 +120,13 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
+													<td>
+														<div class="thumbnail" style="padding:10px">
+															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
+															echo base_url(); ?>uploads/<?php echo $gp['image']; 
+															} else { echo base_url(); ?>assets/default/default-img.jpg <?php } ?>" />
+														</div>
+													</td>
 													<!--<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>-->
 												</tr>
 											<?php $x++; } } else { ?>

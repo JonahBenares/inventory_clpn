@@ -164,7 +164,7 @@ class Gatepass extends CI_Controller {
         $unit_name = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $unit);
         $item=$this->input->post('item');
         $item_name = $this->super_model->select_column_where("items", "item_name", "item_id", $item);
-        
+
        $data['list'] = array(
             'unit_id'=>$unit,
             'unit'=>$unit_name,
@@ -182,7 +182,27 @@ class Gatepass extends CI_Controller {
     public function insertGatepass(){
         $counter = $this->input->post('counter');
         $id=$this->input->post('gatepassid');
+        
+
         for($a=0;$a<$counter;$a++){
+            $item=$this->input->post('item['.$a.']');
+            $error_ext=0;
+            $dest= realpath(APPPATH . '../uploads/');
+            if(!empty($_FILES['image']['name'][$x])){
+                 $image= basename($_FILES['image']['name'][$x]);
+                 $image=explode('.',$image);
+                 $ext=$image[1];
+                
+                if($ext=='php' || ($ext!='png' && $exts!= 'jpg' && $ext!='jpeg')){
+                    $error_ext++;
+                } else {
+                     $filename=$item.'1.'.$ext;
+                     move_uploaded_file($_FILES["image"]['tmp_name'][$x], $dest.'/'.$filename);
+                }
+
+            } else {
+                $filename="";
+            }
             if(!empty($this->input->post('item['.$a.']'))){
                 $data = array(
                     'gatepass_id'=>$this->input->post('gatepassid'),
@@ -190,7 +210,7 @@ class Gatepass extends CI_Controller {
                     'quantity'=>$this->input->post('quantity['.$a.']'),
                     'unit_id'=>$this->input->post('unit_id['.$a.']'),
                     'remarks'=>$this->input->post('remarks['.$a.']'),
-                    'image'=>$this->input->post('image['.$a.']'),
+                    'image'=>$filename,
                 );
                 $this->super_model->insert_into("gatepass_details", $data); 
             }
@@ -262,6 +282,7 @@ class Gatepass extends CI_Controller {
                     'quantity'=>$gp->quantity,
                     'unit'=>$unit,
                     'remarks'=>$gp->remarks,
+                    'image'=>$gp->image,
 
                 );
             }
