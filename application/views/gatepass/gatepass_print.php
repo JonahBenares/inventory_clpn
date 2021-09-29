@@ -432,40 +432,25 @@
 <page size="A4">
     <div class="p-t-20 m-l-20 m-r-20">
         <div class="row">
+                <?php 
+                    if(!empty($gatepass_itm)){
+                        foreach($gatepass_itm as $pi){ 
+                ?>
             <div class="col-lg-3">
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
+                <?php if($pi->image!=''){ ?>
+                <div class="thumbnail" style="padding:10px">
+                    <img class="pictures" src="<?php if(!empty($pi['image'])) { 
+                     echo base_url(); ?>uploads/<?php echo $pi['image']; 
+                        } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" alt="your image" width="50%" height="100%" />
                 </div>
-                <center><p>Image Name</p></center>
+                <center><p><?php echo $pi['item'];?></p></center>
+                <?php } ?>
             </div>
-            <div class="col-lg-3">
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </div>
-            <div class="col-lg-3">
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </div>
-            <div class="col-lg-3">
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </div>
-            <div class="col-lg-3">
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </div>
+            <?php } ?>
         </div>         
     </div>
 
-    <table width="100%">
+    <!--<table width="100%">
         <tr>
             <td>
                 <div class="thumbnail" style="margin-bottom:5px">
@@ -510,7 +495,7 @@
                 <center><p>Image Name</p></center>
             </td>
         </tr>
-    </table>
+    </table>-->
 </page>
 
 

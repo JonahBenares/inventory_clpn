@@ -1,3 +1,17 @@
+/*$(document).ready(function(){
+  $("#image").change(function(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect=loc+'/index.php/gatepass/insertimage';
+    $.ajax({
+        type: "POST",
+        url: redirect,
+        data:'image='+$(this).val(),
+        success: function(output){
+        }
+    });
+  });
+});*/
+
 function add_item(){
     var loc= document.getElementById("baseurl").value;
     var redirect=loc+'/index.php/gatepass/getitem';
@@ -7,8 +21,7 @@ function add_item(){
     var quantity =parseFloat($('#quantity').val());
     var remarks =$('#remarks').val();
     var image = $('#image').val();
-
-
+    /*var image = document.getElementById("image").files[0].name;*/
     var i = item.replace(/&/gi,"and");
     var i = i.replace(/#/gi,"");
     var itm = i.replace(/"/gi,"");
@@ -39,7 +52,7 @@ function add_item(){
                     var oFReader = new FileReader();
                     oFReader.readAsDataURL(document.getElementById("image").files[0]);
                     oFReader.onload = function (oFREvent) {
-                        document.getElementById("images").src = oFREvent.target.result;
+                        document.getElementById("images"+count).src = oFREvent.target.result;
                     };
 
                     $('.select2-selection__rendered').empty();
@@ -47,7 +60,7 @@ function add_item(){
                     document.getElementById("unit").value = '';
                     document.getElementById("quantity").value = '';
                     document.getElementById("remarks").value = '';
-                    document.getElementById("image").value = '';
+                    //document.getElementById("image").value = '';
                     document.getElementById("counter").value = count;
                 }
            });

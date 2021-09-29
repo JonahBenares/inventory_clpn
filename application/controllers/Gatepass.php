@@ -179,7 +179,7 @@ class Gatepass extends CI_Controller {
         $this->load->view('gatepass/row_item',$data);
      }
 
-    public function insertGatepass(){
+    /*public function insertGatepass(){
         $counter = $this->input->post('counter');
         $id=$this->input->post('gatepassid');
         
@@ -203,6 +203,76 @@ class Gatepass extends CI_Controller {
             } else {
                 $filename="";
             }
+            if(!empty($this->input->post('item['.$a.']'))){
+                $data = array(
+                    'gatepass_id'=>$this->input->post('gatepassid'),
+                    'item_id'=>$this->input->post('item_id['.$a.']'),
+                    'quantity'=>$this->input->post('quantity['.$a.']'),
+                    'unit_id'=>$this->input->post('unit_id['.$a.']'),
+                    'remarks'=>$this->input->post('remarks['.$a.']'),
+                    'image'=>$filename,
+                );
+                $this->super_model->insert_into("gatepass_details", $data); 
+            }
+        }
+
+        $saved=array(
+            'saved'=>1
+        );
+        $this->super_model->update_where("gatepass_head", $saved, "gatepass_id", $id);
+        echo $id;
+    }*/
+
+    /*public function insertimage(){
+        $counter = $this->input->post('counter');
+        $item = $this->input->post('item');
+        for($a=0;$a<$counter;$a++){
+            $error_ext=0;
+            $dest= realpath(APPPATH . '../uploads/');
+            if(!empty($_FILES['image']['name'][$a])){
+                 $image= basename($_FILES['image']['name'][$a]);
+                 $image=explode('.',$image);
+                 $ext=$image[1];
+                if($ext=='php' || ($ext!='png' && $exts!= 'jpg' && $ext!='jpeg')){
+                    $error_ext++;
+                } else {
+                    $filename=$item.'1.'.$ext;
+                    move_uploaded_file($_FILES["image"]['tmp_name'][$a], $dest.'/'.$filename);
+               }
+
+            } else {
+                $filename="";
+            }
+        }
+     }*/
+
+    public function insertGatepass(){
+        $counter = $this->input->post('counter');
+        $id=$this->input->post('gatepassid');
+        
+
+        for($a=0;$a<$counter;$a++){
+            $item=$this->input->post('item['.$a.']');
+            //$image=$this->input->post('image['.$a.']');
+            $error_ext=0;
+            $dest= realpath(APPPATH . '../uploads/');
+            //echo $_FILES['image']['name'][$a];
+            if(!empty($this->input->post('image['.$a.']'))){
+                 $image= basename($this->input->post('image['.$a.']'));
+                 $image=explode('.',$image);
+                 $ext=$image[1];
+                $filename=$item.'1.'.$ext;
+                //if($ext=='php' || ($ext!='png' && $exts!= 'jpg' && $ext!='jpeg')){
+                    //$error_ext++;
+                //} else {
+                     
+                    // move_uploaded_file($_FILES["image"]['tmp_name'][$a], $dest.'/'.$filename);
+               // }
+
+            } else {
+                $filename="";
+            }
+
             if(!empty($this->input->post('item['.$a.']'))){
                 $data = array(
                     'gatepass_id'=>$this->input->post('gatepassid'),
@@ -245,6 +315,7 @@ class Gatepass extends CI_Controller {
                     'item'=>$item,
                     'quantity'=>$gp->quantity,
                     'remarks'=>$gp->remarks,
+                    'image'=>$gp->image,
                     'unit'=>$unit,
                 );
             }

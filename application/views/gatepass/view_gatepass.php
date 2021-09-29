@@ -139,28 +139,6 @@
 								</div>
 							</div>
 							<br>
-							<h6>Picture/s:</h6>
-							<div  class="row">
-								<div class="col-lg-4">
-									<div class="thumbnail" style="margin-bottom:5px">
-										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-									</div>
-									<center><p>Image Name</p></center>
-									<span id="img1-check" class='img-check'></span>
-								</div>
-								<div class="col-lg-4">
-									<div class="thumbnail" style="margin-bottom:5px">
-										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-									</div>
-									<center><p>Image Name</p></center>
-								</div>
-								<div class="col-lg-4">
-									<div class="thumbnail" style="margin-bottom:5px">
-										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-									</div>
-									<center><p>Image Name</p></center>
-								</div>
-							</div>
 						</div>
 					</form>
 				</div>

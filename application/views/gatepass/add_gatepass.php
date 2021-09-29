@@ -25,7 +25,7 @@
 				<div class="panel-heading" style="height:20px">
 				</div>
 				<div class="panel-body">
-					<form id='gatepassfrm' method = "POST">
+					<form id='gatepassfrm' method = "POST" enctype="multipart/form-data">
 						<div class="canvas-wrapper">
 						<?php foreach($head AS $g){
 							$mgpno=$g['mgp_no'];
