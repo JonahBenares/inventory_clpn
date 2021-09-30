@@ -1,16 +1,34 @@
-/*$(document).ready(function(){
-  $("#image").change(function(){
-    var loc= document.getElementById("baseurl").value;
-    var redirect=loc+'/index.php/gatepass/insertimage';
-    $.ajax({
-        type: "POST",
-        url: redirect,
-        data:'image='+$(this).val(),
-        success: function(output){
-        }
+$(document).ready(function(){
+    $("#submit").click(function(){
+      var loc= document.getElementById("baseurl").value;
+      var redirect=loc+'/index.php/gatepass/insertimage';
+      var frm = new FormData();
+      image = document.getElementById('image');
+      frm.append('image', image.files[0]);
+      item = document.getElementById('item').value;
+      frm.append('item', item);
+      gatepassid = document.getElementById('gatepassid').value;
+      frm.append('gatepassid', gatepassid);
+      $.ajax({
+      method:'POST',
+      url: redirect,
+      data:frm,
+      cache:false,
+      contentType: false,
+      processData: false,
+      beforeSend: function(){
+          $('#alrt').show();
+          document.getElementById('alrt').innerHTML='<b>Please wait, Loading Data...</b>'; 
+          $("#submit").hide(); 
+          $('#savebutton').hide();
+      },
+      success:function(output){
+        $('#submit').show();
+        $('#alrt').hide();
+      }
+      });
     });
-  });
-});*/
+});
 
 function add_item(){
     var loc= document.getElementById("baseurl").value;
@@ -115,8 +133,8 @@ function readImage(input) {
               $('#image')
                   .attr('src', e.target.result);
           };
-        var size2 = input.files[0].size;
-        if(size2 >= 6000000){
+        var size = input.files[0].size;
+        if(size >= 6000000){
           $("#img1-check").show();
           $("#img1-check").html("Warning: Image too big. Upload images less than 5mb.");
           $('input[type="button"]').attr('disabled','disabled');

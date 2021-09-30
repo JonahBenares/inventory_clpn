@@ -412,14 +412,14 @@
                     <td></td>
                     <!-- <td><center>End-User/Requester</center></td> -->
                     <td>
-                        <center><div id='alt' style="font-weight:bold"></div></center>
-                        <input id="positionreq" class="select" style="pointer-events:none" value="CPGC Guard">
+                        <center><div style="font-weight:bold"></div></center>
+                        <input class="select" style="pointer-events:none" value="CPGC Guard">
                     </td>
                     <td></td>
                     <!-- <td><center>O & M Planner</center></td> -->
                     <td>
-                        <center><div id='alts' style="font-weight:bold"></div></center>
-                        <input id="positionrev" class="select" style="pointer-events:none" value="NPC Guard">
+                        <center><div style="font-weight:bold"></div></center>
+                        <input class="select" style="pointer-events:none" value="NPC Guard">
                     </td>
                 </tr>
             </table>
@@ -437,68 +437,19 @@
                         foreach($gatepass_itm as $pi){ 
                 ?>
             <div class="col-lg-3">
-                <?php if($pi->image!=''){ ?>
-                <div class="thumbnail" style="padding:10px">
+                <?php if($pi['image']!=''){ ?>
+                <div style="padding:10px">
                     <img class="pictures" src="<?php if(!empty($pi['image'])) { 
                      echo base_url(); ?>uploads/<?php echo $pi['image']; 
-                        } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" alt="your image" width="50%" height="100%" />
+                        } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" alt="your image" width="200%" height="200%" />
                 </div>
                 <center><p><?php echo $pi['item'];?></p></center>
                 <?php } ?>
             </div>
-            <?php } ?>
+            <?php } }?>
         </div>         
     </div>
-
-    <!--<table width="100%">
-        <tr>
-            <td>
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </td>
-            <td>
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </td>
-            <td>
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </td>
-            <td>
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </td>
-            <td>
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </td>
-            <td>
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </td>
-            <td>
-                <div class="thumbnail" style="margin-bottom:5px">
-                    <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-                </div>
-                <center><p>Image Name</p></center>
-            </td>
-        </tr>
-    </table>-->
 </page>
-
-
 
 <!--<script type="text/javascript">
 function printMReqF(){

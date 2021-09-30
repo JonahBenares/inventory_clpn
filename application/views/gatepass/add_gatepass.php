@@ -62,6 +62,7 @@
 							</table>
 							<br>
 							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
+								<?php if($saved=='0'){ ?>
 								<div class="row">
 									<div class="col-lg-3">
 										<p>
@@ -71,7 +72,6 @@
 												<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->item_name;?></option>
 												<?php } ?>
 											</select>
-										<!-- <input type='hidden' name='item' id='item'> -->
 										</p>
 									</div>
 									<div class="col-lg-1">
@@ -105,7 +105,8 @@
 										</p>
 									</div>
 									<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-								</div>							
+								</div>
+								<?php } ?>							
 								<div class="row">
 									<div class="col-lg-12">
 										<table class="table table-bordered table-hover" style="margin-bottom:0px">
@@ -116,7 +117,9 @@
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
 												<th width="25%" style='text-align: center;'>Image</th>
+												<?php if($saved=='0'){ ?>
 												<th width="5%" style='text-align: center;' width="1%">Action</th>
+												<?php } ?>
 											</tr>
 										<?php 
 										 if(!isset($gatepass_itm)){
@@ -134,13 +137,15 @@
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
    													<td style="width: 100px !important; height: 100px !important; border: 1px"><center>
-   														<div class="thumbnail" style="padding:10px">
+   														<div style="padding:10px">
 															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
 																echo base_url(); ?>uploads/<?php echo $gp['image']; 
-																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" alt="your image" width="50%" height="100%" />
+																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
 															</div>
    													</td><center>
+   														<?php if($saved=='0'){ ?>
 													<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
+													<?php } ?>
 												</tr>
 											<?php } ?>
 										</tbody>
@@ -151,28 +156,6 @@
 								</div>	
 							</div>	
 							<br>
-							<!--<h6>Add Image/s:</h6>
-							<div  class="row">
-								<div class="col-lg-4">
-									<input type="file" class="form-control" name="">
-									<div class="thumbnail">
-										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-									</div>
-									<span id="img1-check" class='img-check'></span>
-								</div>
-								<div class="col-lg-4">
-									<input type="file" class="form-control" name="">
-									<div class="thumbnail">
-										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<input type="file" class="form-control" name="">
-									<div class="thumbnail">
-										<img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/default-img.jpg" alt="your image" />
-									</div>
-								</div>
-							</div>-->
 							<br>
 							<div class="row">
 								<div class="col-lg-12">

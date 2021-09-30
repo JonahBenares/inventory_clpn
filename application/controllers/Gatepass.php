@@ -50,6 +50,24 @@ class Gatepass extends CI_Controller {
         }
     }
 
+    public function slash_replace($query){
+        $search = ["/", " / "];
+        $replace   = ["_"];
+        return str_replace($search, $replace, $query);
+    }
+
+    public function slash_unreplace($query){
+        $search = ["_"];
+        $replace   = ["/", " / "];
+        return str_replace($search, $replace, $query);
+    }
+
+    public function clean($string) {
+       $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+
+       return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+    }
+
     public function gatepass_list(){
     $rows= $this->super_model->count_rows("gatepass_head");
         if($rows!=0){
@@ -179,96 +197,37 @@ class Gatepass extends CI_Controller {
         $this->load->view('gatepass/row_item',$data);
      }
 
-    /*public function insertGatepass(){
-        $counter = $this->input->post('counter');
-        $id=$this->input->post('gatepassid');
-        
-
-        for($a=0;$a<$counter;$a++){
-            $item=$this->input->post('item['.$a.']');
-            $error_ext=0;
-            $dest= realpath(APPPATH . '../uploads/');
-            if(!empty($_FILES['image']['name'][$x])){
-                 $image= basename($_FILES['image']['name'][$x]);
-                 $image=explode('.',$image);
-                 $ext=$image[1];
-                
-                if($ext=='php' || ($ext!='png' && $exts!= 'jpg' && $ext!='jpeg')){
-                    $error_ext++;
-                } else {
-                     $filename=$item.'1.'.$ext;
-                     move_uploaded_file($_FILES["image"]['tmp_name'][$x], $dest.'/'.$filename);
-                }
-
+     public function insertimage(){
+        $item=$this->input->post('item');
+        $gatepass_id=$this->input->post('gatepassid');
+        $error_ext=0;
+        $dest= realpath(APPPATH . '../uploads/');
+        if(!empty($_FILES['image']['name'])){
+             $image= basename($_FILES['image']['name']);
+             $image=explode('.',$image);
+             $ext=$image[1];
+            if($ext=='php' || ($ext!='png' && $ext!= 'jpg' && $ext!='jpeg')){
+                $error_ext++;
             } else {
-                $filename="";
-            }
-            if(!empty($this->input->post('item['.$a.']'))){
-                $data = array(
-                    'gatepass_id'=>$this->input->post('gatepassid'),
-                    'item_id'=>$this->input->post('item_id['.$a.']'),
-                    'quantity'=>$this->input->post('quantity['.$a.']'),
-                    'unit_id'=>$this->input->post('unit_id['.$a.']'),
-                    'remarks'=>$this->input->post('remarks['.$a.']'),
-                    'image'=>$filename,
-                );
-                $this->super_model->insert_into("gatepass_details", $data); 
-            }
+                $filename=$item."-".$gatepass_id.'.'.$ext;
+                move_uploaded_file($_FILES["image"]['tmp_name'], $dest.'/'.$filename);
+           }
+
+        } else {
+            $filename="";
         }
-
-        $saved=array(
-            'saved'=>1
-        );
-        $this->super_model->update_where("gatepass_head", $saved, "gatepass_id", $id);
-        echo $id;
-    }*/
-
-    /*public function insertimage(){
-        $counter = $this->input->post('counter');
-        $item = $this->input->post('item');
-        for($a=0;$a<$counter;$a++){
-            $error_ext=0;
-            $dest= realpath(APPPATH . '../uploads/');
-            if(!empty($_FILES['image']['name'][$a])){
-                 $image= basename($_FILES['image']['name'][$a]);
-                 $image=explode('.',$image);
-                 $ext=$image[1];
-                if($ext=='php' || ($ext!='png' && $exts!= 'jpg' && $ext!='jpeg')){
-                    $error_ext++;
-                } else {
-                    $filename=$item.'1.'.$ext;
-                    move_uploaded_file($_FILES["image"]['tmp_name'][$a], $dest.'/'.$filename);
-               }
-
-            } else {
-                $filename="";
-            }
-        }
-     }*/
+     }
 
     public function insertGatepass(){
         $counter = $this->input->post('counter');
         $id=$this->input->post('gatepassid');
-        
-
         for($a=0;$a<$counter;$a++){
-            $item=$this->input->post('item['.$a.']');
-            //$image=$this->input->post('image['.$a.']');
-            $error_ext=0;
-            $dest= realpath(APPPATH . '../uploads/');
-            //echo $_FILES['image']['name'][$a];
+            $item=$this->input->post('item_id['.$a.']');
             if(!empty($this->input->post('image['.$a.']'))){
                  $image= basename($this->input->post('image['.$a.']'));
                  $image=explode('.',$image);
                  $ext=$image[1];
-                $filename=$item.'1.'.$ext;
-                //if($ext=='php' || ($ext!='png' && $exts!= 'jpg' && $ext!='jpeg')){
-                    //$error_ext++;
-                //} else {
-                     
-                    // move_uploaded_file($_FILES["image"]['tmp_name'][$a], $dest.'/'.$filename);
-               // }
-
+                $filename=$item."-".$id.'.'.$ext;
             } else {
                 $filename="";
             }

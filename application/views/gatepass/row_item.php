@@ -5,13 +5,13 @@
     <td style="padding: 0px; width:80px;"><input type = "hidden"  name = "unit[]" value="<?php echo $list['unit']; ?>"><input type = "text" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['unit']?>" readonly></td>
    <td style="padding: 0px; width:50px; "><input type = "text" name = "remarks[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['remarks']; ?>"></td>
    
-   	<td style="padding: 0px width: 50px; border: 1px">
+    <td style="padding: 0px width: 50px; border: 1px">
       <center>
-     		<div style="width: auto; height: auto;">
-     			<img id="images<?php echo $list['count']; ?>" width="50%" height="50%"/>
-     		</div>
+        <div style="width: auto; height: auto;">
+          <img id="images<?php echo $list['count']; ?>" width="50%" height="50%"/>
+        </div>
       <center>
-   	</td>
+    </td>
     <td ><center>
         <a class="btn btn-danger table-remove btn-xs" onclick="remove_item(<?php echo $list['count']; ?>)"><span class=" fa fa-times"></span></a></center>
         <input type="hidden" name="image[]" value="<?php echo $list['image']; ?>">
