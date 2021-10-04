@@ -66,12 +66,14 @@ function add_item(){
                     $('#savebutton').show();
                     $('#submit').show();
                     $('#alrt').hide();
-
+                    var img = document.getElementById("image").value;
+                    if(img!=''){
                     var oFReader = new FileReader();
-                    oFReader.readAsDataURL(document.getElementById("image").files[0]);
-                    oFReader.onload = function (oFREvent) {
-                        document.getElementById("images"+count).src = oFREvent.target.result;
-                    };
+                        oFReader.readAsDataURL(document.getElementById("image").files[0]);
+                        oFReader.onload = function (oFREvent) {
+                            document.getElementById("images"+count).src = oFREvent.target.result;
+                        };
+                    }
 
                     $('.select2-selection__rendered').empty();
                     document.getElementById("item").value = '';
