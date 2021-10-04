@@ -40,24 +40,29 @@
 							$saved=$g['saved'];
 						} ?>
 							<table width="100%" >
+
 								<tr>
-									<td width="10%" ><p class="nomarg">To Company:</p></td>
-									<td width="40%" ><label class="labelStyle"><?php echo $company; ?></label></td>
-									<td width="15%" ><p class="nomarg pull-right">Date Issued:</p></td>
-									<td width="50%" colspan="3"><label class="labelStyle">&nbsp; <?php echo date('F d, Y', strtotime($issued)); ?></label></td>
+									<td style="vertical-align: top;"><p class="nomarg">To Company:</p></td>
+									<td colspan="4" ><label class="labelStyle"><?php echo $company; ?></label></td>
+								</tr>
+								<tr>
+									<td width="10%" ><p class="nomarg">Destination: </p></td>
+									<td width="30%" ><h5 class="nomarg"><?php echo $destination; ?></h5></td>
+									<td width="13%" ><p class="nomarg">Date Issued:</p></td>
+									<td width="42%" colspan="3"><h5 class="nomarg"><?php echo date('F d, Y', strtotime($issued)); ?></h5></td>
 									<!--<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>-->
 								</tr>
 								<tr>
-									<td><p class="nomarg">Destination: </p></td>
-									<td><h5 class="nomarg"><?php echo $destination; ?></h5></td>
-									<td><p class="nomarg pull-right">Date Returned:</p></td>
-									<td><h5 class="nomarg">&nbsp; <?php echo date('F d, Y', strtotime($returned)); ?></h5></td>
+									<td><p class="nomarg">Vehicle No:</p></td>
+									<td><h5 class="nomarg"><?php echo $vehicle_no; ?></h5></td>
+									<td><p class="nomarg">Date Returned:</p></td>
+									<td><h5 class="nomarg"><?php echo date('F d, Y', strtotime($returned)); ?></h5></td>
 								</tr>
 								<tr>
-									<td><p class="nomarg">Vehicle No:</p></td>
-									<td> <h5 class="nomarg"><?php echo $vehicle_no; ?></h5></td>
-									<td><p class="nomarg pull-right">MGP No.:</p></td>
-									<td><h5 class="nomarg">&nbsp; <?php echo $mgpno; ?></h5></td>
+									<td><p class="nomarg">MGP No.:</p></td>
+									<td><h5 class="nomarg"><?php echo $mgpno; ?></h5> </td>
+									<td></td>
+									<td></td>
 								</tr>
 							</table>
 							<br>
@@ -76,13 +81,13 @@
 									</div>
 									<div class="col-lg-1">
 										<p>				
-											<input placeholder="Quantity" type="text" name="quantity" id="quantity" class="form-control" >
+											<input placeholder="Qty" type="text" name="quantity" id="quantity" class="form-control" >
 										</p>
 									</div>
 									<div class="col-lg-2">
 										<p>				
 										<select name="unit" id='unit' class="form-control select2">
-											<option value = ""></option>
+											<option value = "">Select UOM</option>
 											<?php foreach($unit AS $unit){ ?>
 											<option value = "<?php echo $unit->unit_id;?>"><?php echo $unit->unit_name;?></option>
 											<?php } ?>
@@ -136,7 +141,7 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
-   													<td style="width: 100px !important; height: 100px !important; border: 1px"><center>
+   													<td style="width: 100px !important; height: 100px !important;"><center>
    														<div style="padding:10px">
 															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
 																echo base_url(); ?>uploads/<?php echo $gp['image']; 

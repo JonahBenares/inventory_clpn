@@ -35,17 +35,18 @@
 							<table width="100%" >
 								<tr>
 									<td style="vertical-align: top;"><p class="nomarg">To Company:</p></td>
-									<td colspan="4"><label class="labelStyle"><?php echo $p['company'];?></label></td>
+									<td colspan="3"><label class="labelStyle"><?php echo $p['company'];?></label></td>
+									<?php if($saved=='0'){ ?>
+									<td width="5%" ><a href="<?php echo base_url(); ?>index.php/gatepass/add_gatepass/<?php echo $p['gatepassid'];?>" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td>
+									<?php } ?>
+									<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print/<?php echo $p['gatepassid'];?>" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>
 								</tr>
 								<tr>
 									<td width="10%"><p class="nomarg">Destination: </p></td>
 									<td width="30%"><h5 class="nomarg"><?php echo $p['destination'];?></h5></td>
 									<td width="13%"><p class="nomarg">Date Issued:</p></td>
 									<td width="42%" colspan="3"><h5 class="nomarg"><?php echo date('F d, Y', strtotime($p['date_issued'])); ?></h5></td>
-									<?php if($saved=='0'){ ?>
-									<td width="5%" ><a href="<?php echo base_url(); ?>index.php/gatepass/add_gatepass/<?php echo $p['gatepassid'];?>" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td>
-									<?php } ?>
-									<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print/<?php echo $p['gatepassid'];?>" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>
+									
 								</tr>
 								<tr>
 									<td><p class="nomarg">Vehicle No:</p></td>
