@@ -34,26 +34,30 @@
 							foreach($pass as $p){ ?>
 							<table width="100%" >
 								<tr>
-									<td width="10%" ><p class="nomarg">To Company:</p></td>
-									<td width="40%" ><label class="labelStyle"><?php echo $p['company'];?></label></td>
-									<td width="15%" ><p class="nomarg pull-right">Date Issued:</p></td>
-									<td width="50%" colspan="3"><label class="labelStyle">&nbsp; <?php echo date('F d, Y', strtotime($p['date_issued'])); ?></label></td>
+									<td style="vertical-align: top;"><p class="nomarg">To Company:</p></td>
+									<td colspan="4"><label class="labelStyle"><?php echo $p['company'];?></label></td>
+								</tr>
+								<tr>
+									<td width="10%"><p class="nomarg">Destination: </p></td>
+									<td width="30%"><h5 class="nomarg"><?php echo $p['destination'];?></h5></td>
+									<td width="13%"><p class="nomarg">Date Issued:</p></td>
+									<td width="42%" colspan="3"><h5 class="nomarg"><?php echo date('F d, Y', strtotime($p['date_issued'])); ?></h5></td>
 									<?php if($saved=='0'){ ?>
 									<td width="5%" ><a href="<?php echo base_url(); ?>index.php/gatepass/add_gatepass/<?php echo $p['gatepassid'];?>" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td>
 									<?php } ?>
 									<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print/<?php echo $p['gatepassid'];?>" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>
 								</tr>
 								<tr>
-									<td><p class="nomarg">Destination: </p></td>
-									<td><h5 class="nomarg"><?php echo $p['destination'];?></h5></td>
-									<td><p class="nomarg pull-right">Date Returned:</p></td>
-									<td><h5 class="nomarg">&nbsp; <?php echo date('F d, Y', strtotime($p['date_returned'])); ?></h5></td>
+									<td><p class="nomarg">Vehicle No:</p></td>
+									<td><h5 class="nomarg"><?php echo $p['vehicle_no'];?></h5></td>
+									<td><p class="nomarg">Date Returned:</p></td>
+									<td><h5 class="nomarg"><?php echo date('F d, Y', strtotime($p['date_returned'])); ?></h5></td>
 								</tr>
 								<tr>
-									<td><p class="nomarg">Vehicle No:</p></td>
-									<td> <h5 class="nomarg"><?php echo $p['vehicle_no'];?></h5></td>
-									<td><p class="nomarg pull-right">MGP No.:</p></td>
-									<td><h5 class="nomarg">&nbsp; <?php echo $p['mgp_no'];?></h5></td>
+									<td><p class="nomarg ">MGP No.:</p></td>
+									<td><h5 class="nomarg"><?php echo $p['mgp_no'];?></h5></td>
+									<td></td>
+									<td></td>
 								</tr>
 								<?php } ?>
 							</table>

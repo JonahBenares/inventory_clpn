@@ -436,7 +436,7 @@
                     if(!empty($gatepass_itm)){
                         foreach($gatepass_itm as $pi){ 
                 ?>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <?php if($pi['image']!=''){ ?>
                 <div style="padding:10px">
                     <img class="pictures" src="<?php if(!empty($pi['image'])) { 
