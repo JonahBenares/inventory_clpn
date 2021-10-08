@@ -54,16 +54,7 @@
         width: 21cm;
         height: 14.8cm;  
     }
-    .thumbnail{
-        border: 1px solid #fff;
-    }
     @media print {
-        .thumbnail{
-            border: 1px solid #fff;
-        }
-        #img1{
-            display: none;
-        }
         .col-lg-6 {
             width: 50%;
         }
@@ -315,82 +306,91 @@
         </table>
         <?php }?>
         <br>
-
-        <form method='POST' id='GatepassSign'>     
-            <div class="row">
-                <div class="col-lg-6">
-                    <br>
-                    <br>
-                    <table class="nobor-all" width="100%"> <!--  -->
-                        <tr>
-                            <td width="30%">Prepared By:</td>
-                            <td width="5%"></td>                    
-                            
-                        </tr>
-                        <?php foreach($signs AS $us) ?>
-                        <tr>
-                            <td style="border-bottom:1px solid #000">
-                                <input id="" class="select" style="pointer-events:none" value="<?php echo $us['prepared'];?>">
-                            </td>   
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input id="" class="select" style="pointer-events:none" value="Warehouse In-charge">
-                            </td>
-                            <td></td>                   
-                        </tr>
-                        <tr>
-                            <td><br><br><br></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td width="30%">Noted by:</td>
-                            <td></td>   
-                        </tr>
-                        <tr>
-                            <td style="border-bottom:1px solid #000">
-                                <input id="" class="select" style="pointer-events:none" value="<?php echo $us['noted'];?>">
-                            </td> 
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input id="" class="select" style="pointer-events:none" value="<?php echo $us['posnoted'];?>">
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><br><br><br></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td width="30%">Approved by:</td>
-                            <td></td>           
-                        </tr>
-                        <tr>
-                            <td style="border-bottom:1px solid #000">
-                                <input id="" class="select" style="pointer-events:none" value="<?php echo $us['approved'];?>">
-                            </td> 
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input id="" class="select" style="pointer-events:none" value="<?php echo $us['posapproved'];?>">
-                            </td>
-                            <td></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-lg-6">
-                    <input class="form-control"  type="file" name="pic1" id="img1" onchange="readPic1(this);">
-                    <div class="thumbnail">
-                        <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/white.jpg" alt="your image" />
-                    </div>
-                </div>
-            </div>
-
-            
+        <form method='POST' id='GatepassSign'>        
+            <table class="nobor-all" width="100%">
+                <tr>
+                    <td width="30%">Prepared By:</td>
+                    <td width="5%"></td>                    
+                    <td width="30%"></td>
+                    <td width="5%"></td>
+                    <td width="30%"></td>
+                </tr>
+                <?php foreach($signs AS $us) ?>
+                <tr>
+                    <td style="border-bottom:1px solid #000">
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['prepared'];?>">
+                    </td>   
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="" class="select" style="pointer-events:none" value="Warehouse In-charge">
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <br>
+            <table class="nobor-all" width="100%">
+                <tr>
+                    <td width="30%">Noted by:</td>
+                    <td width="5%"></td>                    
+                    <td width="30%"></td>
+                    <td width="5%"></td>
+                    <td width="30%"></td>
+                </tr>
+                <tr>
+                    <td style="border-bottom:1px solid #000">
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['noted'];?>">
+                    </td> 
+                    <td></td>
+                    <td></td>   
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['posnoted'];?>">
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <br>
+            <table class="nobor-all" width="100%">
+                <tr>
+                    <td width="30%">Approved by:</td>
+                    <td width="5%"></td>                    
+                    <td width="30%"></td>
+                    <td width="5%"></td>
+                    <td width="30%"></td>
+                </tr>
+                <tr>
+                    <td style="border-bottom:1px solid #000">
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['approved'];?>">
+                    </td> 
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td ></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="" class="select" style="pointer-events:none" value="<?php echo $us['posapproved'];?>">
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
             <br>
             <br>
             <table class="nobor-all" width="100%">
@@ -438,7 +438,7 @@
         </form> 
     </div>
 </page>
-<!-- <page size="A4">
+<page size="A4">
     <div class="p-t-20 m-l-20 m-r-20">
         <div class="row">
             <?php 
@@ -458,7 +458,7 @@
             <?php } }?>
         </div>         
     </div>
-</page> -->
+</page>
 
 <!--<script type="text/javascript">
 function printMReqF(){

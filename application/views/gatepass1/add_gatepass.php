@@ -69,7 +69,7 @@
 							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
 								<?php if($saved=='0'){ ?>
 								<div class="row">
-									<div class="col-lg-5">
+									<div class="col-lg-3">
 										<p>
 											<select name="item" id='item' class="form-control select2">
 												<option value = ""></option>
@@ -99,10 +99,10 @@
 											<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control">
 										</p>
 									</div>
-									<!-- <div class="col-lg-2">
-										<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
-										<span id="img1-check" class='img-check'></span>
-									</div> -->
+									<div class="col-lg-2">
+									<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
+									<span id="img1-check" class='img-check'></span>
+									</div>
 									<div class="col-lg-1">
 										<div id='alrt' style="font-weight:bold"></div>
 										<p>				
@@ -121,6 +121,7 @@
 												<th width="10%" style='text-align: center;'>Qty</th>
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
+												<th width="25%" style='text-align: center;'>Image</th>
 												<?php if($saved=='0'){ ?>
 												<th width="5%" style='text-align: center;' width="1%">Action</th>
 												<?php } ?>
