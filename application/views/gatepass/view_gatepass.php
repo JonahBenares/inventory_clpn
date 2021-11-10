@@ -125,13 +125,13 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
-													<!-- <td>
+													<td>
    														<div style="padding:10px">
 															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
 																echo base_url(); ?>uploads/<?php echo $gp['image']; 
 																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
 															</div>
-													</td> -->
+													</td>
 													<!--<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>-->
 												</tr>
 											<?php $x++; } } else { ?>

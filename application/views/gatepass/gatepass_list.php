@@ -6,7 +6,17 @@
 <style type="text/css">
 	.label-info {
     background-color: #5bc0de;
-}
+		}
+	@media print{
+	    #btn-print{
+	    	display: none;
+	    	}
+	    }
+
+	.gatepassdate{
+		margin-bottom: 0px;
+		margin-top: 5px
+		}
 </style>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 <div class="row">
@@ -33,18 +43,34 @@
 			<div class="panel panel-default shadow">
 				<div class="panel-heading">
 					Gatepass
-					<div class="pull-right">
+					<div  id="btn-print" class="pull-right">
+						<button class="btn btn-success" data-toggle="modal" data-target="#GatepassFilter" ><span class="fa fa-filter"> </span> Filter</button>
 						<!--<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
 							<span class="fa fa-search"></span>
 						</a>-->
+						<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
+							<span  class="fa fa-print"></span>
+						</button>	
 						<a class="clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#gatepassModal">
 							<span class="fa fa-plus"></span></span>
 						</a>
 					</div>
 				</div>
 				<div class="panel-body">
-					<div class="canvas-wrapper">
+					<div id="printableArea" class="canvas-wrapper">
 						<div class="row" style="padding:0px 10px 0px 10px">
+							<!--<?php 
+								if(!empty($_POST)){
+								
+									?>
+									
+									<div class='alert alert-warning alert-shake'>
+										<center>
+											<strong>Filters applied:</strong> <?php echo  $filter; ?>.
+											<a href='<?php echo base_url(); ?>index.php/gatepass/gatepass_list' class='remove_filter alert-link'>Remove Filters</a>. 
+										</center>
+									</div>
+							<?php  }?>-->
 						</div>
 						<table class="table-bordered table-hover" id="gatepass_datatable" width="100%" style="font-size: 15px">
 							<thead>
@@ -55,8 +81,8 @@
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="15%" align="center"><strong>Vehicle No.</strong></td>
 									<td width="15%" align="center"><strong>Date Issued</strong></td>
-									<td width="15%" align="center"><strong>Date Returned</strong></td>
-									<td width="1%" 	align="center" ><strong><span class="fa fa-bars"></span></strong></td>
+									<!--<td width="15%" align="center"><strong>Date Returned</strong></td>-->
+									<td width="1%" 	align="center" id="btn-print"><strong><span class="fa fa-bars"></span></strong></td>
 								</tr>
 							
 							</thead>
@@ -65,12 +91,12 @@
 								<tr>
 									<!--<td align="center"><?php echo $x; ?></td>-->
 									<td align="center"><?php echo $gp['mgp_no'];?></td>
-									<td align="center"><?php echo $gp['supplier'];?></td>
+									<td align="center"><?php echo $gp['company'];?></td>
 									<td align="center"><?php echo $gp['destination'];?></td>
 									<td align="center"><?php echo $gp['vehicle_no'];?></td>
 									<td align="center"><?php echo $gp['date_issued'];?></td>
-									<td align="center"><?php echo $gp['date_returned'];?></td>
-									<td align="center">
+									<!--<td align="center"><?php echo $gp['date_returned'];?></td>-->
+									<td align="center" id="btn-print">
 
 										<a  href="<?php echo base_url();?>index.php/gatepass/view_gatepass/<?php echo $gp['gatepassid'];?>" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 
@@ -168,6 +194,32 @@
 			</div>
 		</div>
 	</div>-->
+	<div class="modal fade" id="GatepassFilter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Filter</h4>
+				</div>
+				<form method="POST" action = "<?php echo base_url();?>index.php/gatepass/filter_gatepass">
+					<div class="modal-body">
+						<div class = "row">
+							<div class = "col-lg-6">
+								<p class="gatepassdate">From:</p>
+								<input type = "date" name = "from" class = "form-control bor-radius">
+							</div>
+							<div class = "col-lg-6">
+								<p class="gatepassdate">To:</p>
+								<input type = "date" name = "to" class = "form-control bor-radius">
+							</div>
+						</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-info btn-block"><span class="fa fa-filter"></span> Filter</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 	<div class="modal fade" id="modal_delete_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="alert alert-danger">

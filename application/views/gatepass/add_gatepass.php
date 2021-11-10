@@ -29,7 +29,7 @@
 						<div class="canvas-wrapper">
 						<?php foreach($head AS $g){
 							$mgpno=$g['mgp_no'];
-							$company=$g['to_company'];
+							$company=$g['company'];
 							$destination=$g['destination'];
 							$issued=$g['date_issued'];
 							$returned=$g['date_returned'];
@@ -69,14 +69,9 @@
 							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
 								<?php if($saved=='0'){ ?>
 								<div class="row">
-									<div class="col-lg-5">
-										<p>
-											<select name="item" id='item' class="form-control select2">
-												<option value = ""></option>
-												<?php foreach($item_list AS $itm){ ?>
-												<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->item_name;?></option>
-												<?php } ?>
-											</select>
+									<div class="col-lg-4">
+										<p>				
+											<input placeholder="Item Name" type="text" name="item" id="items" class="form-control" >
 										</p>
 									</div>
 									<div class="col-lg-1">
@@ -84,14 +79,9 @@
 											<input placeholder="Qty" type="text" name="quantity" id="quantity" class="form-control" >
 										</p>
 									</div>
-									<div class="col-lg-2">
+									<div class="col-lg-1">
 										<p>				
-										<select name="unit" id='unit' class="form-control select2">
-											<option value = "">Select UOM</option>
-											<?php foreach($unit AS $unit){ ?>
-											<option value = "<?php echo $unit->unit_id;?>"><?php echo $unit->unit_name;?></option>
-											<?php } ?>
-										</select>
+											<input placeholder="Unit" type="text" name="unit" id="unit" class="form-control">
 										</p>
 									</div>
 									<div class="col-lg-3">
@@ -99,10 +89,10 @@
 											<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control">
 										</p>
 									</div>
-									<!-- <div class="col-lg-2">
+									<div class="col-lg-2">
 										<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
 										<span id="img1-check" class='img-check'></span>
-									</div> -->
+									</div>
 									<div class="col-lg-1">
 										<div id='alrt' style="font-weight:bold"></div>
 										<p>				
@@ -136,7 +126,7 @@
 											?>
 												<tr>
 													<td><center><?php echo $x; ?></center></td>
-													<td><?php echo $gp['item_name'];?></td>
+													<td><?php echo $gp['item'];?></td>
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>

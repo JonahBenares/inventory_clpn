@@ -5,8 +5,8 @@ $(document).ready(function(){
       var frm = new FormData();
       image = document.getElementById('image');
       frm.append('image', image.files[0]);
-      item = document.getElementById('item').value;
-      frm.append('item', item);
+      items = document.getElementById('items').value;
+      frm.append('items', items);
       gatepassid = document.getElementById('gatepassid').value;
       frm.append('gatepassid', gatepassid);
       $.ajax({
@@ -34,17 +34,17 @@ function add_item(){
     var loc= document.getElementById("baseurl").value;
     var redirect=loc+'/index.php/gatepass/getitem';
 
-    var item =$('#item').val();
+    var items =$('#items').val();
     var unit =$('#unit').val();
     var quantity =parseFloat($('#quantity').val());
     var remarks =$('#remarks').val();
     var image = $('#image').val();
     /*var image = document.getElementById("image").files[0].name;*/
-    var i = item.replace(/&/gi,"and");
+    var i = items.replace(/&/gi,"and");
     var i = i.replace(/#/gi,"");
     var itm = i.replace(/"/gi,"");
     //var maxqty = parseFloat(document.getElementById("maxqty").value);
-    if(item==''){
+    if(items==''){
          alert('Item must not be empty. Please choose/click from the suggested item list.');
     } else if(quantity==''){
          alert('Quantity must not be empty.');
@@ -54,7 +54,7 @@ function add_item(){
           $.ajax({
                 type: "POST",
                 url:redirect,
-                data: "item="+item+"&unit="+unit+"&quantity="+quantity+"&remarks="+remarks+"&image="+image+"&count="+count,
+                data: "item="+items+"&unit="+unit+"&quantity="+quantity+"&remarks="+remarks+"&image="+image+"&count="+count,
                 beforeSend: function(){
                     document.getElementById('alrt').innerHTML='<b>Please wait, Loading Data...</b>'; 
                     $("#submit").hide(); 
@@ -75,8 +75,8 @@ function add_item(){
                         };
                     }
 
-                    $('.select2-selection__rendered').empty();
-                    document.getElementById("item").value = '';
+                    //$('.select2-selection__rendered').empty();
+                    document.getElementById("items").value = '';
                     document.getElementById("unit").value = '';
                     document.getElementById("quantity").value = '';
                     document.getElementById("remarks").value = '';

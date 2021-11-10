@@ -261,7 +261,7 @@
         <table class="table-bordsered nobor-all" width="100%">
             <tr>
                 <td width="10%"><strong><h6 class="nomarg">To Company</h6></strong></td>
-                <td width="42%"style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['to_company'];?></label></td>
+                <td width="42%"style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['company'];?></label></td>
                 <td width="5%"></td>
                 <td width="13%"><strong><h6 class="nomarg pull-right">Date Issued &nbsp;</h6></strong></td>
                 <td width="30%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo date('F d, Y', strtotime($p['date_issued']));?></label></td>
@@ -315,7 +315,23 @@
         </table>
         <?php }?>
         <br>
-
+<!-- 
+        <?php 
+            if(!empty($gatepass_itm)){
+                foreach($gatepass_itm as $pis){ 
+                    if($pis['rows']==1){
+        ?>
+        <div class="col-lg-4">
+            <?php if($pis['image']!=''){ ?>
+            <div style="padding:10px">
+                <img class="pictures" src="<?php if(!empty($pis['image'])) { 
+                 echo base_url(); ?>uploads/<?php echo $pis['image']; 
+                    } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" alt="your image" width="200%" height="200%" />
+            </div>
+            <center><p><?php echo $pis['item'];?></p></center>
+            <?php } ?>
+        </div>
+        <?php } } }?> -->
         <form method='POST' id='GatepassSign'>     
             <div class="row">
                 <div class="col-lg-6">
@@ -382,12 +398,12 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-lg-6">
+                <!--<div class="col-lg-6">
                     <input class="form-control"  type="file" name="pic1" id="img1" onchange="readPic1(this);">
                     <div class="thumbnail">
                         <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/white.jpg" alt="your image" />
                     </div>
-                </div>
+                </div>-->
             </div>
 
             
@@ -438,12 +454,13 @@
         </form> 
     </div>
 </page>
-<!-- <page size="A4">
+<page size="A4">
     <div class="p-t-20 m-l-20 m-r-20">
         <div class="row">
             <?php 
                 if(!empty($gatepass_itm)){
                     foreach($gatepass_itm as $pi){ 
+                        if($pi['rows']>1){
             ?>
             <div class="col-lg-4">
                 <?php if($pi['image']!=''){ ?>
@@ -455,10 +472,10 @@
                 <center><p><?php echo $pi['item'];?></p></center>
                 <?php } ?>
             </div>
-            <?php } }?>
+            <?php } } } ?>
         </div>         
     </div>
-</page> -->
+</page>
 
 <!--<script type="text/javascript">
 function printMReqF(){

@@ -17,6 +17,6 @@
         <input type="hidden" name="image[]" value="<?php echo $list['image']; ?>">
     </td>
     
-    <input type="hidden" name="item_id[]" value="<?php echo $list['item_id']; ?>">
-    <input type="hidden" name="unit_id[]" value="<?php echo $list['unit_id']; ?>">
+    <!--<input type="hidden" name="item_id[]" value="<?php echo $list['item_id']; ?>">-->
+    <!--<input type="hidden" name="unit_id[]" value="<?php echo $list['unit_id']; ?>">-->
 </tr>

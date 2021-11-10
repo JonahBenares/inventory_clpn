@@ -376,7 +376,7 @@
 									<input type="text" class="form-control" value="<?php echo $mgp_no; ?>" name="mgp_no" readonly>
 								</td>
 							</tr>
-							<tr>
+							<!--<tr>
 								<td width="20%"><label>To Company:</label></td>
 								<td style ="padding-bottom: 5px;padding-left: 4px;"><select class="form-control select2" style="margin:4px;width:100%" name="company" id="to_company">
 									<option selected="selected" >-Choose Company-</option>
@@ -384,6 +384,12 @@
 										<option value="<?php echo $sup->supplier_id; ?>?"><?php echo $sup->supplier_name; ?></option>
 									<?php } ?>
 								</select></td>
+							</tr>-->
+							<tr>
+								<td width="20%" class = "t"><label>To Company:</label></td>
+								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
+									<input type="" class="form-control" name="company">
+								</td>
 							</tr>
 							<tr>
 								<td width="20%" class = "t"><label>Destination:</label></td>
