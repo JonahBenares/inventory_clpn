@@ -63,7 +63,7 @@
 						<!--<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
 							<span class="fa fa-search"></span>
 						</a>-->
-						<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
+						<button id="printReport" class="btn btn-info " onclick="printDiv('printableArea')">
 							<span  class="fa fa-print"></span>
 						</button>	
 						<a class="clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#gatepassModal">
