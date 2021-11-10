@@ -270,25 +270,26 @@
                 <td><strong><h6 class="nomarg">Destination</h6></strong></td>
                 <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['destination'];?></label></td>
                 <td></td>
-                <td><strong><h6 class="nomarg pull-right">Date Returned &nbsp;</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo date('F d, Y', strtotime($p['date_returned']));?></label></td>
+                <td><strong><h6 class="nomarg pull-right">MGP No. &nbsp;</h6></strong></td>
+                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['mgp_no'];?></label></td>
             </tr>
             <tr>
                 <td><strong><h6 class="nomarg">Vehicle No</h6></strong></td>
                 <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['vehicle_no'];?></label></td>
                 <td></td>
-                <td><strong><h6 class="nomarg pull-right">MGP No. &nbsp;</h6></strong></td>
-                <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $p['mgp_no'];?></label></td>
+                <td><strong></strong></td>
+                <td> </label></td>
             </tr>    
         </table>
         <br>    
         <table width="100%" class="table-bordered">
             <tr>
                 <td width="3%" align="center"><strong>#</strong></td>
-                <td width="57%" align="center"><strong>Item Description</strong></td>                    
-                <td width="5%" align="center"><strong>Qty</strong></td>
+                <td width="50%" align="center"><strong>Item Description</strong></td>                    
+                <td width="7%" align="center"><strong>Qty</strong></td>
                 <td width="5%" align="center"><strong>U/M</strong></td>
-                <td width="35%" align="center"><strong>Remarks</strong></td>
+                <td width="10%" align="center"><strong>Date Returned</strong></td>
+                <td width="30%" align="center"><strong>Remarks</strong></td>
             </tr>
             <tr>
                     <?php 
@@ -301,6 +302,7 @@
                     <td align="left">&nbsp; <?php echo $pi['item'];?></td>
                     <td align="center"><?php echo $pi['quantity'];?></td>
                     <td align="center"><?php echo $pi['unit'];?></td>
+                    <td align="center">10-10-21</td>
                     <td align="center"><?php echo $pi['remarks'];?></td>
                 </tr>
                     <?php $x++; } } else { ?>
@@ -398,12 +400,12 @@
                         </tr>
                     </table>
                 </div>
-                <!--<div class="col-lg-6">
-                    <input class="form-control"  type="file" name="pic1" id="img1" onchange="readPic1(this);">
+                <div class="col-lg-6">
+                    <!-- <input class="form-control"  type="file" name="pic1" id="img1" onchange="readPic1(this);"> -->
                     <div class="thumbnail">
                         <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/white.jpg" alt="your image" />
                     </div>
-                </div>-->
+                </div>
             </div>
 
             

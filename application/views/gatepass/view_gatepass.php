@@ -2,6 +2,32 @@
 <script src="<?php echo base_url(); ?>assets/js/gatepass.js"></script>
 <link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
 <script src="<?php echo base_url(); ?>assets/js/select2.min.js"></script>
+
+<div class="modal fade" id="datereturn" tabindex="-1" role="dialog" aria-labelledby="datereturn">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Date Returned</h4>
+				</div>
+				<div class="modal-body" style="padding:30px 20px 30px 20px">
+					<table width="100%">
+						<tr>
+							<td width="30%"><label>Date Returned:</label></td>							
+						</tr>
+						<tr>
+							<td><input type = "date" name = "" class = "form-control" style="margin:4px"></td>
+						</tr>
+					</table>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<a  class="btn btn-warning" href="">Save</a>							
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row">
 		<ol class="breadcrumb">
@@ -51,15 +77,10 @@
 								<tr>
 									<td><p class="nomarg">Vehicle No:</p></td>
 									<td><h5 class="nomarg"><?php echo $p['vehicle_no'];?></h5></td>
-									<td><p class="nomarg">Date Returned:</p></td>
-									<td><h5 class="nomarg"><?php echo date('F d, Y', strtotime($p['date_returned'])); ?></h5></td>
-								</tr>
-								<tr>
-									<td><p class="nomarg ">MGP No.:</p></td>
+									<td><p class="nomarg">MGP No.:</p></td>
 									<td><h5 class="nomarg"><?php echo $p['mgp_no'];?></h5></td>
-									<td></td>
-									<td></td>
 								</tr>
+								
 								<?php } ?>
 							</table>
 							<br>
@@ -108,11 +129,12 @@
 										<table class="table table-bordered table-hover">
 											<tr>
 												<th width="2%" style='text-align: center;'>#</th>
-												<th width="48%">Item Description</th>
+												<th width="33%">Item Description</th>
 												<th width="10%" style='text-align: center;'>Qty</th>
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
-												<!-- <th width="25%" style='text-align: center;'>Image</th> -->
+												<th width="15%" style='text-align: center;'>Date Returned</th>
+												<th width="25%" style='text-align: center;'></th>
 												<!--<th width="5%" style='text-align: center;' width="1%">Action</th>-->
 											</tr>
 										<tbody id="item_body">
@@ -125,6 +147,7 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
+													<td><center>00-00-0000 &nbsp; <a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn"><span class="fa fa-plus"></span></a></center></td>
 													<td>
    														<div style="padding:10px">
 															<img class="pictures" src="<?php if(!empty($gp['image'])) { 

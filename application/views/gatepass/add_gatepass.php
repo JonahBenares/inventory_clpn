@@ -55,41 +55,45 @@
 								<tr>
 									<td><p class="nomarg">Vehicle No:</p></td>
 									<td><h5 class="nomarg"><?php echo $vehicle_no; ?></h5></td>
-									<td><p class="nomarg">Date Returned:</p></td>
-									<td><h5 class="nomarg"><?php echo date('F d, Y', strtotime($returned)); ?></h5></td>
-								</tr>
-								<tr>
 									<td><p class="nomarg">MGP No.:</p></td>
-									<td><h5 class="nomarg"><?php echo $mgpno; ?></h5> </td>
-									<td></td>
-									<td></td>
+									<td><h5 class="nomarg"><?php echo $mgpno; ?></h5></td>
 								</tr>
+								
 							</table>
 							<br>
 							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
 								<?php if($saved=='0'){ ?>
 								<div class="row">
-									<div class="col-lg-4">
+									<div class="col-lg-3" style="padding-right: 0px;">
 										<p>				
 											<input placeholder="Item Name" type="text" name="item" id="items" class="form-control" >
 										</p>
 									</div>
-									<div class="col-lg-1">
+									<div class="col-lg-1" style="padding-right: 0px;">
 										<p>				
-											<input placeholder="Qty" type="text" name="quantity" id="quantity" class="form-control" >
+											<input placeholder="Qty" type="text" name="quantity" id="quantity" class="form-control" style="padding-right: 0px;" >
 										</p>
 									</div>
-									<div class="col-lg-1">
+									<div class="col-lg-1" style="padding-right: 0px;">
 										<p>				
-											<input placeholder="Unit" type="text" name="unit" id="unit" class="form-control">
+											<input placeholder="Unit" type="text" name="unit" id="unit" class="form-control" style="padding-right: 0px;">
 										</p>
 									</div>
-									<div class="col-lg-3">
+									<div class="col-lg-2" style="padding-right: 0px;">
 										<p>				
-											<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control">
+											<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" style="padding-right: 0px;">
 										</p>
 									</div>
-									<div class="col-lg-2">
+									<div class="col-lg-2" style="padding-right: 0px;">
+										<p>				
+											<select class="form-control">
+												<option>--- Status ---</option>
+												<option>Returnable</option>
+												<option>Non-Returnable</option>
+											</select>
+										</p>
+									</div>
+									<div class="col-lg-2" style="padding-right: 0px;">
 										<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
 										<span id="img1-check" class='img-check'></span>
 									</div>
@@ -107,10 +111,11 @@
 										<table class="table table-bordered table-hover" style="margin-bottom:0px">
 											<tr>
 												<th width="2%" style='text-align: center;'>#</th>
-												<th width="48%">Item Description</th>
+												<th width="30%">Item Description</th>
 												<th width="10%" style='text-align: center;'>Qty</th>
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
+												<th width="18%" style='text-align: center;'>Status</th>
 												<?php if($saved=='0'){ ?>
 												<th width="5%" style='text-align: center;' width="1%">Action</th>
 												<?php } ?>
@@ -137,8 +142,9 @@
 																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
 															</div>
    													</td><center>
-   														<?php if($saved=='0'){ ?>
-													<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
+   													<td></td>
+   													<?php if($saved=='0'){ ?>
+														<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
 													<?php } ?>
 												</tr>
 											<?php } ?>

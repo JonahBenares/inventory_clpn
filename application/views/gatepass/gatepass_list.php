@@ -7,11 +7,26 @@
 	.label-info {
     background-color: #5bc0de;
 		}
+
+
+		
+	#gatepass_datatable_2{
+		display: none;
+	}
+
+
 	@media print{
-	    #btn-print{
+		#gatepass_datatable{
 	    	display: none;
-	    	}
 	    }
+	    #btn-print{
+    		display: none;
+    	}	    
+	    #gatepass_datatable_2{
+	    	display: block;
+	    }
+	}
+	   
 
 	.gatepassdate{
 		margin-bottom: 0px;
@@ -57,7 +72,7 @@
 					</div>
 				</div>
 				<div class="panel-body">
-					<div id="printableArea" class="canvas-wrapper">
+					<div id="" class="canvas-wrapper">
 						<div class="row" style="padding:0px 10px 0px 10px">
 							<!--<?php 
 								if(!empty($_POST)){
@@ -72,7 +87,7 @@
 									</div>
 							<?php  }?>-->
 						</div>
-						<table class="table-bordered table-hover" id="gatepass_datatable" width="100%" style="font-size: 15px">
+						<table class="tabledate table-bordered table-hover" id="gatepass_datatable" width="100%" style="font-size: 15px">
 							<thead>
 								<tr>
 									<!--<td width="1%" align="center">#</td>-->
@@ -105,6 +120,35 @@
 								<?php } ?>
 							</tbody>
 						</table>
+
+
+						<!-- ----------------------- table for Printing ------------------------ -->
+
+						<div id="printableArea" class="canvas-wrapper">
+							<table class="table-bordered table-hover" id="gatepass_datatable_2" width="100%" style="font-size: 15px">
+								<thead>
+									<tr>
+										<td width="10%" align="center"><strong>MGP No</strong></td>
+										<td width="29%" align="center"><strong>To Company</strong></td>
+										<td width="15%" align="center"><strong>Destination</strong></td>
+										<td width="15%" align="center"><strong>Vehicle No.</strong></td>
+										<td width="15%" align="center"><strong>Date Issued</strong></td></strong></td>
+									</tr>
+								
+								</thead>
+								<tbody>
+									<?php foreach($gatepass as $gp){ ?>
+									<tr>
+										<td align="center"><?php echo $gp['mgp_no'];?></td>
+										<td align="center"><?php echo $gp['company'];?></td>
+										<td align="center"><?php echo $gp['destination'];?></td>
+										<td align="center"><?php echo $gp['vehicle_no'];?></td>
+										<td align="center"><?php echo $gp['date_issued'];?></td>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
