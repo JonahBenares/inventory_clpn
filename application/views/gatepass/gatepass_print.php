@@ -389,10 +389,10 @@
                     </table>
                 </div>
                 <?php 
-            if(!empty($gatepass_itm)){
-                foreach($gatepass_itm as $pis){ 
-                    if($pis['rows']==1){
-        ?>
+                if(!empty($gatepass_itm)){
+                    foreach($gatepass_itm as $pis){ 
+                        if($pis['rows']==1){
+                ?>
                 <div class="col-lg-6">
                     <?php if($pis['image']!=''){ ?>
                     <!-- <input class="form-control"  type="file" name="pic1" id="img1" onchange="readPic1(this);"> -->
@@ -403,8 +403,8 @@
                     </div>
                     <?php } ?>
                 </div>
-            <?php } } }?>
-            
+                <?php } } }?>
+            </div>
             <br>
             <br>
             <table class="nobor-all" width="100%">
@@ -449,6 +449,7 @@
             <?php ?>
         <!--<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
         <input type='hidden' name='passid' id='passid' value="<?php echo $id; ?>" >-->
+            
         </form> 
     </div>
     </div>
