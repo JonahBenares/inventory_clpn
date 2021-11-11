@@ -32,7 +32,7 @@
 							$company=$g['company'];
 							$destination=$g['destination'];
 							$issued=$g['date_issued'];
-							$returned=$g['date_returned'];
+							//$returned=$g['date_returned'];
 							$vehicle_no=$g['vehicle_no'];
 							$prepared_by=$g['prepared_by'];
 							$noted_by=$g['noted_by'];
@@ -86,10 +86,10 @@
 									</div>
 									<div class="col-lg-2" style="padding-right: 0px;">
 										<p>				
-											<select class="form-control">
+											<select class="form-control" name="status" id="status">
 												<option>--- Status ---</option>
-												<option>Returnable</option>
-												<option>Non-Returnable</option>
+												<option value = "Returnable">Returnable</option>
+												<option value = "Non-Returnable">Non-Returnable</option>
 											</select>
 										</p>
 									</div>
@@ -135,6 +135,7 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
+													<td><center><?php echo $gp['status'];?></center></td>
    													<td style="width: 100px !important; height: 100px !important;"><center>
    														<div style="padding:10px">
 															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
@@ -142,7 +143,6 @@
 																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
 															</div>
    													</td><center>
-   													<td></td>
    													<?php if($saved=='0'){ ?>
 														<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
 													<?php } ?>

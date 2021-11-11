@@ -302,7 +302,12 @@
                     <td align="left">&nbsp; <?php echo $pi['item'];?></td>
                     <td align="center"><?php echo $pi['quantity'];?></td>
                     <td align="center"><?php echo $pi['unit'];?></td>
-                    <td align="center">10-10-21</td>
+                    <?php if($pi['status']=='Non-Returnable'){ ?>
+                    <td align="center"><?php echo $pi['status'];?></td>
+                    <?php } ?>
+                    <?php if($pi['status']=='Returnable'){ ?>
+                    <td align="center"><?php echo $pi['date_returned'];?></td>
+                    <?php } ?>
                     <td align="center"><?php echo $pi['remarks'];?></td>
                 </tr>
                     <?php $x++; } } else { ?>
@@ -317,23 +322,6 @@
         </table>
         <?php }?>
         <br>
-<!-- 
-        <?php 
-            if(!empty($gatepass_itm)){
-                foreach($gatepass_itm as $pis){ 
-                    if($pis['rows']==1){
-        ?>
-        <div class="col-lg-4">
-            <?php if($pis['image']!=''){ ?>
-            <div style="padding:10px">
-                <img class="pictures" src="<?php if(!empty($pis['image'])) { 
-                 echo base_url(); ?>uploads/<?php echo $pis['image']; 
-                    } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" alt="your image" width="200%" height="200%" />
-            </div>
-            <center><p><?php echo $pis['item'];?></p></center>
-            <?php } ?>
-        </div>
-        <?php } } }?> -->
         <form method='POST' id='GatepassSign'>     
             <div class="row">
                 <div class="col-lg-6">
@@ -400,14 +388,22 @@
                         </tr>
                     </table>
                 </div>
+                <?php 
+            if(!empty($gatepass_itm)){
+                foreach($gatepass_itm as $pis){ 
+                    if($pis['rows']==1){
+        ?>
                 <div class="col-lg-6">
+                    <?php if($pis['image']!=''){ ?>
                     <!-- <input class="form-control"  type="file" name="pic1" id="img1" onchange="readPic1(this);"> -->
                     <div class="thumbnail">
-                        <img id="pic1" class="pictures" src="<?php echo base_url() ?>assets/default/white.jpg" alt="your image" />
+                        <img class="pictures" src="<?php if(!empty($pis['image'])) { 
+                 echo base_url(); ?>uploads/<?php echo $pis['image']; 
+                    } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" alt="Your image" width="200%" height="200%" />
                     </div>
+                    <?php } ?>
                 </div>
-            </div>
-
+            <?php } } }?>
             
             <br>
             <br>
@@ -454,6 +450,7 @@
         <!--<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
         <input type='hidden' name='passid' id='passid' value="<?php echo $id; ?>" >-->
         </form> 
+    </div>
     </div>
 </page>
 <page size="A4">

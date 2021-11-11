@@ -409,12 +409,12 @@
 									<input type="date" class="form-control" name="date_issued">
 								</td>
 							</tr>
-							<tr>
+							<!--<tr>
 								<td width="20%" class = "t"><label>Date Returned:</label></td>
 								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
 									<input type="date" class="form-control" name="date_returned">
 								</td>
-							</tr>
+							</tr>-->
 							<tr>
 								<td width="20%" class = "t"><label>Prepared by:</label></td>
 								<td style ="padding-bottom: 5px;padding-left: 4px;"><select class="form-control select2" style="margin:4px;width:100%" name="prepared" id="prepared_by">

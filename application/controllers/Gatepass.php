@@ -116,7 +116,7 @@ class Gatepass extends CI_Controller {
                 'destination'=>$gatepass->destination,
                 'vehicle_no'=>$gatepass->vehicle_no,
                 'date_issued'=>$gatepass->date_issued,
-                'date_returned'=>$gatepass->date_returned,
+                //'date_returned'=>$gatepass->date_returned,
                 'company'=>$gatepass->company,
                 //'supplier'=>$supplier,
                 //'prepared_by'=>$prepared,
@@ -151,7 +151,7 @@ class Gatepass extends CI_Controller {
            'destination'=> $this->input->post('destination'),
            'vehicle_no'=> $this->input->post('vehicle_no'),
            'date_issued'=> $this->input->post('date_issued'),
-           'date_returned'=> $this->input->post('date_returned'),
+           //'date_returned'=> $this->input->post('date_returned'),
            'prepared_by'=> $this->input->post('prepared'),
            'noted_by'=> $this->input->post('noted'),
            'approved_by'=> $this->input->post('approved'),
@@ -184,7 +184,7 @@ class Gatepass extends CI_Controller {
                 "destination"=>$pass->destination,
                 "vehicle_no"=>$pass->vehicle_no,
                 "date_issued"=>$pass->date_issued,
-                "date_returned"=>$pass->date_returned,
+                //"date_returned"=>$pass->date_returned,
                 "prepared_by"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $pass->prepared_by),
                 "noted_by"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $pass->noted_by),
                 "approved_by"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $pass->approved_by),
@@ -200,6 +200,7 @@ class Gatepass extends CI_Controller {
                     'item'=>$gp->item_name,
                     'quantity'=>$gp->quantity,
                     'remarks'=>$gp->remarks,
+                    'status'=>$gp->status,
                     'image'=>$gp->image,
                     'unit'=>$gp->unit,
                 );
@@ -229,6 +230,7 @@ class Gatepass extends CI_Controller {
             'item'=>$this->input->post('item'),
             'count'=>$this->input->post('count'),
             'remarks'=>$this->input->post('remarks'),
+            'status'=>$this->input->post('status'),
             'image'=>$this->input->post('image'),
         );
             
@@ -236,7 +238,7 @@ class Gatepass extends CI_Controller {
      }
 
      public function insertimage(){
-        $item=$this->input->post('item');
+        $item=$this->input->post('items');
         $gatepass_id=$this->input->post('gatepassid');
         $error_ext=0;
         $dest= realpath(APPPATH . '../uploads/');
@@ -277,6 +279,7 @@ class Gatepass extends CI_Controller {
                     'quantity'=>$this->input->post('quantity['.$a.']'),
                     'unit'=>$this->input->post('unit['.$a.']'),
                     'remarks'=>$this->input->post('remarks['.$a.']'),
+                    'status'=>$this->input->post('status['.$a.']'),
                     'image'=>$filename,
                 );
                 $this->super_model->insert_into("gatepass_details", $data); 
@@ -314,8 +317,10 @@ class Gatepass extends CI_Controller {
                     'item'=>$gp->item_name,
                     'quantity'=>$gp->quantity,
                     'remarks'=>$gp->remarks,
+                    'date_returned'=>$gp->date_returned,
                     'image'=>$gp->image,
                     'unit'=>$gp->unit,
+                    'status'=>$gp->status,
                     'rows'=>$rows,
                 );
             }
@@ -327,7 +332,7 @@ class Gatepass extends CI_Controller {
                 'vehicle_no'=>$pass->vehicle_no,
                 'date_issued'=>$pass->date_issued,
                 'date_issued'=>$pass->date_issued,
-                'date_returned'=>$pass->date_returned,
+                //'date_returned'=>$pass->date_returned,
                 'company'=>$pass->company,
             );
         }
@@ -337,6 +342,17 @@ class Gatepass extends CI_Controller {
         $this->load->view('gatepass/gatepass_print',$data);
         $this->load->view('template/footer');
     }
+
+    public function add_date_returned(){
+        $id = $this->input->post('gatepassid');
+        $update = array(
+            'date_returned'=>$this->input->post('date_returned'),
+        ); 
+        $this->super_model->update_where("gatepass_details", $update, "gd_id", $id);
+        echo "<script>alert('Date Return Successfully Added!'); 
+                window.location ='".base_url()."index.php/gatepass/view_gatepass/$id'; </script>";
+        }
+
 
     public function view_gatepass(){
         $data['id']=$this->uri->segment(3);
@@ -353,6 +369,8 @@ class Gatepass extends CI_Controller {
                     'quantity'=>$gp->quantity,
                     'unit'=>$gp->unit,
                     'remarks'=>$gp->remarks,
+                    'status'=>$gp->status,
+                    'date_returned'=>$gp->date_returned,
                     'image'=>$gp->image,
 
                 );
@@ -367,7 +385,7 @@ class Gatepass extends CI_Controller {
                 'destination'=>$pass->destination,
                 'vehicle_no'=>$pass->vehicle_no,
                 'date_issued'=>$pass->date_issued,
-                'date_returned'=>$pass->date_returned,
+                //'date_returned'=>$pass->date_returned,
                 'company'=>$pass->company,
                 //'prepared'=>$prepared,
                 //'noted'=>$noted,

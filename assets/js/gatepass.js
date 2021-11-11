@@ -38,6 +38,7 @@ function add_item(){
     var unit =$('#unit').val();
     var quantity =parseFloat($('#quantity').val());
     var remarks =$('#remarks').val();
+    var status =$('#status').val();
     var image = $('#image').val();
     /*var image = document.getElementById("image").files[0].name;*/
     var i = items.replace(/&/gi,"and");
@@ -54,7 +55,7 @@ function add_item(){
           $.ajax({
                 type: "POST",
                 url:redirect,
-                data: "item="+items+"&unit="+unit+"&quantity="+quantity+"&remarks="+remarks+"&image="+image+"&count="+count,
+                data: "item="+items+"&unit="+unit+"&quantity="+quantity+"&remarks="+remarks+"&status="+status+"&image="+image+"&count="+count,
                 beforeSend: function(){
                     document.getElementById('alrt').innerHTML='<b>Please wait, Loading Data...</b>'; 
                     $("#submit").hide(); 
@@ -80,6 +81,7 @@ function add_item(){
                     document.getElementById("unit").value = '';
                     document.getElementById("quantity").value = '';
                     document.getElementById("remarks").value = '';
+                    document.getElementById("status").value = '';
                     //document.getElementById("image").value = '';
                     document.getElementById("counter").value = count;
                 }

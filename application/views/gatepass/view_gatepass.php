@@ -10,18 +10,20 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">Date Returned</h4>
 				</div>
+				<form method="POST" action="<?php echo base_url(); ?>index.php/gatepass/add_date_returned">
 				<div class="modal-body" style="padding:30px 20px 30px 20px">
 					<table width="100%">
 						<tr>
 							<td width="30%"><label>Date Returned:</label></td>							
 						</tr>
 						<tr>
-							<td><input type = "date" name = "" class = "form-control" style="margin:4px"></td>
+							<td><input type = "date" name = "date_returned" class = "form-control" style="margin:4px"></td>
 						</tr>
 					</table>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<a  class="btn btn-warning" href="">Save</a>							
+						<input type='hidden' name='gatepassid' value='<?php echo $id; ?>'>
+						<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+						<input type="submit" class="btn btn-primary btn-block" value="Add Date Return">							
 					</div>
 				</div>
 			</div>
@@ -140,14 +142,19 @@
 										<tbody id="item_body">
 											<?php 
 											 $x=1; if(!empty($gatepass_itm)){
-												foreach($gatepass_itm as $gp){ ?>
+												foreach($gatepass_itm as $gp){  ?>
 												<tr>
 													<td><center><?php echo $x; ?></center></td>
 													<td><?php echo $gp['item'];?></td>
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
-													<td><center>00-00-0000 &nbsp; <a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn"><span class="fa fa-plus"></span></a></center></td>
+													<?php if($gp['status']=='Non-Returnable'){ ?>
+													<td><center><?php echo $gp['status'];?></center></td>
+													<?php } ?>
+													<?php if($gp['status']=='Returnable'){ ?>
+													<td><center><?php echo $gp['date_returned'];?> &nbsp; <?php if($gp['date_returned']==''){ ?><a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn"><span class="fa fa-plus"></span></a><?php } ?></center></td>
+													<?php } ?>
 													<td>
    														<div style="padding:10px">
 															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
