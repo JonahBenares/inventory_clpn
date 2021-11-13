@@ -345,10 +345,11 @@ class Gatepass extends CI_Controller {
 
     public function add_date_returned(){
         $id = $this->input->post('gatepassid');
+        $gd_id = $this->input->post('gd_id');
         $update = array(
             'date_returned'=>$this->input->post('date_returned'),
-        ); 
-        $this->super_model->update_where("gatepass_details", $update, "gd_id", $id);
+        );
+        $this->super_model->update_where("gatepass_details", $update, "gd_id", $gd_id);
         echo "<script>alert('Date Return Successfully Added!'); 
                 window.location ='".base_url()."index.php/gatepass/view_gatepass/$id'; </script>";
         }
@@ -365,6 +366,7 @@ class Gatepass extends CI_Controller {
                 //$item = $this->super_model->select_column_where("items", "item_name", "item_id", $gp->item_id);
                 //$unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $gp->unit_id);
                 $data['gatepass_itm'][] = array(
+                    'gd_id'=>$gp->gd_id,
                     'item'=>$gp->item_name,
                     'quantity'=>$gp->quantity,
                     'unit'=>$gp->unit,

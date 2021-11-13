@@ -22,6 +22,7 @@
 					</table>
 					<div class="modal-footer">
 						<input type='hidden' name='gatepassid' value='<?php echo $id; ?>'>
+						<input type='hidden' name='gd_id' id="gd_id">
 						<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
 						<input type="submit" class="btn btn-primary btn-block" value="Add Date Return">							
 					</div>
@@ -153,7 +154,7 @@
 													<td><center><?php echo $gp['status'];?></center></td>
 													<?php } ?>
 													<?php if($gp['status']=='Returnable'){ ?>
-													<td><center><?php echo $gp['date_returned'];?> &nbsp; <?php if($gp['date_returned']==''){ ?><a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn"><span class="fa fa-plus"></span></a><?php } ?></center></td>
+													<td><center><?php echo $gp['date_returned'];?> &nbsp; <?php if($gp['date_returned']==''){ ?><a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp['gd_id']; ?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
 													<?php } ?>
 													<td>
    														<div style="padding:10px">
@@ -180,3 +181,10 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$(document).on("click", "#clickDate", function () {
+		    var gd_id = $(this).attr("data-id");
+		    $("#gd_id").val(gd_id);
+		  
+		});
+	</script>
