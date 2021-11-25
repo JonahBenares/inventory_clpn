@@ -8,7 +8,7 @@
 			<li><a href="#">
 				<em class="fa fa-home"></em>
 			</a></li>
-			<li class=""><a href="<?php echo base_url(); ?>index.php/request/request_list">Gatepass </a></li>
+			<li class=""><a href="<?php echo base_url(); ?>index.php/gatepass/gatepass_list">Gatepass </a></li>
 			<li class="active"> Add Gatepass</li>
 		</ol>
 	</div><!--/.row-->
@@ -86,8 +86,8 @@
 									</div>
 									<div class="col-lg-2" style="padding-right: 0px;">
 										<p>				
-											<select class="form-control" name="status" id="status">
-												<option>--- Status ---</option>
+											<select class="form-control" name="type" id="type">
+												<option>--- Select Type ---</option>
 												<option value = "Returnable">Returnable</option>
 												<option value = "Non-Returnable">Non-Returnable</option>
 											</select>
@@ -115,7 +115,8 @@
 												<th width="10%" style='text-align: center;'>Qty</th>
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
-												<th width="18%" style='text-align: center;'>Status</th>
+												<th width="18%" style='text-align: center;'>Type</th>
+												<th width="18%" style='text-align: center;'>Image</th>
 												<?php if($saved=='0'){ ?>
 												<th width="5%" style='text-align: center;' width="1%">Action</th>
 												<?php } ?>
@@ -135,7 +136,7 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
-													<td><center><?php echo $gp['status'];?></center></td>
+													<td><center><?php echo $gp['type'];?></center></td>
    													<td style="width: 100px !important; height: 100px !important;"><center>
    														<div style="padding:10px">
 															<img class="pictures" src="<?php if(!empty($gp['image'])) { 

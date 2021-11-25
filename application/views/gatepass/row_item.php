@@ -4,7 +4,7 @@
     <td style="padding: 0px; width:50px; "><input type = "text" name = "quantity[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['quantity']; ?>"></td>
     <td style="padding: 0px; width:80px;"><input type = "hidden"  name = "unit[]" value="<?php echo $list['unit']; ?>"><input type = "text" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['unit']?>" readonly></td>
    <td style="padding: 0px; width:50px; "><input type = "text" name = "remarks[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['remarks']; ?>"></td>
-   <td style="padding: 0px; width:50px; "><input type = "text" name = "status[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['status']; ?>"></td>
+   <td style="padding: 0px; width:50px; "><input type = "text" name = "type[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['type']; ?>"></td>
    
     <td style="padding: 0px width: 50px;">
       <center>

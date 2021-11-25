@@ -288,7 +288,7 @@
                 <td width="50%" align="center"><strong>Item Description</strong></td>                    
                 <td width="7%" align="center"><strong>Qty</strong></td>
                 <td width="5%" align="center"><strong>U/M</strong></td>
-                <td width="10%" align="center"><strong>Date Returned</strong></td>
+                <td width="10%" align="center"><strong>Type</strong></td>
                 <td width="30%" align="center"><strong>Remarks</strong></td>
             </tr>
             <tr>
@@ -302,12 +302,13 @@
                     <td align="left">&nbsp; <?php echo $pi['item'];?></td>
                     <td align="center"><?php echo $pi['quantity'];?></td>
                     <td align="center"><?php echo $pi['unit'];?></td>
-                    <?php if($pi['status']=='Non-Returnable'){ ?>
-                    <td align="center"><?php echo $pi['status'];?></td>
+                    <td align="center"><?php echo $pi['type'];?></td>
+                    <!--<?php if($pi['type']=='Non-Returnable'){ ?>
+                    <td align="center"><?php echo $pi['type'];?></td>
                     <?php } ?>
-                    <?php if($pi['status']=='Returnable'){ ?>
+                    <?php if($pi['type']=='Returnable'){ ?>
                     <td align="center"><?php echo $pi['date_returned'];?></td>
-                    <?php } ?>
+                    <?php } ?>-->
                     <td align="center"><?php echo $pi['remarks'];?></td>
                 </tr>
                     <?php $x++; } } else { ?>

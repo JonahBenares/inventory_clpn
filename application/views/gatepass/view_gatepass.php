@@ -150,10 +150,10 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
-													<?php if($gp['status']=='Non-Returnable'){ ?>
-													<td><center><?php echo $gp['status'];?></center></td>
+													<?php if($gp['type']=='Non-Returnable'){ ?>
+													<td><center><?php echo $gp['type'];?></center></td>
 													<?php } ?>
-													<?php if($gp['status']=='Returnable'){ ?>
+													<?php if($gp['type']=='Returnable'){ ?>
 													<td><center><?php echo $gp['date_returned'];?> &nbsp; <?php if($gp['date_returned']==''){ ?><a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp['gd_id']; ?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
 													<?php } ?>
 													<td>

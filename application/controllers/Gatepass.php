@@ -200,7 +200,7 @@ class Gatepass extends CI_Controller {
                     'item'=>$gp->item_name,
                     'quantity'=>$gp->quantity,
                     'remarks'=>$gp->remarks,
-                    'status'=>$gp->status,
+                    'type'=>$gp->type,
                     'image'=>$gp->image,
                     'unit'=>$gp->unit,
                 );
@@ -230,7 +230,7 @@ class Gatepass extends CI_Controller {
             'item'=>$this->input->post('item'),
             'count'=>$this->input->post('count'),
             'remarks'=>$this->input->post('remarks'),
-            'status'=>$this->input->post('status'),
+            'type'=>$this->input->post('type'),
             'image'=>$this->input->post('image'),
         );
             
@@ -279,7 +279,7 @@ class Gatepass extends CI_Controller {
                     'quantity'=>$this->input->post('quantity['.$a.']'),
                     'unit'=>$this->input->post('unit['.$a.']'),
                     'remarks'=>$this->input->post('remarks['.$a.']'),
-                    'status'=>$this->input->post('status['.$a.']'),
+                    'type'=>$this->input->post('type['.$a.']'),
                     'image'=>$filename,
                 );
                 $this->super_model->insert_into("gatepass_details", $data); 
@@ -320,7 +320,7 @@ class Gatepass extends CI_Controller {
                     'date_returned'=>$gp->date_returned,
                     'image'=>$gp->image,
                     'unit'=>$gp->unit,
-                    'status'=>$gp->status,
+                    'type'=>$gp->type,
                     'rows'=>$rows,
                 );
             }
@@ -371,7 +371,7 @@ class Gatepass extends CI_Controller {
                     'quantity'=>$gp->quantity,
                     'unit'=>$gp->unit,
                     'remarks'=>$gp->remarks,
-                    'status'=>$gp->status,
+                    'type'=>$gp->type,
                     'date_returned'=>$gp->date_returned,
                     'image'=>$gp->image,
 
