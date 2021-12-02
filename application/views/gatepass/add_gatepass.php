@@ -8,8 +8,8 @@
 			<li><a href="#">
 				<em class="fa fa-home"></em>
 			</a></li>
-			<li class=""><a href="<?php echo base_url(); ?>index.php/gatepass/gatepass_list">Gatepass </a></li>
-			<li class="active"> Add Gatepass</li>
+			<li class=""><a href="<?php echo base_url(); ?>index.php/gatepass/gatepass_list">Material Gatepass List </a></li>
+			<li class="active"> Add Gatepass Item</li>
 		</ol>
 	</div><!--/.row-->
 	

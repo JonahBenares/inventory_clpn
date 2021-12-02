@@ -39,7 +39,7 @@
 		<li><a href="#">
 			<em class="fa fa-home"></em>
 		</a></li>
-		<li class="active">Gatepass</li>
+		<li class="active">Material Gatepass</li>
 	</ol>
 </div><!--/.row-->
 <div class="row">
@@ -57,7 +57,7 @@
 		<div class="col-md-12">
 			<div class="panel panel-default shadow">
 				<div class="panel-heading">
-					Gatepass
+					Material Gatepass
 					<div  id="btn-print" class="pull-right">
 						<button class="btn btn-success" data-toggle="modal" data-target="#GatepassFilter" ><span class="fa fa-filter"> </span> Filter</button>
 						<!--<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">

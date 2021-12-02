@@ -720,7 +720,12 @@
 					</li>
 					<li>
 						<a class="" href="<?php echo base_url(); ?>index.php/gatepass/gatepass_list">
-							<span class="fa fa-arrow-right">&nbsp;</span> View List
+							<span class="fa fa-arrow-right">&nbsp;</span> Material Gatepass List
+						</a>
+					</li>
+					<li>
+						<a class="" href="<?php echo base_url(); ?>index.php/gatepass/gatepass_items_list">
+							<span class="fa fa-arrow-right">&nbsp;</span> Gatepass Items List
 						</a>
 					</li>
 				</ul>

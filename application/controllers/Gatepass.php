@@ -133,6 +133,52 @@ class Gatepass extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+        public function gatepass_items_list(){
+        $from=$this->uri->segment(3);
+        $to=$this->uri->segment(4);
+        $data['from']=$this->uri->segment(3);
+        $data['to']=$this->uri->segment(4);
+        $sql="";
+        if($from!='null' && $to!='null' || $from!='' && $to!=''){
+           $sql.= " WHERE date_issued BETWEEN '$from' AND '$to' AND";
+        }
+
+        if($from!='' && $to!=''){
+            $query=substr($sql,0,-3);
+        }else{
+            $query='';
+        }
+
+        $rows= $this->super_model->count_custom_query("SELECT * FROM gatepass_details ".$query);
+        if($rows!=0){
+        foreach($this->super_model->custom_query("SELECT * FROM gatepass_details ".$query) AS $gatepass_items){
+            $mgp_no = $this->super_model->select_column_where("gatepass_head", "mgp_no", "gatepass_id", $gatepass_items->gatepass_id);
+            $date_issued = $this->super_model->select_column_where("gatepass_head", "date_issued", "gatepass_id", $gatepass_items->gatepass_id);
+            //$prepared = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->prepared_by);
+            //$noted = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->noted_by);
+            //$approved = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->approved_by);
+            $data['gatepass_items'][] = array(
+                'gdid'=>$gatepass_items->gd_id,
+                'item_name'=>$gatepass_items->item_name,
+                'quantity'=>$gatepass_items->quantity,
+                'unit'=>$gatepass_items->unit,
+                'type'=>$gatepass_items->type,
+                'remarks'=>$gatepass_items->remarks,
+                'mgp_no'=>$mgp_no,
+                'date_issued'=>$date_issued,
+
+
+            );
+        }
+        } else {
+            $data['gatepass_items']=array();
+        }
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('gatepass/gatepass_items_list',$data);
+        $this->load->view('template/footer');
+    }
+
     public function insert_gatepass_head(){
 
         $head_rows = $this->super_model->count_rows("gatepass_head");
