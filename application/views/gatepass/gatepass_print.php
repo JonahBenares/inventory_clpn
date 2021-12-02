@@ -455,13 +455,16 @@
     </div>
     </div>
 </page>
+    <?php 
+        foreach($gatepass_itm as $pi){ 
+            if($pi['rows']>1){
+    ?>
 <page size="A4">
     <div class="p-t-20 m-l-20 m-r-20">
         <div class="row">
             <?php 
                 if(!empty($gatepass_itm)){
                     foreach($gatepass_itm as $pi){ 
-                        if($pi['rows']>1){
             ?>
             <div class="col-lg-4">
                 <?php if($pi['image']!=''){ ?>
@@ -477,7 +480,7 @@
         </div>         
     </div>
 </page>
-
+<?php } ?>
 <!--<script type="text/javascript">
 function printMReqF(){
     var sign = $("#GatepassSign").serialize();

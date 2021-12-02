@@ -153,6 +153,7 @@ class Gatepass extends CI_Controller {
         if($rows!=0){
         foreach($this->super_model->custom_query("SELECT * FROM gatepass_details ".$query) AS $gatepass_items){
             $mgp_no = $this->super_model->select_column_where("gatepass_head", "mgp_no", "gatepass_id", $gatepass_items->gatepass_id);
+            $destination = $this->super_model->select_column_where("gatepass_head", "destination", "gatepass_id", $gatepass_items->gatepass_id);
             $date_issued = $this->super_model->select_column_where("gatepass_head", "date_issued", "gatepass_id", $gatepass_items->gatepass_id);
             //$prepared = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->prepared_by);
             //$noted = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->noted_by);
@@ -164,7 +165,9 @@ class Gatepass extends CI_Controller {
                 'unit'=>$gatepass_items->unit,
                 'type'=>$gatepass_items->type,
                 'remarks'=>$gatepass_items->remarks,
+                'type'=>$gatepass_items->type,
                 'mgp_no'=>$mgp_no,
+                'destination'=>$destination,
                 'date_issued'=>$date_issued,
 
 

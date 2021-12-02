@@ -149,11 +149,12 @@
 											<tr>
 												<th width="2%" style='text-align: center;'>#</th>
 												<th width="33%">Item Description</th>
-												<th width="10%" style='text-align: center;'>Qty</th>
+												<th width="5%" style='text-align: center;'>Qty</th>
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
-												<th width="15%" style='text-align: center;'>Date Returned</th>
-												<th width="25%" style='text-align: center;'></th>
+												<th width="15%" style='text-align: center;'>Type</th>
+												<th width="25%" style='text-align: center;'>Returned History</th>
+												<th width="25%" style='text-align: center;'>Image</th>
 												<!--<th width="5%" style='text-align: center;' width="1%">Action</th>-->
 											</tr>
 										<tbody id="item_body">
@@ -166,12 +167,19 @@
 													<td><center><?php echo $gp['quantity'];?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
+													<td><center><?php echo $gp['type'];?></center></td>
 													<?php if($gp['type']=='Non-Returnable'){ ?>
 													<td><center><?php echo $gp['type'];?></center></td>
 													<?php } ?>
 													<?php if($gp['type']=='Returnable'){ ?>
-													<td><center><?php echo $gp['date_returned'];?> &nbsp; <?php if($gp['date_returned']==''){ ?><a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp['gd_id']; ?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
+													<td><center><a class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a></center></td>
 													<?php } ?>
+													<!--<?php if($gp['type']=='Non-Returnable'){ ?>
+													<td><center><?php echo $gp['type'];?></center></td>
+													<?php } ?>
+													<?php if($gp['type']=='Returnable'){ ?>
+													<td><center><?php echo $gp['date_returned'];?> &nbsp; <?php if($gp['date_returned']==''){ ?><a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp['gd_id']; ?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
+													<?php } ?>-->
 													<td>
    														<div style="padding:10px">
 															<img class="zoom " src="<?php if(!empty($gp['image'])) { 
