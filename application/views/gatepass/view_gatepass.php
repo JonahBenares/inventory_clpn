@@ -2,7 +2,23 @@
 <script src="<?php echo base_url(); ?>assets/js/gatepass.js"></script>
 <link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
 <script src="<?php echo base_url(); ?>assets/js/select2.min.js"></script>
+<style type="">
+	.zoom {
+	  padding: 0px;
+	  transition: transform .2s;
+	  width:20px;
+	  height: 20px;
+	  margin: 0 auto;
+	  right: 0; 
+	}
 
+	.zoom:hover {
+	  -ms-transform: scale(25); /* IE 9 */
+	  -webkit-transform: scale(25); /* Safari 3-8 */
+	  transform: scale(25);
+	  right: 0; 
+	}
+</style>
 <div class="modal fade" id="datereturn" tabindex="-1" role="dialog" aria-labelledby="datereturn">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -158,7 +174,7 @@
 													<?php } ?>
 													<td>
    														<div style="padding:10px">
-															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
+															<img class="zoom " src="<?php if(!empty($gp['image'])) { 
 																echo base_url(); ?>uploads/<?php echo $gp['image']; 
 																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
 															</div>
