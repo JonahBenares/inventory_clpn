@@ -126,7 +126,12 @@
 										<a class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate"><span class="fa fa-plus"></span></a></center></td>
 									<?php } ?>
+									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
+									<td><center><?php echo $gp_itms['type'];?></center></td>
+									<?php } ?>
+									<?php if($gp_itms['type']=='Returnable'){ ?>
 									<td align="center"></td>
+									<?php } ?>
 									<!--<td align="center"><?php echo $gp['date_issued'];?></td>-->
 									<!--<td align="center" id="btn-print">
 
