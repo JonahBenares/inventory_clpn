@@ -189,10 +189,10 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
+	<!--<script type="text/javascript">
 		$(document).on("click", "#clickDate", function () {
 		    var gd_id = $(this).attr("data-id");
 		    $("#gd_id").val(gd_id);
 		  
 		});
-	</script>
+	</script>-->

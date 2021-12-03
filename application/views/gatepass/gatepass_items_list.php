@@ -150,26 +150,42 @@
 							<table class="table-bordered table-hover" id="gatepass_datatable_2" width="100%" style="font-size: 15px">
 								<thead>
 									<tr>
-									<td width="10%" align="center"><strong>Item Name</strong></td>
-									<td width="29%" align="center"><strong>Unit</strong></td>
-									<td width="15%" align="center"><strong>Quantity</strong></td>
+									<td width="10%" align="center"><strong>Date Issued</strong></td>
+									<td width="15%" align="center"><strong>Item Description</strong></td>
+									<td width="5%" align="center"><strong>U/M</strong></td>
+									<td width="5%" align="center"><strong>Quantity</strong></td>
 									<td width="15%" align="center"><strong>Remarks</strong></td>
-									<td width="15%" align="center"><strong>Type</strong></td>
-									<td width="15%" align="center"><strong>MGP No</strong></td>
-									<td width="15%" align="center"><strong>Date Issued</strong></td>
+									<td width="20%" align="center"><strong>Type</strong></td>
+									<td width="20%" align="center"><strong>MGP No</strong></td>
+									<td width="15%" align="center"><strong>Destination</strong></td>
+									<td width="20%" align="center"><strong>Returned History</strong></td>
+									<td width="20%" align="center"><strong>Status</strong></td>
 									</tr>
 								
 								</thead>
 								<tbody>
 									<?php foreach($gatepass_items as $gp_itms){ ?>
 									<tr>
+									<td align="center"><?php echo $gp_itms['date_issued'];?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
 									<td align="center"><?php echo $gp_itms['unit'];?></td>
 									<td align="center"><?php echo $gp_itms['quantity'];?></td>
 									<td align="center"><?php echo $gp_itms['remarks'];?></td>
 									<td align="center"><?php echo $gp_itms['type'];?></td>
 									<td align="center"><?php echo $gp_itms['mgp_no'];?></td>
-									<td align="center"><?php echo $gp_itms['date_issued'];?></td>
+									<td align="center"><?php echo $gp_itms['destination'];?></td>
+									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
+									<td><center><?php echo $gp_itms['type'];?></center></td>
+									<?php } ?>
+									<?php if($gp_itms['type']=='Returnable'){ ?>
+									<td><center>
+									<?php } ?>
+									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
+									<td><center><?php echo $gp_itms['type'];?></center></td>
+									<?php } ?>
+									<?php if($gp_itms['type']=='Returnable'){ ?>
+									<td align="center"></td>
+									<?php } ?>
 									</tr>
 									<?php } ?>
 								</tbody>
@@ -271,7 +287,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">Filter</h4>
 				</div>
-				<form method="POST" action = "<?php echo base_url();?>index.php/gatepass/filter_gatepass">
+				<form method="POST" action = "<?php echo base_url();?>index.php/gatepass/filter_gatepass_items">
 					<div class="modal-body">
 						<div class = "row">
 							<div class = "col-lg-6">

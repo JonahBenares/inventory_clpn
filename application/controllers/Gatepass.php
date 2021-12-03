@@ -87,6 +87,23 @@ class Gatepass extends CI_Controller {
             window.location.href ='<?php echo base_url(); ?>index.php/gatepass/gatepass_list/<?php echo $from; ?>/<?php echo $to; ?>/'</script> <?php
     }
 
+        public function filter_gatepass_items(){
+           if(!empty($this->input->post('from'))){
+                $from = $this->input->post('from');
+           } else {
+                $from = "null";
+           }
+
+           if(!empty($this->input->post('to'))){
+                $to = $this->input->post('to');
+           } else {
+                $to = "null";
+           }
+           ?>
+           <script>
+            window.location.href ='<?php echo base_url(); ?>index.php/gatepass/gatepass_items_list/<?php echo $from; ?>/<?php echo $to; ?>/'</script> <?php
+    }
+
     public function gatepass_list(){
         $from=$this->uri->segment(3);
         $to=$this->uri->segment(4);
@@ -110,6 +127,7 @@ class Gatepass extends CI_Controller {
             //$prepared = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->prepared_by);
             //$noted = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->noted_by);
             //$approved = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->approved_by);
+            $type = $this->super_model->select_column_where("gatepass_details", "type", "gd_id", $gatepass->gatepass_id);
             $data['gatepass'][] = array(
                 'gatepassid'=>$gatepass->gatepass_id,
                 'mgp_no'=>$gatepass->mgp_no,
@@ -118,6 +136,7 @@ class Gatepass extends CI_Controller {
                 'date_issued'=>$gatepass->date_issued,
                 //'date_returned'=>$gatepass->date_returned,
                 'company'=>$gatepass->company,
+                'type'=>$type,
                 //'supplier'=>$supplier,
                 //'prepared_by'=>$prepared,
                 //'noted_by'=>$noted,
@@ -140,7 +159,7 @@ class Gatepass extends CI_Controller {
         $data['to']=$this->uri->segment(4);
         $sql="";
         if($from!='null' && $to!='null' || $from!='' && $to!=''){
-           $sql.= " WHERE date_issued BETWEEN '$from' AND '$to' AND";
+           $sql.= " WHERE gh.date_issued BETWEEN '$from' AND '$to' AND";
         }
 
         if($from!='' && $to!=''){
@@ -149,12 +168,13 @@ class Gatepass extends CI_Controller {
             $query='';
         }
 
-        $rows= $this->super_model->count_custom_query("SELECT * FROM gatepass_details ".$query);
+        $rows= $this->super_model->count_custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query);
         if($rows!=0){
-        foreach($this->super_model->custom_query("SELECT * FROM gatepass_details ".$query) AS $gatepass_items){
-            $mgp_no = $this->super_model->select_column_where("gatepass_head", "mgp_no", "gatepass_id", $gatepass_items->gatepass_id);
-            $destination = $this->super_model->select_column_where("gatepass_head", "destination", "gatepass_id", $gatepass_items->gatepass_id);
-            $date_issued = $this->super_model->select_column_where("gatepass_head", "date_issued", "gatepass_id", $gatepass_items->gatepass_id);
+        //foreach($this->super_model->custom_query("SELECT * FROM gatepass_details ".$query) AS $gatepass_items){
+        foreach($this->super_model->custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query) AS $gatepass_items){
+            //$mgp_no = $this->super_model->select_column_where("gatepass_head", "mgp_no", "gatepass_id", $gatepass_items->gatepass_id);
+            //$destination = $this->super_model->select_column_where("gatepass_head", "destination", "gatepass_id", $gatepass_items->gatepass_id);
+            //$date_issued = $this->super_model->select_column_where("gatepass_head", "date_issued", "gatepass_id", $gatepass_items->gatepass_id);
             //$prepared = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->prepared_by);
             //$noted = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->noted_by);
             //$approved = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->approved_by);
@@ -166,9 +186,9 @@ class Gatepass extends CI_Controller {
                 'type'=>$gatepass_items->type,
                 'remarks'=>$gatepass_items->remarks,
                 'type'=>$gatepass_items->type,
-                'mgp_no'=>$mgp_no,
-                'destination'=>$destination,
-                'date_issued'=>$date_issued,
+                'mgp_no'=>$gatepass_items->mgp_no,
+                'destination'=>$gatepass_items->destination,
+                'date_issued'=>$gatepass_items->date_issued,
 
 
             );
@@ -366,7 +386,6 @@ class Gatepass extends CI_Controller {
                     'item'=>$gp->item_name,
                     'quantity'=>$gp->quantity,
                     'remarks'=>$gp->remarks,
-                    'date_returned'=>$gp->date_returned,
                     'image'=>$gp->image,
                     'unit'=>$gp->unit,
                     'type'=>$gp->type,
@@ -421,7 +440,7 @@ class Gatepass extends CI_Controller {
                     'unit'=>$gp->unit,
                     'remarks'=>$gp->remarks,
                     'type'=>$gp->type,
-                    'date_returned'=>$gp->date_returned,
+                    //'date_returned'=>$gp->date_returned,
                     'image'=>$gp->image,
 
                 );
@@ -445,6 +464,15 @@ class Gatepass extends CI_Controller {
 
             );
         }
+
+        foreach($this->super_model->custom_query("SELECT * FROM gp_returned_history WHERE gd_id ='$gp->gd_id'") AS $rh) {  
+                $data['returned_history'][] = array(
+                    'date_returned'=>$rh->item,
+                    'qty'=>$rh->qty,
+                );     
+            }
+
+
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
         $this->load->view('gatepass/view_gatepass',$data);
