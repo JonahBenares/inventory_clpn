@@ -87,6 +87,7 @@
 									</div>
 							<?php  }?>-->
 						</div>
+						<div style="overflow-x: scroll;">
 						<table class="tabledate table-bordered table-hover" id="gatepass_datatable" width="100%" style="font-size: 15px">
 							<thead>
 								<tr>
@@ -123,8 +124,8 @@
 									<?php } ?>
 									<?php if($gp_itms['type']=='Returnable'){ ?>
 									<td><center>
-										<a class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
-										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate"><span class="fa fa-plus"></span></a></center></td>
+										<a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" title="View History" alt='View History'><span class="fa fa-eye"></span></a>
+										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#multipleret" id="clickDate"><span class="fa fa-plus"></span></a></center></td>
 									<?php } ?>
 									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
@@ -190,6 +191,7 @@
 									<?php } ?>
 								</tbody>
 							</table>
+						</div>
 						</div>
 					</div>
 				</div>
@@ -280,6 +282,58 @@
 			</div>
 		</div>
 	</div>-->
+	<div class="modal fade" id="returnhistory" tabindex="-1" role="dialog" aria-labelledby="returnhistory">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Date Returned History</h4>
+				</div>
+				<div class="modal-body" style="padding:30px 20px 30px 20px">
+					<table class="table table-bordered" width="100%">
+						<tr>
+							<td width="70%"><label>Date Returned</label></td>							
+							<td><label>Qty</label></td>							
+						</tr>
+						<tr>
+							<td>10-10-21</td>
+							<td>100</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="multipleret" tabindex="-1" role="dialog" aria-labelledby="multipleret">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Date Returned</h4>
+				</div>
+				<form method="POST" action="<?php echo base_url(); ?>index.php/gatepass/add_date_returned">
+					<div class="modal-body" style="padding:30px 20px 30px 20px">
+						<table width="100%">
+							<tr>
+								<td width="23%"><label>Date Returned:</label></td>							
+								<td width="77%"><input type="date" class="form-control" name=""></td>							
+							</tr>
+							<tr>
+								<td colspan="2"><br></td>
+							</tr>
+							<tr>
+								<td><label>Qty:</label></td>							
+								<td><input type="number" class="form-control" name=""></td>							
+							</tr>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-info btn-block">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 	<div class="modal fade" id="GatepassFilter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
