@@ -123,6 +123,14 @@ class Gatepass extends CI_Controller {
         $rows= $this->super_model->count_custom_query("SELECT * FROM gatepass_head ".$query);
         if($rows!=0){
         foreach($this->super_model->custom_query("SELECT * FROM gatepass_head ".$query) AS $gatepass){
+        $gd_id = $this->super_model->select_column_where("gatepass_details", "gd_id", "gatepass_id", $gatepass->gatepass_id);
+        $total_quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", "gatepass_id='$gatepass->gatepass_id'" AND "type='Returnable'");
+        $total_returned = $this->super_model->select_sum_where("gp_returned_history", "qty", "gatepass_id='$gatepass->gatepass_id'");
+        if($total_returned==$total_quantity){
+            $status = "Completed";
+            } else {
+            $status = "Incomplete";
+            }
             //$supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $gatepass->supplier_id);
             //$prepared = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->prepared_by);
             //$noted = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->noted_by);
@@ -137,6 +145,7 @@ class Gatepass extends CI_Controller {
                 //'date_returned'=>$gatepass->date_returned,
                 'company'=>$gatepass->company,
                 'type'=>$type,
+                'status'=>$status,
                 //'supplier'=>$supplier,
                 //'prepared_by'=>$prepared,
                 //'noted_by'=>$noted,
@@ -157,6 +166,7 @@ class Gatepass extends CI_Controller {
         $to=$this->uri->segment(4);
         $data['from']=$this->uri->segment(3);
         $data['to']=$this->uri->segment(4);
+        $data['filt']='';
         $sql="";
         if($from!='null' && $to!='null' || $from!='' && $to!=''){
            $sql.= " WHERE gh.date_issued BETWEEN '$from' AND '$to' AND";
@@ -178,8 +188,18 @@ class Gatepass extends CI_Controller {
             //$prepared = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->prepared_by);
             //$noted = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->noted_by);
             //$approved = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->approved_by);
+            $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gd_id", $gatepass_items->gd_id);
+            $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gd_id", $gatepass_items->gd_id);
+            $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
+            if($sum_qty== $gatepass_items->quantity){
+             $status = "Completed";
+            } else {
+            $status = "Incomplete";
+             }
+            $balance=$gatepass_items->quantity-$sum_qty;
             $data['gatepass_items'][] = array(
-                'gdid'=>$gatepass_items->gd_id,
+                'gd_id'=>$gatepass_items->gd_id,
+                'gatepass_id'=>$gatepass_items->gatepass_id,
                 'item_name'=>$gatepass_items->item_name,
                 'quantity'=>$gatepass_items->quantity,
                 'unit'=>$gatepass_items->unit,
@@ -189,10 +209,15 @@ class Gatepass extends CI_Controller {
                 'mgp_no'=>$gatepass_items->mgp_no,
                 'destination'=>$gatepass_items->destination,
                 'date_issued'=>$gatepass_items->date_issued,
-
+                'sum_qty'=>$sum_qty,
+                'status'=>$status,
+                'returned_date'=>$returned_date,
+                'returned_qty'=>$returned_qty,
+                'balance'=>$balance,
 
             );
         }
+ 
         } else {
             $data['gatepass_items']=array();
         }
@@ -200,6 +225,166 @@ class Gatepass extends CI_Controller {
         $this->load->view('template/sidebar',$this->dropdown);
         $this->load->view('gatepass/gatepass_items_list',$data);
         $this->load->view('template/footer');
+    }
+
+     public function view_history(){  
+        $this->load->view('template/header');
+        $data['gd_id']=$this->input->post('gd_id');
+        $gd_id=$this->input->post('gd_id');
+        $data['returned'] = $this->super_model->select_row_where('gp_returned_history', 'gd_id', $gd_id);
+        $this->load->view('gatepass/view_history',$data);
+    }
+
+        public function export_gatepass(){
+        $from=$this->uri->segment(3);
+        $to=$this->uri->segment(4);
+        $data['from']=$this->uri->segment(3);
+        $data['to']=$this->uri->segment(4);
+        $sql="";
+        if($from!='null' && $to!='null' || $from!='' && $to!=''){
+           $sql.= " WHERE gh.date_issued BETWEEN '$from' AND '$to' AND";
+        }
+
+        if($from!='' && $to!=''){
+            $query=substr($sql,0,-3);
+        }else{
+            $query='';
+        }
+        require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
+        $objPHPExcel = new PHPExcel();
+        $exportfilename="Materials Gatepass Report.xlsx";
+
+        $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+        $objDrawing->setName('Sample image');
+        $objDrawing->setDescription('Sample image');
+        $objDrawing->setImageResource($gdImage);
+        $objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+        $objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+        $objDrawing->setHeight(35);
+        $objDrawing->setCoordinates('A2');
+        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save(str_replace('.php', '.xlsx', __FILE__));
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "Date Issued");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', "Item Description");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', "U/M");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', "Quantity");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1', "Remarks");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', "Type");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G1', "MGP No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H1', "Destination");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I1', "Returned History");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J1', "Status");
+        $num=11;
+
+        $x = 1;
+        $styleArray = array(
+          'borders' => array(
+            'allborders' => array(
+              'style' => PHPExcel_Style_Border::BORDER_THIN
+            )
+          )
+        );
+        foreach($this->super_model->custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query) AS $gatepass_items){
+            $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gp_rh_id", $gatepass_items->gatepass_id);
+            $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gatepass_items->gatepass_id);
+            $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
+            if($sum_qty== $gatepass_items->quantity){
+             $status = "Completed";
+            } else {
+            $status = "Incomplete";
+             }
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $gatepass_items->date_issued);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $gatepass_items->item_name);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$num, $gatepass_items->unit);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$num, $gatepass_items->quantity);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $gatepass_items->remarks);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$num, $gatepass_items->type);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $gatepass_items->mgp_no);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $gatepass_items->destination);
+            if($gatepass_items->type=='Non-Returnable'){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $gatepass_items->type);
+            }else{
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num);
+            }
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$num, $status);
+
+            $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);    
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":O".$num)->applyFromArray($styleArray);
+            $objPHPExcel->getActiveSheet()->getStyle('R'.$num.":S".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+            $num++;
+            $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":C".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('F11:G11');
+            $objPHPExcel->getActiveSheet()->mergeCells('F'.$num.":G".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('H11:I11');
+            $objPHPExcel->getActiveSheet()->mergeCells('H'.$num.":I".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('J11:K11');
+            $objPHPExcel->getActiveSheet()->mergeCells('J'.$num.":K".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('L11:O11');
+            $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":O".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('T11:W11');
+            $objPHPExcel->getActiveSheet()->mergeCells('T'.$num.":W".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('X11:Y11');
+            $objPHPExcel->getActiveSheet()->mergeCells('X'.$num.":Y".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('Z11:AB11');
+            $objPHPExcel->getActiveSheet()->mergeCells('Z'.$num.":AB".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('AC11:AE11');
+            $objPHPExcel->getActiveSheet()->mergeCells('AC'.$num.":AE".$num);
+            $objPHPExcel->getActiveSheet()->getStyle('B11:E11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('B'.$num.":E".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('P11:S11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('P'.$num.":S".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        }
+
+
+        $objPHPExcel->getActiveSheet()->mergeCells('N2:T2');
+        $objPHPExcel->getActiveSheet()->mergeCells('B10:C10');
+        $objPHPExcel->getActiveSheet()->mergeCells('F10:G10');
+        $objPHPExcel->getActiveSheet()->mergeCells('H10:I10');
+        $objPHPExcel->getActiveSheet()->mergeCells('J10:K10');
+        $objPHPExcel->getActiveSheet()->mergeCells('L10:O10');
+        $objPHPExcel->getActiveSheet()->mergeCells('T10:W10');
+        $objPHPExcel->getActiveSheet()->mergeCells('X10:Y10');
+        $objPHPExcel->getActiveSheet()->mergeCells('Z10:AB10');
+        $objPHPExcel->getActiveSheet()->mergeCells('AC10:AE10');
+        $objPHPExcel->getActiveSheet()->mergeCells('B11:C11');
+        $objPHPExcel->getActiveSheet()->getStyle('A10:AE10')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A10:AE10')->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:AE3')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:AE1')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:AE1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:AE2')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:AE3')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:AE1')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:AE2')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:AE3')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('C1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('C2')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('C3')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('H1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('H2')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('H3')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('AE1')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('AE2')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('AE3')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('H1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('C5')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('G5')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle("N2")->getFont()->setBold(true)->setName('Arial Black');
+        $objPHPExcel->getActiveSheet()->getStyle('N2:T2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        if (file_exists($exportfilename))
+        unlink($exportfilename);
+        $objWriter->save($exportfilename);
+        unset($objPHPExcel);
+        unset($objWriter);   
+        ob_end_clean();
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Materials Gatepass Report.xlsx"');
+        readfile($exportfilename);
     }
 
     public function insert_gatepass_head(){
@@ -412,15 +597,18 @@ class Gatepass extends CI_Controller {
     }
 
     public function add_date_returned(){
-        $id = $this->input->post('gatepassid');
+        $id = $this->input->post('gp_rh_id');
         $gd_id = $this->input->post('gd_id');
-        $update = array(
+        $data = array(
+            'gd_id'=>$this->input->post('gd_id'),
+            'gatepass_id'=>$this->input->post('gatepass_id'),
             'date_returned'=>$this->input->post('date_returned'),
+            'qty'=>$this->input->post('qty'),
         );
-        $this->super_model->update_where("gatepass_details", $update, "gd_id", $gd_id);
-        echo "<script>alert('Date Return Successfully Added!'); 
-                window.location ='".base_url()."index.php/gatepass/view_gatepass/$id'; </script>";
+        if($this->super_model->insert_into("gp_returned_history", $data)){; 
+        redirect(base_url().'index.php/gatepass/gatepass_items_list', 'refresh');
         }
+    }
 
 
     public function view_gatepass(){
@@ -431,8 +619,8 @@ class Gatepass extends CI_Controller {
         
         foreach($this->super_model->select_row_where('gatepass_head','gatepass_id', $id) AS $pass){
             foreach($this->super_model->select_row_where('gatepass_details','gatepass_id', $pass->gatepass_id) AS $gp){
-                //$item = $this->super_model->select_column_where("items", "item_name", "item_id", $gp->item_id);
-                //$unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $gp->unit_id);
+                $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gp_rh_id", $gp->gatepass_id);
+                $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gp->gatepass_id);
                 $data['gatepass_itm'][] = array(
                     'gd_id'=>$gp->gd_id,
                     'item'=>$gp->item_name,
@@ -442,6 +630,8 @@ class Gatepass extends CI_Controller {
                     'type'=>$gp->type,
                     //'date_returned'=>$gp->date_returned,
                     'image'=>$gp->image,
+                    'returned_date'=>$returned_date,
+                    'returned_qty'=>$returned_qty,
 
                 );
             }
@@ -464,14 +654,6 @@ class Gatepass extends CI_Controller {
 
             );
         }
-
-        foreach($this->super_model->custom_query("SELECT * FROM gp_returned_history WHERE gd_id ='$gp->gd_id'") AS $rh) {  
-                $data['returned_history'][] = array(
-                    'date_returned'=>$rh->item,
-                    'qty'=>$rh->qty,
-                );     
-            }
-
 
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);

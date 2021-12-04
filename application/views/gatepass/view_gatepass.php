@@ -19,7 +19,7 @@
 	  margin-right: 0px;
 	}
 </style>
-<div class="modal fade" id="datereturn" tabindex="-1" role="dialog" aria-labelledby="datereturn">
+<!--<div class="modal fade" id="datereturn" tabindex="-1" role="dialog" aria-labelledby="datereturn">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header modal-headback">
@@ -39,13 +39,13 @@
 				<div class="modal-footer">
 					<input type='hidden' name='gatepassid' value='<?php echo $id; ?>'>
 					<input type='hidden' name='gd_id' id="gd_id">
-					<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<input type="submit" class="btn btn-primary btn-block" value="Add Date Return">							
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
 
 <div class="modal fade" id="returnhistory" tabindex="-1" role="dialog" aria-labelledby="returnhistory">
 	<div class="modal-dialog" role="document">
@@ -54,18 +54,8 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Date Returned History</h4>
 			</div>
-			<form method="POST" action="<?php echo base_url(); ?>index.php/gatepass/add_date_returned">
 			<div class="modal-body" style="padding:30px 20px 30px 20px">
-				<table class="table table-bordered" width="100%">
-					<tr>
-						<td width="70%"><label>Date Returned</label></td>							
-						<td width="30%"><label>Qty</label></td>							
-					</tr>
-					<tr>
-						<td>10-10-21</td>
-						<td>100</td>
-					</tr>
-				</table>
+				<div id="view_det"></div>
 			</div>
 		</div>
 	</div>
@@ -196,7 +186,7 @@
 													<td><center><?php echo $gp['type'];?></center></td>
 													<?php } ?>
 													<?php if($gp['type']=='Returnable'){ ?>
-													<td><center><a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>
+													<td><center><a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp['gd_id']; ?>" data-date="<?php echo $gp['returned_date']; ?>" data-qty="<?php echo $gp['returned_qty']; ?>" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>
 													<?php } ?>
 													<!--<?php if($gp['type']=='Non-Returnable'){ ?>
 													<td><center><?php echo $gp['type'];?></center></td>
@@ -229,6 +219,26 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+			$(document).on("click", "#clickHistory", function () {
+		    var gd_id = $(this).attr("data-id");
+		    var returned_date = $(this).attr("data-date");
+		    var returned_qty = $(this).attr("data-qty");
+		    var loc= document.getElementById("baseurl").value;
+   	 		var redirect = loc+'index.php/gatepass/view_history';
+		    $.ajax({
+	            type: "POST",
+	            url: redirect,
+	            data: "gd_id="+gd_id,
+	            beforeSend:function(){
+	                $("#view_det").html('Please wait ..');
+	            },
+	            success:function(data){
+	               $("#view_det").html(data);
+	            },
+	      	});
+		});
+</script>
 	<!--<script type="text/javascript">
 		$(document).on("click", "#clickDate", function () {
 		    var gd_id = $(this).attr("data-id");

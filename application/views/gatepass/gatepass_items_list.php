@@ -59,6 +59,11 @@
 				<div class="panel-heading">
 					Gatepass Items
 					<div  id="btn-print" class="pull-right">
+						<?php if($from!='' || $to!=''){ ?>
+						<a href="<?php echo base_url(); ?>index.php/gatepass/export_gatepass/<?php echo $from;?>/<?php echo $to;?>" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
+						<?php } else { ?>
+						<a href="<?php echo base_url(); ?>index.php/gatepass/export_gatepass" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
+						<?php } ?>
 						<button class="btn btn-success" data-toggle="modal" data-target="#GatepassFilter" ><span class="fa fa-filter"> </span> Filter</button>
 						<!--<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
 							<span class="fa fa-search"></span>
@@ -124,14 +129,15 @@
 									<?php } ?>
 									<?php if($gp_itms['type']=='Returnable'){ ?>
 									<td><center>
-										<a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" title="View History" alt='View History'><span class="fa fa-eye"></span></a>
-										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#multipleret" id="clickDate"><span class="fa fa-plus"></span></a></center></td>
+										<a class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp_itms['gd_id']; ?>" data-date="<?php echo $gp_itms['returned_date']; ?>" data-qty="<?php echo $gp_itms['returned_qty']; ?>"  title="View History" alt='View History'><span class="fa fa-eye"></span></a>
+										<?php if($gp_itms['quantity']!=$gp_itms['sum_qty']){ ?>
+										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp_itms['gd_id']; ?>" data-gp-id="<?php echo $gp_itms['gatepass_id']; ?>" data-issued="<?php echo $gp_itms['quantity']?>" data-sum="<?php echo $gp_itms['sum_qty'];?>" data-balance="<?php echo $gp_itms['balance'];?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
 									<?php } ?>
 									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
 									<?php } ?>
 									<?php if($gp_itms['type']=='Returnable'){ ?>
-									<td align="center"></td>
+									<td align="center"><?php echo $gp_itms['status'];?></td>
 									<?php } ?>
 									<!--<td align="center"><?php echo $gp['date_issued'];?></td>-->
 									<!--<td align="center" id="btn-print">
@@ -167,6 +173,15 @@
 								<tbody>
 									<?php foreach($gatepass_items as $gp_itms){ ?>
 									<tr>
+									<?php 
+                                    if($gp_itms['type']=='Non-Returnable'){
+                                        $history=$gp_itms['type'];
+                                    } /*else if($gp_itms['type']=='Returnable'){
+                                        $history='';
+                                    }*/ else if($gp_itms['type']=='Returnable' && $gp_itms['balance']!=0){
+                                    	$history="Date: ".$gp_itms['returned_date']."<br>Qty: ".$gp_itms['returned_qty'];
+                                    }
+                                	?>
 									<td align="center"><?php echo $gp_itms['date_issued'];?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
 									<td align="center"><?php echo $gp_itms['unit'];?></td>
@@ -175,17 +190,11 @@
 									<td align="center"><?php echo $gp_itms['type'];?></td>
 									<td align="center"><?php echo $gp_itms['mgp_no'];?></td>
 									<td align="center"><?php echo $gp_itms['destination'];?></td>
-									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
-									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>
+									<td><center><?php echo $history; ?></center></td>
 									<?php if($gp_itms['type']=='Returnable'){ ?>
-									<td><center>
-									<?php } ?>
-									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
+									<td align="center"><?php echo $gp_itms['status'];?></td>
+									<?php } else {?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>
-									<?php if($gp_itms['type']=='Returnable'){ ?>
-									<td align="center"></td>
 									<?php } ?>
 									</tr>
 									<?php } ?>
@@ -290,21 +299,12 @@
 					<h4 class="modal-title" id="myModalLabel">Date Returned History</h4>
 				</div>
 				<div class="modal-body" style="padding:30px 20px 30px 20px">
-					<table class="table table-bordered" width="100%">
-						<tr>
-							<td width="70%"><label>Date Returned</label></td>							
-							<td><label>Qty</label></td>							
-						</tr>
-						<tr>
-							<td>10-10-21</td>
-							<td>100</td>
-						</tr>
-					</table>
+					<div id="view_det"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="multipleret" tabindex="-1" role="dialog" aria-labelledby="multipleret">
+	<div class="modal fade" id="datereturn" tabindex="-1" role="dialog" aria-labelledby="datereturn">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header modal-headback">
@@ -316,19 +316,23 @@
 						<table width="100%">
 							<tr>
 								<td width="23%"><label>Date Returned:</label></td>							
-								<td width="77%"><input type="date" class="form-control" name=""></td>							
+								<td width="77%"><input type="date" class="form-control" name="date_returned" required="true"></td>							
 							</tr>
 							<tr>
 								<td colspan="2"><br></td>
 							</tr>
 							<tr>
 								<td><label>Qty:</label></td>							
-								<td><input type="number" class="form-control" name=""></td>							
+								<td><input type="number" id="returned_qty" class="form-control" name="qty" required="true"></td>							
 							</tr>
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-info btn-block">Save</button>
+						<input type='hidden' name='gp_rh_id' value='<?php echo $id; ?>'>
+						<input type='hidden' name='gd_id' id="gd_id">
+						<input type='hidden' name='gatepass_id' id="gatepass_id">
+						<input type='hidden' name='sum_returned' id="sum_returned">
+						<button type="submit" id="save_btn" class="btn btn-info btn-block">Save</button>
 					</div>
 				</form>
 			</div>
@@ -374,3 +378,48 @@
 			</div>
 		</div>
 	</div>
+<script type="text/javascript">
+		$(document).on("click", "#clickDate", function () {
+		    var gd_id = $(this).attr("data-id");
+		    var gatepass_id = $(this).attr("data-gp-id");
+		    var returned_qty = $(this).attr("data-issued");
+		    var sum_returned = $(this).attr("data-sum");
+		    var balance = $(this).attr("data-balance");
+		    $("#gd_id").val(gd_id);
+		    $("#gatepass_id").val(gatepass_id);
+		    //$("#returned_qty").val(balance);
+		    $("#sum_returned").val(returned_qty);
+		});
+
+		$(document).on("click", "#clickHistory", function () {
+		    var gd_id = $(this).attr("data-id");
+		    var returned_date = $(this).attr("data-date");
+		    var returned_qty = $(this).attr("data-qty");
+		    var loc= document.getElementById("baseurl").value;
+   	 		var redirect = loc+'index.php/gatepass/view_history';
+		    $.ajax({
+	            type: "POST",
+	            url: redirect,
+	            data: "gd_id="+gd_id,
+	            beforeSend:function(){
+	                $("#view_det").html('Please wait ..');
+	            },
+	            success:function(data){
+	               $("#view_det").html(data);
+	            },
+	      	});
+		});
+		
+	    $(document).on("blur", "#returned_qty", function () {
+	    	var returned_qty=document.getElementById('returned_qty').value;
+	    	var sum_returned=document.getElementById('sum_returned').value;
+	        if(parseFloat(returned_qty) > parseFloat(sum_returned)){
+	          alert("Returned quantity is greater than Issued quantity!");
+	          $('#save_btn').attr('disabled','disabled');
+	        }else{
+	        	$('#save_btn').removeAttr('disabled');
+	        }
+	    });
+
+
+</script>

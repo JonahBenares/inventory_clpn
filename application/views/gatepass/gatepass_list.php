@@ -111,12 +111,13 @@
 									<td align="center"><?php echo $gp['destination'];?></td>
 									<td align="center"><?php echo $gp['vehicle_no'];?></td>
 									<td align="center"><?php echo $gp['date_issued'];?></td>
-									<?php if($gp['type']=='Non-Returnable'){ ?>
+									<td align="center"><?php echo $gp['status'];?></td>
+									<!--<?php if($gp['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp['type'];?></center></td>
 									<?php } ?>
 									<?php if($gp['type']=='Returnable'){ ?>
-									<td align="center"></td>
-									<?php } ?>
+									<td align="center"><?php echo $gp['status'];?></td>
+									<?php } ?>-->
 									<!--<td align="center"><?php echo $gp['date_returned'];?></td>-->
 									<td align="center" id="btn-print">
 
@@ -152,12 +153,13 @@
 										<td align="center"><?php echo $gp['destination'];?></td>
 										<td align="center"><?php echo $gp['vehicle_no'];?></td>
 										<td align="center"><?php echo $gp['date_issued'];?></td>
-										<?php if($gp['type']=='Non-Returnable'){ ?>
+										<td align="center"><?php echo $gp['status'];?></td>
+										<!--<?php if($gp['type']=='Non-Returnable'){ ?>
 										<td><center><?php echo $gp['type'];?></center></td>
 										<?php } ?>
 										<?php if($gp['type']=='Returnable'){ ?>
-										<td align="center"></td>
-										<?php } ?>
+										<td align="center"><?php echo $gp['status'];?></td>
+										<?php } ?>-->
 										</tr>
 										<?php } ?>
 								</tbody>
