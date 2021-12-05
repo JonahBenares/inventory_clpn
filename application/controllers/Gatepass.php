@@ -197,6 +197,16 @@ class Gatepass extends CI_Controller {
             $status = "Incomplete";
              }
             $balance=$gatepass_items->quantity-$sum_qty;
+            $history='';
+            foreach($this->super_model->select_row_where("gp_returned_history","gd_id",$gatepass_items->gd_id) AS $ret){
+                if($gatepass_items->type=='Non-Returnable'){
+                    $history.=$gatepass_items->type;
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty==0 ){
+                    $history.='';
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty!=0){
+                    $history.="Date: ".$returned_date."<br>Qty: ".$returned_qty."<br><br>";
+                }
+            }
             $data['gatepass_items'][] = array(
                 'gd_id'=>$gatepass_items->gd_id,
                 'gatepass_id'=>$gatepass_items->gatepass_id,
@@ -214,6 +224,7 @@ class Gatepass extends CI_Controller {
                 'returned_date'=>$returned_date,
                 'returned_qty'=>$returned_qty,
                 'balance'=>$balance,
+                'history'=>$history,
 
             );
         }
@@ -275,7 +286,7 @@ class Gatepass extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H1', "Destination");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I1', "Returned History");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J1', "Status");
-        $num=11;
+        $num=2;
 
         $x = 1;
         $styleArray = array(
@@ -289,11 +300,22 @@ class Gatepass extends CI_Controller {
             $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gp_rh_id", $gatepass_items->gatepass_id);
             $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gatepass_items->gatepass_id);
             $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
-            if($sum_qty== $gatepass_items->quantity){
+            if($sum_qty==$gatepass_items->quantity){
              $status = "Completed";
             } else {
             $status = "Incomplete";
              }
+
+            $history='';
+            foreach($this->super_model->select_row_where("gp_returned_history","gd_id",$gatepass_items->gd_id) AS $ret){
+                if($gatepass_items->type=='Non-Returnable'){
+                    $history.=$gatepass_items->type;
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty==0 ){
+                    $history.='';
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty!=0){
+                    $history.="Date: ".$ret->date_returned."\nQty: ".$ret->qty."\n\n";
+                }
+            }
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $gatepass_items->date_issued);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $gatepass_items->item_name);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$num, $gatepass_items->unit);
@@ -305,15 +327,18 @@ class Gatepass extends CI_Controller {
             if($gatepass_items->type=='Non-Returnable'){
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $gatepass_items->type);
             }else{
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $history);
             }
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$num, $status);
-
+            if($gatepass_items->type=='Returnable'){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$num, $status);
+            }else{
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$num, $gatepass_items->type);
+            }
             $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);    
             $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":O".$num)->applyFromArray($styleArray);
-            $objPHPExcel->getActiveSheet()->getStyle('R'.$num.":S".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+            //$objPHPExcel->getActiveSheet()->getStyle('R'.$num.":S".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
             $num++;
-            $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":C".$num);
+            /*$objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":C".$num);
             $objPHPExcel->getActiveSheet()->mergeCells('F11:G11');
             $objPHPExcel->getActiveSheet()->mergeCells('F'.$num.":G".$num);
             $objPHPExcel->getActiveSheet()->mergeCells('H11:I11');
@@ -333,12 +358,11 @@ class Gatepass extends CI_Controller {
             $objPHPExcel->getActiveSheet()->getStyle('B11:E11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objPHPExcel->getActiveSheet()->getStyle('B'.$num.":E".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $objPHPExcel->getActiveSheet()->getStyle('P11:S11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objPHPExcel->getActiveSheet()->getStyle('P'.$num.":S".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('P'.$num.":S".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);*/
         }
 
 
-        $objPHPExcel->getActiveSheet()->mergeCells('N2:T2');
-        $objPHPExcel->getActiveSheet()->mergeCells('B10:C10');
+        /*$objPHPExcel->getActiveSheet()->mergeCells('B10:C10');
         $objPHPExcel->getActiveSheet()->mergeCells('F10:G10');
         $objPHPExcel->getActiveSheet()->mergeCells('H10:I10');
         $objPHPExcel->getActiveSheet()->mergeCells('J10:K10');
@@ -347,10 +371,10 @@ class Gatepass extends CI_Controller {
         $objPHPExcel->getActiveSheet()->mergeCells('X10:Y10');
         $objPHPExcel->getActiveSheet()->mergeCells('Z10:AB10');
         $objPHPExcel->getActiveSheet()->mergeCells('AC10:AE10');
-        $objPHPExcel->getActiveSheet()->mergeCells('B11:C11');
-        $objPHPExcel->getActiveSheet()->getStyle('A10:AE10')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle('A10:AE10')->applyFromArray($styleArray);
-        $objPHPExcel->getActiveSheet()->getStyle('A3:AE3')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->mergeCells('B11:C11');*/
+        $objPHPExcel->getActiveSheet()->getStyle('A1:K10')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:K10')->applyFromArray($styleArray);
+        /*$objPHPExcel->getActiveSheet()->getStyle('A3:AE3')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('A1:AE1')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('A1:AE1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('A2:AE2')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
@@ -366,7 +390,7 @@ class Gatepass extends CI_Controller {
         $objPHPExcel->getActiveSheet()->getStyle('H3')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('AE1')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('AE2')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('AE3')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('AE3')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);*/
         $objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getFont()->setBold(true);
         $objPHPExcel->getActiveSheet()->getStyle('H1')->getFont()->setBold(true);
         $objPHPExcel->getActiveSheet()->getStyle('C5')->getFont()->setBold(true);

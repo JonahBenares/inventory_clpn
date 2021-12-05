@@ -131,7 +131,7 @@
 									<td><center>
 										<a class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp_itms['gd_id']; ?>" data-date="<?php echo $gp_itms['returned_date']; ?>" data-qty="<?php echo $gp_itms['returned_qty']; ?>"  title="View History" alt='View History'><span class="fa fa-eye"></span></a>
 										<?php if($gp_itms['quantity']!=$gp_itms['sum_qty']){ ?>
-										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp_itms['gd_id']; ?>" data-gp-id="<?php echo $gp_itms['gatepass_id']; ?>" data-issued="<?php echo $gp_itms['quantity']?>" data-sum="<?php echo $gp_itms['sum_qty'];?>" data-balance="<?php echo $gp_itms['balance'];?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
+										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp_itms['gd_id']; ?>" data-gp-id="<?php echo $gp_itms['gatepass_id']; ?>" data-issued="<?php echo $gp_itms['quantity']?>" data-balance="<?php echo $gp_itms['balance'];?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
 									<?php } ?>
 									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
@@ -174,13 +174,13 @@
 									<?php foreach($gatepass_items as $gp_itms){ ?>
 									<tr>
 									<?php 
-                                    if($gp_itms['type']=='Non-Returnable'){
+                                    /*if($gp_itms['type']=='Non-Returnable'){
                                         $history=$gp_itms['type'];
-                                    } /*else if($gp_itms['type']=='Returnable'){
+                                    } else if($gp_itms['type']=='Returnable' &&  $gp_itms['sum_qty']==0 ){
                                         $history='';
-                                    }*/ else if($gp_itms['type']=='Returnable' && $gp_itms['balance']!=0){
+                                    } else if($gp_itms['type']=='Returnable' &&  $gp_itms['sum_qty']!=0){
                                     	$history="Date: ".$gp_itms['returned_date']."<br>Qty: ".$gp_itms['returned_qty'];
-                                    }
+                                    }*/
                                 	?>
 									<td align="center"><?php echo $gp_itms['date_issued'];?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
@@ -190,7 +190,7 @@
 									<td align="center"><?php echo $gp_itms['type'];?></td>
 									<td align="center"><?php echo $gp_itms['mgp_no'];?></td>
 									<td align="center"><?php echo $gp_itms['destination'];?></td>
-									<td><center><?php echo $history; ?></center></td>
+									<td><center><?php echo $gp_itms['history']; ?></center></td>
 									<?php if($gp_itms['type']=='Returnable'){ ?>
 									<td align="center"><?php echo $gp_itms['status'];?></td>
 									<?php } else {?>
@@ -331,7 +331,7 @@
 						<input type='hidden' name='gp_rh_id' value='<?php echo $id; ?>'>
 						<input type='hidden' name='gd_id' id="gd_id">
 						<input type='hidden' name='gatepass_id' id="gatepass_id">
-						<input type='hidden' name='sum_returned' id="sum_returned">
+						<input type='hidden' name='balance' id="balance">
 						<button type="submit" id="save_btn" class="btn btn-info btn-block">Save</button>
 					</div>
 				</form>
@@ -383,12 +383,12 @@
 		    var gd_id = $(this).attr("data-id");
 		    var gatepass_id = $(this).attr("data-gp-id");
 		    var returned_qty = $(this).attr("data-issued");
-		    var sum_returned = $(this).attr("data-sum");
+		    //var sum_returned = $(this).attr("data-sum");
 		    var balance = $(this).attr("data-balance");
 		    $("#gd_id").val(gd_id);
 		    $("#gatepass_id").val(gatepass_id);
-		    //$("#returned_qty").val(balance);
-		    $("#sum_returned").val(returned_qty);
+		    $("#balance").val(balance);
+		    //$("#sum_returned").val(returned_qty);
 		});
 
 		$(document).on("click", "#clickHistory", function () {
@@ -412,9 +412,9 @@
 		
 	    $(document).on("blur", "#returned_qty", function () {
 	    	var returned_qty=document.getElementById('returned_qty').value;
-	    	var sum_returned=document.getElementById('sum_returned').value;
-	        if(parseFloat(returned_qty) > parseFloat(sum_returned)){
-	          alert("Returned quantity is greater than Issued quantity!");
+	    	var balance=document.getElementById('balance').value;
+	        if(parseFloat(returned_qty) > parseFloat(balance)){
+	          alert("Returned quantity is greater than Issued quantity/Remaining quantity!");
 	          $('#save_btn').attr('disabled','disabled');
 	        }else{
 	        	$('#save_btn').removeAttr('disabled');
