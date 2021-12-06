@@ -110,7 +110,7 @@ function saveGatepass(){
             },
             success: function(output){
                 if(conf==true){
-                    alert("Gatepass successfully Added!");
+                    alert("Gatepass successfully added!");
                     location.reload();
                     window.open(loc+'index.php/gatepass/gatepass_print/'+output, '_blank');
                 }
