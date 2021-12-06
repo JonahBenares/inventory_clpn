@@ -96,6 +96,7 @@
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="15%" align="center"><strong>Vehicle No.</strong></td>
 									<td width="15%" align="center"><strong>Date Issued</strong></td>
+									<td width="15%" align="center"><strong>Status</strong></td>
 									<!--<td width="15%" align="center"><strong>Date Returned</strong></td>-->
 									<td width="1%" 	align="center" id="btn-print"><strong><span class="fa fa-bars"></span></strong></td>
 								</tr>
@@ -109,7 +110,14 @@
 									<td align="center"><?php echo $gp['company'];?></td>
 									<td align="center"><?php echo $gp['destination'];?></td>
 									<td align="center"><?php echo $gp['vehicle_no'];?></td>
-									<td align="center"><?php echo $gp['date_issued'];?></td>
+									<td align="center"><?php echo date("F d, Y",strtotime($gp['date_issued']));?></td>
+									<td align="center"><?php echo $gp['status'];?></td>
+									<!--<?php if($gp['type']=='Non-Returnable'){ ?>
+									<td><center><?php echo $gp['type'];?></center></td>
+									<?php } ?>
+									<?php if($gp['type']=='Returnable'){ ?>
+									<td align="center"><?php echo $gp['status'];?></td>
+									<?php } ?>-->
 									<!--<td align="center"><?php echo $gp['date_returned'];?></td>-->
 									<td align="center" id="btn-print">
 
@@ -133,6 +141,7 @@
 										<td width="15%" align="center"><strong>Destination</strong></td>
 										<td width="15%" align="center"><strong>Vehicle No.</strong></td>
 										<td width="15%" align="center"><strong>Date Issued</strong></td></strong></td>
+										<td width="15%" align="center"><strong>Status</strong></td>
 									</tr>
 								
 								</thead>
@@ -143,9 +152,16 @@
 										<td align="center"><?php echo $gp['company'];?></td>
 										<td align="center"><?php echo $gp['destination'];?></td>
 										<td align="center"><?php echo $gp['vehicle_no'];?></td>
-										<td align="center"><?php echo $gp['date_issued'];?></td>
-									</tr>
-									<?php } ?>
+										<td align="center"><?php echo date("F d, Y",strtotime($gp['date_issued']));?></td>
+										<td align="center"><?php echo $gp['status'];?></td>
+										<!--<?php if($gp['type']=='Non-Returnable'){ ?>
+										<td><center><?php echo $gp['type'];?></center></td>
+										<?php } ?>
+										<?php if($gp['type']=='Returnable'){ ?>
+										<td align="center"><?php echo $gp['status'];?></td>
+										<?php } ?>-->
+										</tr>
+										<?php } ?>
 								</tbody>
 							</table>
 						</div>
