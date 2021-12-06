@@ -65,8 +65,6 @@
 	.popover__message {
 	  text-align: center;
 	}
-
-}
 </style>
 <div class="modal fade" id="datereturn" tabindex="-1" role="dialog" aria-labelledby="datereturn">
 	<div class="modal-dialog" role="document">

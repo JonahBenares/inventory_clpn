@@ -1,3 +1,51 @@
+<style type="text/css">
+	.popover__title {
+	  font-size: 12px;
+	  text-decoration: none;
+	  color: rgb(228, 68, 68);
+	  text-align: center;
+	}
+
+	.popover__wrapper {
+	  position: relative;
+	  display: inline-block;
+	}
+	.popover__content {
+	  opacity: 0;
+	  visibility: hidden;
+	  position: absolute;
+	  right: 55px;
+      top: -150px;
+	  transform: translate(0, 10px);
+	  background-color: #dbdbdb;
+	  padding: 1.5rem;
+	  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	  width: auto;
+	}
+	.popover__content:before {
+		position: absolute;
+	    z-index: -1;
+	    content: "";
+	    right: calc(-1% - 10px);
+	    top: 35%;
+	    transform: rotate(90deg);
+	    border-style: solid;
+	    border-width: 0 10px 10px 10px;
+	    border-color: transparent transparent #dbdbdb transparent;
+	    transition-duration: 0.3s;
+	    transition-property: transform;
+	}
+	.popover__wrapper:hover .popover__content {
+	  z-index: 10;
+	  opacity: 1;
+	  visibility: visible;
+	  transform: translate(0, -20px);
+	  transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+	}
+	.popover__message {
+	  text-align: center;
+	}
+</style>
 <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/gatepass.js"></script>
 <link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
@@ -139,10 +187,15 @@
 													<td><center><?php echo $gp['type'];?></center></td>
    													<td style="width: 100px !important; height: 100px !important;"><center>
    														<div style="padding:10px">
-															<img class="pictures" src="<?php if(!empty($gp['image'])) { 
-																echo base_url(); ?>uploads/<?php echo $gp['image']; 
-																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
-															</div>
+															<div class="popover__wrapper">
+																<img src="<?php if(!empty($gp['image'])) { 
+															echo base_url(); ?>uploads/<?php echo $gp['image']; 
+															 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
+															  	<div class="popover__content">
+															    	<img style="width: 500px" src="<?php if(!empty($gp['image'])) { echo base_url(); ?>uploads/<?php echo $gp['image']; 
+											 						} else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>">
+															  	</div>
+															</div>	
    													</td><center>
    													<?php if($saved=='0'){ ?>
 														<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>
