@@ -115,49 +115,49 @@
 							<br>
 							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
 								<?php if($saved=='0'){ ?>
-								<div class="row">
-									<div class="col-lg-3" style="padding-right: 0px;">
-										<p>				
-											<input placeholder="Item Name" type="text" name="item" id="items" class="form-control" >
-										</p>
-									</div>
-									<div class="col-lg-1" style="padding-right: 0px;">
-										<p>				
-											<input placeholder="Qty" type="text" name="quantity" id="quantity" class="form-control" style="padding-right: 0px;" >
-										</p>
-									</div>
-									<div class="col-lg-1" style="padding-right: 0px;">
-										<p>				
-											<input placeholder="Unit" type="text" name="unit" id="unit" class="form-control" style="padding-right: 0px;">
-										</p>
-									</div>
-									<div class="col-lg-2" style="padding-right: 0px;">
-										<p>				
-											<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" style="padding-right: 0px;">
-										</p>
-									</div>
-									<div class="col-lg-2" style="padding-right: 0px;">
-										<p>				
-											<select class="form-control" name="type" id="type">
-												<option>--- Select Type ---</option>
-												<option value = "Returnable">Returnable</option>
-												<option value = "Non-Returnable">Non-Returnable</option>
-											</select>
-										</p>
-									</div>
-									<div class="col-lg-2" style="padding-right: 0px;">
-										<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
-										<span id="img1-check" class='img-check'></span>
-									</div>
-									<div class="col-lg-1">
-										<div id='alrt' style="font-weight:bold"></div>
-										<p>				
-											<a type="button" onclick='add_item()' class="btn btn-warning btn-md" id = "submit"><span class="fa fa-plus"></span></a>
-										</p>
-									</div>
-									<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-								</div>
-								<?php } ?>							
+									<table class="table table-bordesred" style="margin-bottom:0px;color: #fff;" >
+										
+										<tr>
+											<td colspan="2">
+												<input placeholder="Item Name" type="text" name="item" id="items" class="form-control" >
+											</td>
+											<td>
+												<input placeholder="Qty" type="text" name="quantity" id="quantity" class="form-control" style="padding-right: 0px;" >
+											</td>
+											<td>
+												<input placeholder="Unit" type="text" name="unit" id="unit" class="form-control" style="padding-right: 0px;">
+											</td>
+											<td>
+												<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" style="padding-right: 0px;">
+											</td>
+											<td>
+												<select class="form-control" name="type" id="type">
+													<option>--- Select Type ---</option>
+													<option value = "Returnable">Returnable</option>
+													<option value = "Non-Returnable">Non-Returnable</option>
+												</select>
+											</td>
+											<td>
+												<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
+												<span id="img1-check" class='img-check'></span></td>
+											<td>
+												<div id='alrt' style="font-weight:bold"></div>		
+												<a type="button" onclick='add_item()' class="btn btn-warning btn-md" id = "submit"><span class="fa fa-plus"></span></a>
+												<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+											</td>
+										</tr>
+										<tr>
+											<th width="2%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>#</th>
+											<th width="30%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Item Description</th>
+											<th width="10%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Qty</th>
+											<th width="10%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>UOM</th>
+											<th width="25%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Remarks</th>
+											<th width="18%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Type</th>
+											<th width="18%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Image</th>
+											<th width="5%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;' width="1%">Action</th>
+										</tr>
+									</table>
+								<?php } ?>					
 								<div class="row">
 									<div class="col-lg-12">
 										<table class="table table-bordered table-hover" style="margin-bottom:0px">

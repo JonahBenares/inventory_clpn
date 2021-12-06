@@ -161,7 +161,7 @@ class Gatepass extends CI_Controller {
         $this->load->view('template/footer');
     }
 
-        public function gatepass_items_list(){
+    public function completed_gatepass_items(){
         $from=$this->uri->segment(3);
         $to=$this->uri->segment(4);
         $data['from']=$this->uri->segment(3);
@@ -236,7 +236,86 @@ class Gatepass extends CI_Controller {
         }
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('gatepass/gatepass_items_list',$data);
+        $this->load->view('gatepass/completed_gatepass_items',$data);
+        $this->load->view('template/footer');
+    }
+
+    public function incomplete_gatepass_items(){
+        $from=$this->uri->segment(3);
+        $to=$this->uri->segment(4);
+        $data['from']=$this->uri->segment(3);
+        $data['to']=$this->uri->segment(4);
+        $data['filt']='';
+        $sql="";
+        if($from!='null' && $to!='null' || $from!='' && $to!=''){
+           $sql.= " WHERE gh.date_issued BETWEEN '$from' AND '$to' AND";
+        }
+
+        if($from!='' && $to!=''){
+            $query=substr($sql,0,-3);
+        }else{
+            $query='';
+        }
+
+        $rows= $this->super_model->count_custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query);
+        if($rows!=0){
+        //foreach($this->super_model->custom_query("SELECT * FROM gatepass_details ".$query) AS $gatepass_items){
+        foreach($this->super_model->custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query) AS $gatepass_items){
+            //$mgp_no = $this->super_model->select_column_where("gatepass_head", "mgp_no", "gatepass_id", $gatepass_items->gatepass_id);
+            //$destination = $this->super_model->select_column_where("gatepass_head", "destination", "gatepass_id", $gatepass_items->gatepass_id);
+            //$date_issued = $this->super_model->select_column_where("gatepass_head", "date_issued", "gatepass_id", $gatepass_items->gatepass_id);
+            //$prepared = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->prepared_by);
+            //$noted = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->noted_by);
+            //$approved = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->approved_by);
+            $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gd_id", $gatepass_items->gd_id);
+            $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gd_id", $gatepass_items->gd_id);
+            $returned_remarks = $this->super_model->select_column_where("gp_returned_history", "remarks", "gd_id", $gatepass_items->gd_id);
+            $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
+            if($sum_qty== $gatepass_items->quantity){
+             $status = "Completed";
+            } else {
+            $status = "Incomplete";
+             }
+            $balance=$gatepass_items->quantity-$sum_qty;
+            $history='';
+            foreach($this->super_model->select_row_where("gp_returned_history","gd_id",$gatepass_items->gd_id) AS $ret){
+                if($gatepass_items->type=='Non-Returnable'){
+                    $history.=$gatepass_items->type;
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty==0 ){
+                    $history.='';
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty!=0){
+                    $history.="Date: ".$returned_date."<br>Qty: ".$returned_qty."<br><br>";
+                }
+            }
+            $data['gatepass_items'][] = array(
+                'gd_id'=>$gatepass_items->gd_id,
+                'gatepass_id'=>$gatepass_items->gatepass_id,
+                'item_name'=>$gatepass_items->item_name,
+                'quantity'=>$gatepass_items->quantity,
+                'unit'=>$gatepass_items->unit,
+                'type'=>$gatepass_items->type,
+                'remarks'=>$gatepass_items->remarks,
+                'type'=>$gatepass_items->type,
+                'mgp_no'=>$gatepass_items->mgp_no,
+                'destination'=>$gatepass_items->destination,
+                'date_issued'=>$gatepass_items->date_issued,
+                'sum_qty'=>$sum_qty,
+                'status'=>$status,
+                'returned_date'=>$returned_date,
+                'returned_qty'=>$returned_qty,
+                'returned_remarks'=>$returned_remarks,
+                'balance'=>$balance,
+                'history'=>$history,
+
+            );
+        }
+ 
+        } else {
+            $data['gatepass_items']=array();
+        }
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('gatepass/incomplete_gatepass_items',$data);
         $this->load->view('template/footer');
     }
 

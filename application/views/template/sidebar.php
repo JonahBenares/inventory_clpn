@@ -723,11 +723,25 @@
 							<span class="fa fa-arrow-right">&nbsp;</span> Material Gatepass List
 						</a>
 					</li>
-					<li>
-						<a class="" href="<?php echo base_url(); ?>index.php/gatepass/gatepass_items_list">
-							<span class="fa fa-arrow-right">&nbsp;</span> Gatepass Items List
+					<li class="parent ">
+						<a data-toggle="collapse" href="#gatepass-sub">
+							<span data-toggle="collapse" href="#gatepass-sub" class="icon">
+								<em class="fa fa-plus"></em>
+							</span>&nbsp;Gatepass Items List 							
 						</a>
-					</li>
+						<ul class="children collapse" id="gatepass-sub">
+							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/gatepass/completed_gatepass_items" >
+									<span class="fa fa-arrow-right">&nbsp;</span> Completed
+								</a>
+							</li>
+							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/gatepass/incomplete_gatepass_items" >
+									<span class="fa fa-arrow-right">&nbsp;</span> Incomplete
+								</a>
+							</li>
+						</ul>
+					</li>	
 				</ul>
 			</li>
 
