@@ -7,11 +7,15 @@
    <td style="padding: 0px; width:50px; "><input type = "text" name = "type[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['type']; ?>"></td>
    
     <td style="padding: 0px width: 50px;">
-      <center>
-        <div style="width: auto; height: auto;">
-          <img id="images<?php echo $list['count']; ?>" width="50%" height="50%"/>
-        </div>
-      <center>
+      <div class="popover__wrapper">
+          <img src="<?php if(!empty($gp['image'])) { 
+        echo base_url(); ?>uploads/<?php echo $gp['image']; 
+         } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
+            <div class="popover__content">
+              <img style="width: 500px" src="<?php if(!empty($gp['image'])) { echo base_url(); ?>uploads/<?php echo $gp['image']; 
+            } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>">
+            </div>
+        </div>  
     </td>
     <td ><center>
         <a class="btn btn-danger table-remove btn-xs" onclick="remove_item(<?php echo $list['count']; ?>)"><span class=" fa fa-times"></span></a></center>

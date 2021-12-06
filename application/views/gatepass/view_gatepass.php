@@ -18,6 +18,53 @@
 	  transform: scale(25);
 	  margin-right: 0px;
 	}
+
+	.popover__title {
+	  font-size: 12px;
+	  text-decoration: none;
+	  color: rgb(228, 68, 68);
+	  text-align: center;
+	}
+
+	.popover__wrapper {
+	  position: relative;
+	  display: inline-block;
+	}
+	.popover__content {
+	  opacity: 0;
+	  visibility: hidden;
+	  position: absolute;
+	  right: 55px;
+      top: -150px;
+	  transform: translate(0, 10px);
+	  background-color: #dbdbdb;
+	  padding: 1.5rem;
+	  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	  width: auto;
+	}
+	.popover__content:before {
+		position: absolute;
+	    z-index: -1;
+	    content: "";
+	    right: calc(-1% - 10px);
+	    top: 35%;
+	    transform: rotate(90deg);
+	    border-style: solid;
+	    border-width: 0 10px 10px 10px;
+	    border-color: transparent transparent #dbdbdb transparent;
+	    transition-duration: 0.3s;
+	    transition-property: transform;
+	}
+	.popover__wrapper:hover .popover__content {
+	  z-index: 10;
+	  opacity: 1;
+	  visibility: visible;
+	  transform: translate(0, -20px);
+	  transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+	}
+	.popover__message {
+	  text-align: center;
+	}
 </style>
 <!--<div class="modal fade" id="datereturn" tabindex="-1" role="dialog" aria-labelledby="datereturn">
 	<div class="modal-dialog" role="document">
@@ -67,7 +114,7 @@
 			<li><a href="#">
 				<em class="fa fa-home"></em>
 			</a></li>
-			<li class=""><a href="<?php echo base_url(); ?>index.php/request/request_list">Gatepass </a></li>
+			<li class=""><a href="javascript:history.back()">Gatepass </a></li>
 			<li class="active"> View Details</li>
 		</ol>
 	</div><!--/.row-->
@@ -195,11 +242,15 @@
 													<td><center><?php echo $gp['date_returned'];?> &nbsp; <?php if($gp['date_returned']==''){ ?><a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp['gd_id']; ?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
 													<?php } ?>-->
 													<td>
-   														<div style="padding:10px">
-															<img class="zoom " src="<?php if(!empty($gp['image'])) { 
-																echo base_url(); ?>uploads/<?php echo $gp['image']; 
-																 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
-															</div>
+														<div class="popover__wrapper">
+															<img src="<?php if(!empty($gp['image'])) { 
+														echo base_url(); ?>uploads/<?php echo $gp['image']; 
+														 } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
+														  	<div class="popover__content">
+														    	<img style="width: 500px" src="<?php if(!empty($gp['image'])) { echo base_url(); ?>uploads/<?php echo $gp['image']; 
+										 						} else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>">
+														  	</div>
+														</div>															
 													</td>
 													<!--<td><center><a href="" class="btn btn-danger btn-xs"><span class="fa fa-times"></span></a></center></td>-->
 												</tr>
@@ -245,4 +296,5 @@
 		    $("#gd_id").val(gd_id);
 		  
 		});
+
 	</script>-->
