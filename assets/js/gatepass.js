@@ -73,6 +73,7 @@ function add_item(){
                         oFReader.readAsDataURL(document.getElementById("image").files[0]);
                         oFReader.onload = function (oFREvent) {
                             document.getElementById("images"+count).src = oFREvent.target.result;
+                            document.getElementById("images_hov"+count).src = oFREvent.target.result;
                         };
                     }
 

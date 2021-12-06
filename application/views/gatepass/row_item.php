@@ -11,7 +11,7 @@
             <div class="popover__wrapper">
                 <img id="images<?php echo $list['count']; ?>" width="100%" height="100%"/>
                 <div class="popover__content">
-                    <img id="images<?php echo $list['count']; ?>"style="width: 500px"/>
+                    <img id="images_hov<?php echo $list['count']; ?>"style="width: 500px"/>
                 </div>
             </div>
         <center>
