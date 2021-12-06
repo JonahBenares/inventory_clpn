@@ -86,12 +86,16 @@
 							$noted_by=$g['noted_by'];
 							$approved_by=$g['approved_by'];
 							$saved=$g['saved'];
+							$gatepassid=$g['gatepass_id'];
 						} ?>
 							<table width="100%" >
 
 								<tr>
 									<td style="vertical-align: top;"><p class="nomarg">To Company:</p></td>
 									<td colspan="4" ><label class="labelStyle"><?php echo $company; ?></label></td>
+									<?php if($saved=='1'){ ?>
+									<td width="5%" ><a href="<?php echo base_url();?>index.php/gatepass/gatepass_print/<?php echo $gatepassid;?>" class="btn btn-warning btn-sm"><span class="fa fa-print"></span> Print</a></td>
+									<?php } ?>
 								</tr>
 								<tr>
 									<td width="10%" ><p class="nomarg">Destination: </p></td>
