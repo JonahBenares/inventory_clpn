@@ -114,7 +114,7 @@
 			<li><a href="#">
 				<em class="fa fa-home"></em>
 			</a></li>
-			<li class=""><a href="<?php echo base_url(); ?>index.php/request/request_list">Gatepass </a></li>
+			<li class=""><a href="javascript:history.back()">Gatepass </a></li>
 			<li class="active"> View Details</li>
 		</ol>
 	</div><!--/.row-->
