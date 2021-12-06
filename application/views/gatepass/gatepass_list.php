@@ -110,7 +110,7 @@
 									<td align="center"><?php echo $gp['company'];?></td>
 									<td align="center"><?php echo $gp['destination'];?></td>
 									<td align="center"><?php echo $gp['vehicle_no'];?></td>
-									<td align="center"><?php echo $gp['date_issued'];?></td>
+									<td align="center"><?php echo date("F d, Y",strtotime($gp['date_issued']));?></td>
 									<td align="center"><?php echo $gp['status'];?></td>
 									<!--<?php if($gp['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp['type'];?></center></td>
@@ -152,7 +152,7 @@
 										<td align="center"><?php echo $gp['company'];?></td>
 										<td align="center"><?php echo $gp['destination'];?></td>
 										<td align="center"><?php echo $gp['vehicle_no'];?></td>
-										<td align="center"><?php echo $gp['date_issued'];?></td>
+										<td align="center"><?php echo date("F d, Y",strtotime($gp['date_issued']));?></td>
 										<td align="center"><?php echo $gp['status'];?></td>
 										<!--<?php if($gp['type']=='Non-Returnable'){ ?>
 										<td><center><?php echo $gp['type'];?></center></td>

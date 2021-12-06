@@ -116,7 +116,7 @@
 								<?php foreach($gatepass_items as $gp_itms){ ?>
 								<tr>
 									<!--<td align="center"><?php echo $x; ?></td>-->
-									<td align="center"><?php echo $gp_itms['date_issued'];?></td>
+									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
 									<td align="center"><?php echo $gp_itms['unit'];?></td>
 									<td align="center"><?php echo $gp_itms['quantity'];?></td>
@@ -182,7 +182,7 @@
                                     	$history="Date: ".$gp_itms['returned_date']."<br>Qty: ".$gp_itms['returned_qty'];
                                     }*/
                                 	?>
-									<td align="center"><?php echo $gp_itms['date_issued'];?></td>
+									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
 									<td align="center"><?php echo $gp_itms['unit'];?></td>
 									<td align="center"><?php echo $gp_itms['quantity'];?></td>

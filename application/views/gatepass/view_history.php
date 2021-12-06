@@ -5,7 +5,7 @@
 	</tr>
 	<?php foreach($returned as $gp_itms){ ?>
 	<tr>
-		<td align="center"><?php echo $gp_itms->date_returned;?></td>
+		<td align="center"><?php echo date("F d, Y",strtotime($gp_itms->date_returned));?></td>
 		<td align="center"><?php echo $gp_itms->qty;?></td>
 	</tr>
 	<?php } ?>
