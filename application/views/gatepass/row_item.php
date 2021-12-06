@@ -12,7 +12,8 @@
         echo base_url(); ?>uploads/<?php echo $gp['image']; 
          } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>" width="100%" height="100%" />
             <div class="popover__content">
-              <img style="width: 500px" src="<?php if(!empty($gp['image'])) { echo base_url(); ?>uploads/<?php echo $gp['image']; 
+              <img style="width: 500px" src="<?php if(!empty($gp['image'])) { 
+                echo base_url(); ?>uploads/<?php echo $gp['image']; 
             } else { echo base_url(); ?>assets/default/default-img.jpg<?php } ?>">
             </div>
         </div>  
