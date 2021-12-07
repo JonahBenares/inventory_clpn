@@ -2,6 +2,7 @@
 	<tr>
 		<td align="center"><label>Date Returned</label></td>							
 		<td align="center"><label>Qty</label></td>							
+		<td align="center"><label>Remarks</label></td>							
 	</tr>
 	<?php 
 		if(!empty($returned)){
@@ -9,6 +10,7 @@
 	<tr>
 		<td align="center"><?php echo date("F d, Y",strtotime($gp_itms->date_returned));?></td>
 		<td align="center"><?php echo $gp_itms->qty;?></td>
+		<td align="center"><?php echo $gp_itms->remarks;?></td>
 	</tr>
 	<?php } } else { ?>
 	<tr>

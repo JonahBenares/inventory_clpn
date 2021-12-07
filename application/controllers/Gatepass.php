@@ -190,6 +190,7 @@ class Gatepass extends CI_Controller {
             //$approved = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $gatepass->approved_by);
             $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gd_id", $gatepass_items->gd_id);
             $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gd_id", $gatepass_items->gd_id);
+            $returned_remarks = $this->super_model->select_column_where("gp_returned_history", "remarks", "gd_id", $gatepass_items->gd_id);
             $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
             if($sum_qty== $gatepass_items->quantity){
              $status = "Completed";
@@ -223,6 +224,7 @@ class Gatepass extends CI_Controller {
                 'status'=>$status,
                 'returned_date'=>$returned_date,
                 'returned_qty'=>$returned_qty,
+                'returned_remarks'=>$returned_remarks,
                 'balance'=>$balance,
                 'history'=>$history,
 
@@ -605,6 +607,7 @@ class Gatepass extends CI_Controller {
             'gatepass_id'=>$this->input->post('gatepass_id'),
             'date_returned'=>$this->input->post('date_returned'),
             'qty'=>$this->input->post('qty'),
+            'remarks'=>$this->input->post('remarks'),
         );
         if($this->super_model->insert_into("gp_returned_history", $data)){; 
         redirect(base_url().'index.php/gatepass/gatepass_items_list', 'refresh');
@@ -622,6 +625,10 @@ class Gatepass extends CI_Controller {
             foreach($this->super_model->select_row_where('gatepass_details','gatepass_id', $pass->gatepass_id) AS $gp){
                 $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gp_rh_id", $gp->gatepass_id);
                 $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gp->gatepass_id);
+                $returned_remarks = $this->super_model->select_column_where("gp_returned_history", "remarks", "gp_rh_id", $gp->gatepass_id);
+                $total_quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", $gp->gd_id);
+                $total_returned = $this->super_model->select_sum_where("gp_returned_history", "qty", $gp->gd_id);
+                $remaining_qty=$total_quantity-$total_returned;
                 $data['gatepass_itm'][] = array(
                     'gd_id'=>$gp->gd_id,
                     'item'=>$gp->item_name,
@@ -633,6 +640,9 @@ class Gatepass extends CI_Controller {
                     'image'=>$gp->image,
                     'returned_date'=>$returned_date,
                     'returned_qty'=>$returned_qty,
+                    'returned_remarks'=>$returned_remarks,
+                    'total_returned'=>$total_returned,
+                    'remaining_qty'=>$remaining_qty,
 
                 );
             }

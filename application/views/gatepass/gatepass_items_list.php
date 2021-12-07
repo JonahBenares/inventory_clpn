@@ -106,7 +106,7 @@
 									<td width="15%" align="center"><strong>MGP No</strong></td>
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="15%" align="center"><strong>Returned History</strong></td>
-									<td width="15%" align="center"><strong>Status</strong></td>
+									<td width="15%" align="center"><strong>Remaining Qty</strong></td>
 									<!--<td width="15%" align="center"><strong>Date Returned</strong></td>-->
 									<!--<td width="1%" 	align="center" id="btn-print"><strong><span class="fa fa-bars"></span></strong></td>-->
 								</tr>
@@ -129,16 +129,17 @@
 									<?php } ?>
 									<?php if($gp_itms['type']=='Returnable'){ ?>
 									<td><center>
-										<a class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp_itms['gd_id']; ?>" data-date="<?php echo $gp_itms['returned_date']; ?>" data-qty="<?php echo $gp_itms['returned_qty']; ?>"  title="View History" alt='View History'><span class="fa fa-eye"></span></a>
+										<a class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp_itms['gd_id']; ?>" data-date="<?php echo $gp_itms['returned_date']; ?>" data-qty="<?php echo $gp_itms['returned_qty']; ?>" data-remarks="<?php echo $gp_itms['returned_remarks']; ?>"  title="View History" alt='View History'><span class="fa fa-eye"></span></a>
 										<?php if($gp_itms['quantity']!=$gp_itms['sum_qty']){ ?>
 										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp_itms['gd_id']; ?>" data-gp-id="<?php echo $gp_itms['gatepass_id']; ?>" data-issued="<?php echo $gp_itms['quantity']?>" data-balance="<?php echo $gp_itms['balance'];?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
 									<?php } ?>
-									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
+									<td><center><?php echo number_format($gp_itms['balance'],2);?></center></td>
+									<!--<?php if($gp_itms['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
 									<?php } ?>
 									<?php if($gp_itms['type']=='Returnable'){ ?>
 									<td align="center"><?php echo $gp_itms['status'];?></td>
-									<?php } ?>
+									<?php } ?>-->
 									<!--<td align="center"><?php echo $gp['date_issued'];?></td>-->
 									<!--<td align="center" id="btn-print">
 
@@ -166,7 +167,7 @@
 									<td width="20%" align="center"><strong>MGP No</strong></td>
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="20%" align="center"><strong>Returned History</strong></td>
-									<td width="20%" align="center"><strong>Status</strong></td>
+									<td width="20%" align="center"><strong>Remaining Qty</strong></td>
 									</tr>
 								
 								</thead>
@@ -191,11 +192,12 @@
 									<td align="center"><?php echo $gp_itms['mgp_no'];?></td>
 									<td align="center"><?php echo $gp_itms['destination'];?></td>
 									<td><center><?php echo $gp_itms['history']; ?></center></td>
-									<?php if($gp_itms['type']=='Returnable'){ ?>
+									<td><center><?php echo number_format($gp_itms['balance'],2);?></center></td>
+									<!--<?php if($gp_itms['type']=='Returnable'){ ?>
 									<td align="center"><?php echo $gp_itms['status'];?></td>
 									<?php } else {?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>
+									<?php } ?>-->
 									</tr>
 									<?php } ?>
 								</tbody>
@@ -325,6 +327,13 @@
 								<td><label>Qty:</label></td>							
 								<td><input type="number" id="returned_qty" class="form-control" name="qty" required="true"></td>							
 							</tr>
+							<tr>
+								<td colspan="2"><br></td>
+							</tr>
+							<tr>
+								<td><label>Remarks:</label></td>							
+								<td><input type="text" id="remarks" class="form-control" name="remarks" required="true"></td>							
+							</tr>
 						</table>
 					</div>
 					<div class="modal-footer">
@@ -414,7 +423,7 @@
 	    	var returned_qty=document.getElementById('returned_qty').value;
 	    	var balance=document.getElementById('balance').value;
 	        if(parseFloat(returned_qty) > parseFloat(balance)){
-	          alert("Returned quantity is greater than Issued quantity/Remaining quantity!");
+	          alert("Returned quantity is greater than issued/remaining quantity!");
 	          $('#save_btn').attr('disabled','disabled');
 	        }else{
 	        	$('#save_btn').removeAttr('disabled');

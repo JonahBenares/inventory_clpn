@@ -211,6 +211,8 @@
 												<th width="2%" style='text-align: center;'>#</th>
 												<th width="33%">Item Description</th>
 												<th width="5%" style='text-align: center;'>Qty</th>
+												<th width="5%" style='text-align: center;'>Returned Qty</th>
+												<th width="5%" style='text-align: center;'>Remaining Qty</th>
 												<th width="10%" style='text-align: center;'>UOM</th>
 												<th width="25%" style='text-align: center;'>Remarks</th>
 												<th width="15%" style='text-align: center;'>Type</th>
@@ -226,6 +228,8 @@
 													<td><center><?php echo $x; ?></center></td>
 													<td><?php echo $gp['item'];?></td>
 													<td><center><?php echo $gp['quantity'];?></center></td>
+													<td><center><?php echo number_format($gp['remaining_qty'],2);?></center></td>
+													<td><center><?php echo number_format($gp['total_returned'],2);?></center></td>
 													<td><center><?php echo $gp['unit'];?></center></td>
 													<td><center><?php echo $gp['remarks'];?></center></td>
 													<td><center><?php echo $gp['type'];?></center></td>
@@ -233,7 +237,7 @@
 													<td><center><?php echo $gp['type'];?></center></td>
 													<?php } ?>
 													<?php if($gp['type']=='Returnable'){ ?>
-													<td><center><a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp['gd_id']; ?>" data-date="<?php echo $gp['returned_date']; ?>" data-qty="<?php echo $gp['returned_qty']; ?>" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>
+													<td><center><a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp['gd_id']; ?>" data-date="<?php echo $gp['returned_date']; ?>" data-qty="<?php echo $gp['returned_qty']; ?>" data-remarks="<?php echo $gp['returned_remarks']; ?>" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>
 													<?php } ?>
 													<!--<?php if($gp['type']=='Non-Returnable'){ ?>
 													<td><center><?php echo $gp['type'];?></center></td>
@@ -275,6 +279,7 @@
 		    var gd_id = $(this).attr("data-id");
 		    var returned_date = $(this).attr("data-date");
 		    var returned_qty = $(this).attr("data-qty");
+		    var remarks = $(this).attr("data-remarks");
 		    var loc= document.getElementById("baseurl").value;
    	 		var redirect = loc+'index.php/gatepass/view_history';
 		    $.ajax({
