@@ -60,9 +60,9 @@
 					Incomplete Gatepass Items
 					<div  id="btn-print" class="pull-right">
 						<?php if($from!='' || $to!=''){ ?>
-						<a href="<?php echo base_url(); ?>index.php/gatepass/export_gatepass/<?php echo $from;?>/<?php echo $to;?>" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
+						<a href="<?php echo base_url(); ?>index.php/gatepass/export_incomplete_gatepass/<?php echo $from;?>/<?php echo $to;?>" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
 						<?php } else { ?>
-						<a href="<?php echo base_url(); ?>index.php/gatepass/export_gatepass" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
+						<a href="<?php echo base_url(); ?>index.php/gatepass/export_incomplete_gatepass" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
 						<?php } ?>
 						<button class="btn btn-success" data-toggle="modal" data-target="#GatepassFilter" ><span class="fa fa-filter"> </span> Filter</button>
 						<!--<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
@@ -113,7 +113,7 @@
 							
 							</thead>
 							<tbody>
-								<?php foreach($gatepass_items as $gp_itms){ ?>
+								<?php foreach($incomplete_items as $gp_itms){ ?>
 								<tr>
 									<!--<td align="center"><?php echo $x; ?></td>-->
 									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
@@ -172,7 +172,7 @@
 								
 								</thead>
 								<tbody>
-									<?php foreach($gatepass_items as $gp_itms){ ?>
+									<?php foreach($incomplete_items as $gp_itms){ ?>
 									<tr>
 									<?php 
                                     /*if($gp_itms['type']=='Non-Returnable'){
@@ -354,7 +354,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">Filter</h4>
 				</div>
-				<form method="POST" action = "<?php echo base_url();?>index.php/gatepass/filter_gatepass_items">
+				<form method="POST" action = "<?php echo base_url();?>index.php/gatepass/filter_incomplete_gatepass_items">
 					<div class="modal-body">
 						<div class = "row">
 							<div class = "col-lg-6">
