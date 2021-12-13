@@ -113,7 +113,9 @@
 							
 							</thead>
 							<tbody>
-								<?php foreach($incomplete_items as $gp_itms){ ?>
+								<?php 
+									if(!empty($incomplete_items)){
+									foreach($incomplete_items as $gp_itms){ ?>
 								<tr>
 									<!--<td align="center"><?php echo $x; ?></td>-->
 									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
@@ -147,6 +149,10 @@
 
 									</td>-->
 								</tr>
+								<?php } } else { ?>
+								<tr>
+									<td align="center" colspan='9'><center>No Data Available.</center></td>
+								</tr>
 								<?php } ?>
 							</tbody>
 						</table>
@@ -172,7 +178,9 @@
 								
 								</thead>
 								<tbody>
-									<?php foreach($incomplete_items as $gp_itms){ ?>
+									<?php 
+										if(!empty($incomplete_items)){
+										foreach($incomplete_items as $gp_itms){ ?>
 									<tr>
 									<?php 
                                     /*if($gp_itms['type']=='Non-Returnable'){
@@ -199,7 +207,11 @@
 									<td><center><?php echo $gp_itms['type'];?></center></td>
 									<?php } ?>-->
 									</tr>
-									<?php } ?>
+									<?php } } else { ?>
+								<tr>
+									<td align="center" colspan='9'><center>No Data Available.</center></td>
+								</tr>
+								<?php } ?>
 								</tbody>
 							</table>
 						</div>
@@ -404,6 +416,7 @@
 		    var gd_id = $(this).attr("data-id");
 		    var returned_date = $(this).attr("data-date");
 		    var returned_qty = $(this).attr("data-qty");
+		    var returned_remarks = $(this).attr("data-remarks");
 		    var loc= document.getElementById("baseurl").value;
    	 		var redirect = loc+'index.php/gatepass/view_history';
 		    $.ajax({

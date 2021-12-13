@@ -113,7 +113,9 @@
 							
 							</thead>
 							<tbody>
-								<?php foreach($completed_items as $gp_itms){ ?>
+								<?php
+								 	if(!empty($completed_items)){
+								 	foreach($completed_items as $gp_itms){ ?>
 								<tr>
 									<!--<td align="center"><?php echo $x; ?></td>-->
 									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
@@ -146,6 +148,10 @@
 
 									</td>-->
 								</tr>
+								<?php } } else { ?>
+								<tr>
+									<td align="center" colspan='9'><center>No Data Available.</center></td>
+								</tr>
 								<?php } ?>
 							</tbody>
 						</table>
@@ -170,7 +176,9 @@
 								
 								</thead>
 								<tbody>
-									<?php foreach($completed_items as $gp_itms){ ?>
+									<?php 
+										if(!empty($completed_items)){
+										foreach($completed_items as $gp_itms){ ?>
 									<tr>
 									<?php 
                                     /*if($gp_itms['type']=='Non-Returnable'){
@@ -196,7 +204,11 @@
 									<td><center><?php echo $gp_itms['type'];?></center></td>
 									<?php } ?>-->
 									</tr>
-									<?php } ?>
+									<?php } } else { ?>
+								<tr>
+									<td align="center" colspan='9'><center>No Data Available.</center></td>
+								</tr>
+								<?php } ?>
 								</tbody>
 							</table>
 						</div>
