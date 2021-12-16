@@ -344,7 +344,7 @@ class Gatepass extends CI_Controller {
     }
 
      public function view_history(){  
-        $this->load->view('template/header');
+       // $this->load->view('template/header');
         $data['gd_id']=$this->input->post('gd_id');
         $gd_id=$this->input->post('gd_id');
         $data['returned'] = $this->super_model->select_row_where('gp_returned_history', 'gd_id', $gd_id);

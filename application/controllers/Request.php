@@ -501,18 +501,25 @@ class Request extends CI_Controller {
     }
 
     public function crossreflist(){
-        $item=$this->input->post('item');
+       $item=$this->input->post('item');
          $prno=$this->input->post('prno');
+
+         //$pr= 'MHEC-2021-171';
+        // $item='315';
         $rows=$this->super_model->count_custom_where("supplier_items","item_id = '$item'");
         if($rows!=0){ ?>
-            <select name='siid' id='siid' class='form-control' onchange="getUnitCost('<?php echo $prno; ?>','<?php echo $item; ?>')" >
-           <option value=''>-Cross Reference-</option>
-            <?php 
+          <select name='siid' id='siid' class='form-control' onchange="getUnitCost('<?php echo $prno; ?>','<?php echo $item; ?>')" >
+           <option value=''>-Cross Reference-</option> 
+            
+        
+            <?php  
             foreach($this->super_model->select_custom_where("supplier_items","item_id = '$item' AND quantity != '0'") AS $itm){ 
                     $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $itm->brand_id);
                     $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $itm->supplier_id);
                    // echo $itm->item_id,$itm->supplier_id, $itm->brand_id, $itm->catalog_no;
                     $balance=$this->crossref_balance($itm->item_id,$itm->supplier_id, $itm->brand_id, $itm->catalog_no);
+
+                    //echo $itm->si_id . " - ".$itm->item_id . " - " . $itm->supplier_id. " - ". $itm->brand_id . " - " .$itm->catalog_no  ." = ".$balance."<br>";
                     /*$unit = $this->super_model->select_column_where("items", "unit_id", "item_id", $itm->item_id);*/
                     foreach($this->super_model->select_custom_where("items","item_id = '$item'") AS $it){
                     $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);

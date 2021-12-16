@@ -1,7 +1,8 @@
-<script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
+ <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/gatepass.js"></script>
-<link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
-<script src="<?php echo base_url(); ?>assets/js/select2.min.js"></script>
+
+<!--<link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
+<script src="<?php echo base_url(); ?>assets/js/select2.min.js"></script> -->
 <style type="">
 	.zoom {
 	  padding: 0px;
@@ -237,7 +238,7 @@
 													<td><center><?php echo $gp['type'];?></center></td>
 													<?php } ?>
 													<?php if($gp['type']=='Returnable'){ ?>
-													<td><center><a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp['gd_id']; ?>" data-date="<?php echo $gp['returned_date']; ?>" data-qty="<?php echo $gp['returned_qty']; ?>" data-remarks="<?php echo $gp['returned_remarks']; ?>" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>
+													<td><center><a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp['gd_id']; ?>" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>
 													<?php } ?>
 													<!--<?php if($gp['type']=='Non-Returnable'){ ?>
 													<td><center><?php echo $gp['type'];?></center></td>
@@ -277,9 +278,7 @@
 	<script type="text/javascript">
 			$(document).on("click", "#clickHistory", function () {
 		    var gd_id = $(this).attr("data-id");
-		    var returned_date = $(this).attr("data-date");
-		    var returned_qty = $(this).attr("data-qty");
-		    var remarks = $(this).attr("data-remarks");
+		  
 		    var loc= document.getElementById("baseurl").value;
    	 		var redirect = loc+'index.php/gatepass/view_history';
 		    $.ajax({
