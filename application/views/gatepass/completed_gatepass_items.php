@@ -131,7 +131,8 @@
 									<?php } ?>
 									<?php if($gp_itms['type']=='Returnable'){ ?>
 									<td><center>
-										<a class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp_itms['gd_id']; ?>" data-date="<?php echo $gp_itms['returned_date']; ?>" data-qty="<?php echo $gp_itms['returned_qty']; ?>" data-remarks="<?php echo $gp_itms['returned_remarks']; ?>"  title="View History" alt='View History'><span class="fa fa-eye"></span></a>
+										<a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp_itms['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a>
+										<!--<a class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp_itms['gd_id']; ?>" data-date="<?php echo $gp_itms['returned_date']; ?>" data-qty="<?php echo $gp_itms['returned_qty']; ?>" data-remarks="<?php echo $gp_itms['returned_remarks']; ?>"  title="View History" alt='View History'><span class="fa fa-eye"></span></a>-->
 										<!--<?php if($gp_itms['quantity']!=$gp_itms['sum_qty']){ ?>
 										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp_itms['gd_id']; ?>" data-gp-id="<?php echo $gp_itms['gatepass_id']; ?>" data-issued="<?php echo $gp_itms['quantity']?>" data-balance="<?php echo $gp_itms['balance'];?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
 									<?php } ?>-->

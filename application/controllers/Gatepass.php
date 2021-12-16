@@ -343,13 +343,22 @@ class Gatepass extends CI_Controller {
         $this->load->view('template/footer');
     }
 
-     public function view_history(){  
+    public function view_history(){  
+        $id=$this->uri->segment(3);
+        $data['id']=$id;
+        $data['returned'] = $this->super_model->select_custom_where("gp_returned_history","gd_id = '$id'");
+        $this->load->view('template/header');
+        $this->load->view('gatepass/view_history',$data);
+        $this->load->view('template/footer');
+    }
+
+     /*public function view_history(){  
        // $this->load->view('template/header');
         $data['gd_id']=$this->input->post('gd_id');
         $gd_id=$this->input->post('gd_id');
         $data['returned'] = $this->super_model->select_row_where('gp_returned_history', 'gd_id', $gd_id);
         $this->load->view('gatepass/view_history',$data);
-    }
+    }*/
 
     /*public function view_history(){  
         $data['gd_id']=$this->input->post('gd_id');
@@ -885,8 +894,8 @@ class Gatepass extends CI_Controller {
                 $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gp_rh_id", $gp->gatepass_id);
                 $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gp->gatepass_id);
                 $returned_remarks = $this->super_model->select_column_where("gp_returned_history", "remarks", "gp_rh_id", $gp->gatepass_id);
-                $total_quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", $gp->gd_id);
-                $total_returned = $this->super_model->select_sum_where("gp_returned_history", "qty", $gp->gd_id);
+                $total_quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gp->gd_id'");
+                $total_returned = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gp->gd_id'");
                 $remaining_qty=$total_quantity-$total_returned;
                 $data['gatepass_itm'][] = array(
                     'gd_id'=>$gp->gd_id,
