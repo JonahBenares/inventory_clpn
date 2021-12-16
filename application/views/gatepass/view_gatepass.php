@@ -239,7 +239,7 @@
 													<?php } ?>
 													<?php if($gp['type']=='Returnable'){ ?>
 													<!--<td><center><a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp['gd_id']; ?>" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>-->
-													<td><center><a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>
+													<td><center><a class="btn btn-warning btn-xs" onclick="history('<?php echo $gp['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a></center></td>
 													<?php } ?>
 													<!--<?php if($gp['type']=='Non-Returnable'){ ?>
 													<td><center><?php echo $gp['type'];?></center></td>
