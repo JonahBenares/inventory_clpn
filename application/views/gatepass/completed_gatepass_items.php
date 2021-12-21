@@ -52,7 +52,6 @@
   	<figure class="one"></figure>
   	<figure class="two">loading</figure>
 </div>
-<input type="hidden" id="base_url" value="<?php echo base_url(); ?>">
 <di id="itemslist" style="display: none">
 	<div class="row">
 		<div class="col-md-12">

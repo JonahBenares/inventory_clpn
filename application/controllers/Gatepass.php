@@ -213,7 +213,7 @@ class Gatepass extends CI_Controller {
              if($sum_qty==$gatepass_items->quantity){
                  $status = "Completed";
             } else {
-                $status = "";
+                $status = "Incomplete";
             }
 
             $history='';
