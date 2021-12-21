@@ -345,11 +345,11 @@ class Gatepass extends CI_Controller {
 
     public function view_history(){  
         $id=$this->uri->segment(3);
-        $data['id']=$id;
-        $data['returned'] = $this->super_model->select_custom_where("gp_returned_history","gd_id = '$id'");
+      
+        $data['returned'] = $this->super_model->select_row_where("gp_returned_history","gd_id",$id);
         $this->load->view('template/header');
         $this->load->view('gatepass/view_history',$data);
-        $this->load->view('template/footer');
+        //$this->load->view('template/footer');
     }
 
      /*public function view_history(){  
