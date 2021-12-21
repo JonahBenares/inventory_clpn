@@ -141,7 +141,7 @@ class Gatepass extends CI_Controller {
         if($rows!=0){
         foreach($this->super_model->custom_query("SELECT * FROM gatepass_head ".$query) AS $gatepass){
         $gd_id = $this->super_model->select_column_where("gatepass_details", "gd_id", "gatepass_id", $gatepass->gatepass_id);
-        $total_quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", "gatepass_id='$gatepass->gatepass_id'");
+        $total_quantity = $this->super_model->select_sum_where("gatepass_details", "quantity","gatepass_id='$gatepass->gatepass_id' AND type!='Non-Returnable'");
         $total_returned = $this->super_model->select_sum_where("gp_returned_history", "qty", "gatepass_id='$gatepass->gatepass_id'");
         if($total_returned==$total_quantity){
             $status = "Completed";
@@ -226,7 +226,7 @@ class Gatepass extends CI_Controller {
                     $history.="Date: ".$returned_date."<br>Qty: ".$returned_qty."<br><br>";
                 }
             }
-            if($status=='Completed'){
+            if($status=='Completed' OR $gatepass_items->type=='Non-Returnable'){
                 $data['completed_items'][] = array(
                     'gd_id'=>$gatepass_items->gd_id,
                     'gatepass_id'=>$gatepass_items->gatepass_id,
@@ -309,7 +309,7 @@ class Gatepass extends CI_Controller {
                     $history.="Date: ".$returned_date."<br>Qty: ".$returned_qty."<br><br>";
                 }
             }
-            if($status=="Incomplete"){
+            if($status=="Incomplete" AND $gatepass_items->type!='Non-Returnable'){
                 $data['incomplete_items'][] = array(
                     'gd_id'=>$gatepass_items->gd_id,
                     'gatepass_id'=>$gatepass_items->gatepass_id,
