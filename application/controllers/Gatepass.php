@@ -567,7 +567,9 @@ class Gatepass extends CI_Controller {
         foreach($this->super_model->custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query) AS $gatepass_items){
             $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gp_rh_id", $gatepass_items->gatepass_id);
             $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gatepass_items->gatepass_id);
+            $total_qty = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id'");
             $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
+            $balance=$total_qty-$sum_qty;
             if($sum_qty==$gatepass_items->quantity){
              $status = "Completed";
             } else {
