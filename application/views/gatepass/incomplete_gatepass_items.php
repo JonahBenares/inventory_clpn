@@ -109,7 +109,6 @@
 									<td align="center"><?php echo $gp_itms['destination'];?></td>
 									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>
 									<?php } else { ?>
 									<td><center>
 										<a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp_itms['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a>

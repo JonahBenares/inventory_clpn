@@ -91,8 +91,6 @@
 									<td width="15%" align="center"><strong>MGP No</strong></td>
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="15%" align="center"><strong>Returned History</strong></td>
-									<!--<td width="15%" align="center"><strong>Date Returned</strong></td>-->
-									<!--<td width="1%" 	align="center" id="btn-print"><strong><span class="fa fa-bars"></span></strong></td>-->
 								</tr>
 							
 							</thead>
@@ -101,7 +99,6 @@
 								 	if(!empty($completed_items)){
 								 	foreach($completed_items as $gp_itms){ ?>
 								<tr>
-									<!--<td align="center"><?php echo $x; ?></td>-->
 									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
 									<td align="center"><?php echo $gp_itms['unit'];?></td>
@@ -114,7 +111,8 @@
 									<td><center><?php echo $gp_itms['type'];?></center></td>
 									<?php } else { ?>
 									<td><center>
-										<a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp_itms['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a><td>
+										<a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp_itms['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a>
+									<center><td>
 									<?php } ?>
 								</tr>
 								<?php } } else { ?>
