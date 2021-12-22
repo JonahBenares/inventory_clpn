@@ -65,9 +65,6 @@
 						<a href="<?php echo base_url(); ?>index.php/gatepass/export_completed_gatepass" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
 						<?php } ?>
 						<button class="btn btn-success" data-toggle="modal" data-target="#GatepassFilter" ><span class="fa fa-filter"> </span> Filter</button>
-						<!--<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
-							<span class="fa fa-search"></span>
-						</a>-->
 						<button id="printReport" class="btn btn-info " onclick="printDiv('printableArea')">
 							<span  class="fa fa-print"></span>
 						</button>	
@@ -79,18 +76,6 @@
 				<div class="panel-body">
 					<div id="" class="canvas-wrapper">
 						<div class="row" style="padding:0px 10px 0px 10px">
-							<!--<?php 
-								if(!empty($_POST)){
-								
-									?>
-									
-									<div class='alert alert-warning alert-shake'>
-										<center>
-											<strong>Filters applied:</strong> <?php echo  $filter; ?>.
-											<a href='<?php echo base_url(); ?>index.php/gatepass/gatepass_list' class='remove_filter alert-link'>Remove Filters</a>. 
-										</center>
-									</div>
-							<?php  }?>-->
 						</div>
 						<div style="overflow-x: scroll;">
 						<table class="tabledate table-bordered table-hover" id="gatepass_datatable" width="100%" style="font-size: 15px">
@@ -127,26 +112,10 @@
 									<td align="center"><?php echo $gp_itms['destination'];?></td>
 									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>
-									<?php if($gp_itms['type']=='Returnable'){ ?>
+									<?php } else { ?>
 									<td><center>
-										<a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp_itms['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a>
-										<!--<a class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp_itms['gd_id']; ?>" data-date="<?php echo $gp_itms['returned_date']; ?>" data-qty="<?php echo $gp_itms['returned_qty']; ?>" data-remarks="<?php echo $gp_itms['returned_remarks']; ?>"  title="View History" alt='View History'><span class="fa fa-eye"></span></a>-->
-										<!--<?php if($gp_itms['quantity']!=$gp_itms['sum_qty']){ ?>
-										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp_itms['gd_id']; ?>" data-gp-id="<?php echo $gp_itms['gatepass_id']; ?>" data-issued="<?php echo $gp_itms['quantity']?>" data-balance="<?php echo $gp_itms['balance'];?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
-									<?php } ?>-->
-									<!--<?php if($gp_itms['type']=='Non-Returnable'){ ?>
-									<td><center><?php echo $gp_itms['type'];?></center></td>
+										<a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp_itms['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a><td>
 									<?php } ?>
-									<?php if($gp_itms['type']=='Returnable'){ ?>
-									<td align="center"><?php echo $gp_itms['status'];?></td>
-									<?php } ?>-->
-									<!--<td align="center"><?php echo $gp['date_issued'];?></td>-->
-									<!--<td align="center" id="btn-print">
-
-										<a  href="<?php echo base_url();?>index.php/gatepass/view_gatepass/<?php echo $gp['gatepassid'];?>" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
-
-									</td>-->
 								</tr>
 								<?php } } else { ?>
 								<tr>
