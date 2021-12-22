@@ -112,7 +112,7 @@
 									<?php } else { ?>
 									<td><center>
 										<a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp_itms['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a>
-									</center><td>
+									</center></td>
 									<?php } ?>
 								</tr>
 								<?php } } else { ?>
@@ -148,13 +148,6 @@
 										foreach($completed_items as $gp_itms){ ?>
 									<tr>
 									<?php 
-                                    /*if($gp_itms['type']=='Non-Returnable'){
-                                        $history=$gp_itms['type'];
-                                    } else if($gp_itms['type']=='Returnable' &&  $gp_itms['sum_qty']==0 ){
-                                        $history='';
-                                    } else if($gp_itms['type']=='Returnable' &&  $gp_itms['sum_qty']!=0){
-                                    	$history="Date: ".$gp_itms['returned_date']."<br>Qty: ".$gp_itms['returned_qty'];
-                                    }*/
                                 	?>
 									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
@@ -165,11 +158,6 @@
 									<td align="center"><?php echo $gp_itms['mgp_no'];?></td>
 									<td align="center"><?php echo $gp_itms['destination'];?></td>
 									<td><center><?php echo $gp_itms['history']; ?></center></td>
-									<!--<?php if($gp_itms['type']=='Returnable'){ ?>
-									<td align="center"><?php echo $gp_itms['status'];?></td>
-									<?php } else {?>
-									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>-->
 									</tr>
 									<?php } } else { ?>
 								<tr>
