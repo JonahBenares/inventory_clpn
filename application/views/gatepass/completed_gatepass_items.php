@@ -60,14 +60,11 @@
 					Completed Gatepass Items
 					<div  id="btn-print" class="pull-right">
 						<?php if($from!='' || $to!=''){ ?>
-						<a href="<?php echo base_url(); ?>index.php/gatepass/export_gatepass/<?php echo $from;?>/<?php echo $to;?>" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
+						<a href="<?php echo base_url(); ?>index.php/gatepass/export_completed_gatepass/<?php echo $from;?>/<?php echo $to;?>" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
 						<?php } else { ?>
-						<a href="<?php echo base_url(); ?>index.php/gatepass/export_gatepass" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
+						<a href="<?php echo base_url(); ?>index.php/gatepass/export_completed_gatepass" data-toggle="modal" class="btn btn-primary btn-md">Export Items</a>
 						<?php } ?>
 						<button class="btn btn-success" data-toggle="modal" data-target="#GatepassFilter" ><span class="fa fa-filter"> </span> Filter</button>
-						<!--<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
-							<span class="fa fa-search"></span>
-						</a>-->
 						<button id="printReport" class="btn btn-info " onclick="printDiv('printableArea')">
 							<span  class="fa fa-print"></span>
 						</button>	
@@ -79,18 +76,6 @@
 				<div class="panel-body">
 					<div id="" class="canvas-wrapper">
 						<div class="row" style="padding:0px 10px 0px 10px">
-							<!--<?php 
-								if(!empty($_POST)){
-								
-									?>
-									
-									<div class='alert alert-warning alert-shake'>
-										<center>
-											<strong>Filters applied:</strong> <?php echo  $filter; ?>.
-											<a href='<?php echo base_url(); ?>index.php/gatepass/gatepass_list' class='remove_filter alert-link'>Remove Filters</a>. 
-										</center>
-									</div>
-							<?php  }?>-->
 						</div>
 						<div style="overflow-x: scroll;">
 						<table class="tabledate table-bordered table-hover" id="gatepass_datatable" width="100%" style="font-size: 15px">
@@ -106,16 +91,14 @@
 									<td width="15%" align="center"><strong>MGP No</strong></td>
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="15%" align="center"><strong>Returned History</strong></td>
-									<td width="15%" align="center"><strong>Remaining Qty</strong></td>
-									<!--<td width="15%" align="center"><strong>Date Returned</strong></td>-->
-									<!--<td width="1%" 	align="center" id="btn-print"><strong><span class="fa fa-bars"></span></strong></td>-->
 								</tr>
 							
 							</thead>
 							<tbody>
-								<?php foreach($gatepass_items as $gp_itms){ ?>
+								<?php
+								 	if(!empty($completed_items)){
+								 	foreach($completed_items as $gp_itms){ ?>
 								<tr>
-									<!--<td align="center"><?php echo $x; ?></td>-->
 									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
 									<td align="center"><?php echo $gp_itms['unit'];?></td>
@@ -126,26 +109,15 @@
 									<td align="center"><?php echo $gp_itms['destination'];?></td>
 									<?php if($gp_itms['type']=='Non-Returnable'){ ?>
 									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>
-									<?php if($gp_itms['type']=='Returnable'){ ?>
+									<?php } else { ?>
 									<td><center>
-										<a class="btn btn-warning btn-xs" data-toggle="modal"  data-target="#returnhistory" id="clickHistory" data-id="<?php echo $gp_itms['gd_id']; ?>" data-date="<?php echo $gp_itms['returned_date']; ?>" data-qty="<?php echo $gp_itms['returned_qty']; ?>" data-remarks="<?php echo $gp_itms['returned_remarks']; ?>"  title="View History" alt='View History'><span class="fa fa-eye"></span></a>
-										<?php if($gp_itms['quantity']!=$gp_itms['sum_qty']){ ?>
-										<a class="btn-xs btn-warning btn"  data-toggle="modal" data-target="#datereturn" id="clickDate" data-id="<?php echo $gp_itms['gd_id']; ?>" data-gp-id="<?php echo $gp_itms['gatepass_id']; ?>" data-issued="<?php echo $gp_itms['quantity']?>" data-balance="<?php echo $gp_itms['balance'];?>"><span class="fa fa-plus"></span></a><?php } ?></center></td>
+										<a class="btn btn-warning btn-xs" onclick="history('<?php echo$gp_itms['gd_id'];?>','<?php echo base_url();?>')" title="View History" alt='View History'><span class="fa fa-eye"></span></a>
+									</center></td>
 									<?php } ?>
-									<td><center><?php echo number_format($gp_itms['balance'],2);?></center></td>
-									<!--<?php if($gp_itms['type']=='Non-Returnable'){ ?>
-									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>
-									<?php if($gp_itms['type']=='Returnable'){ ?>
-									<td align="center"><?php echo $gp_itms['status'];?></td>
-									<?php } ?>-->
-									<!--<td align="center"><?php echo $gp['date_issued'];?></td>-->
-									<!--<td align="center" id="btn-print">
-
-										<a  href="<?php echo base_url();?>index.php/gatepass/view_gatepass/<?php echo $gp['gatepassid'];?>" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
-
-									</td>-->
+								</tr>
+								<?php } } else { ?>
+								<tr>
+									<td align="center" colspan='9'><center>No Data Available.</center></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -167,21 +139,15 @@
 									<td width="20%" align="center"><strong>MGP No</strong></td>
 									<td width="15%" align="center"><strong>Destination</strong></td>
 									<td width="20%" align="center"><strong>Returned History</strong></td>
-									<td width="20%" align="center"><strong>Remaining Qty</strong></td>
 									</tr>
 								
 								</thead>
 								<tbody>
-									<?php foreach($gatepass_items as $gp_itms){ ?>
+									<?php 
+										if(!empty($completed_items)){
+										foreach($completed_items as $gp_itms){ ?>
 									<tr>
 									<?php 
-                                    /*if($gp_itms['type']=='Non-Returnable'){
-                                        $history=$gp_itms['type'];
-                                    } else if($gp_itms['type']=='Returnable' &&  $gp_itms['sum_qty']==0 ){
-                                        $history='';
-                                    } else if($gp_itms['type']=='Returnable' &&  $gp_itms['sum_qty']!=0){
-                                    	$history="Date: ".$gp_itms['returned_date']."<br>Qty: ".$gp_itms['returned_qty'];
-                                    }*/
                                 	?>
 									<td align="center"><?php echo date("F d, Y",strtotime($gp_itms['date_issued']));?></td>
 									<td align="center"><?php echo $gp_itms['item_name'];?></td>
@@ -192,14 +158,12 @@
 									<td align="center"><?php echo $gp_itms['mgp_no'];?></td>
 									<td align="center"><?php echo $gp_itms['destination'];?></td>
 									<td><center><?php echo $gp_itms['history']; ?></center></td>
-									<td><center><?php echo number_format($gp_itms['balance'],2);?></center></td>
-									<!--<?php if($gp_itms['type']=='Returnable'){ ?>
-									<td align="center"><?php echo $gp_itms['status'];?></td>
-									<?php } else {?>
-									<td><center><?php echo $gp_itms['type'];?></center></td>
-									<?php } ?>-->
 									</tr>
-									<?php } ?>
+									<?php } } else { ?>
+								<tr>
+									<td align="center" colspan='9'><center>No Data Available.</center></td>
+								</tr>
+								<?php } ?>
 								</tbody>
 							</table>
 						</div>
@@ -209,90 +173,6 @@
 			</div>
 		</div>
 	</div>
-	<!---MO-D-A-L-->
-	<!--<div class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
-		<div class="modal-dialog" role="document">
-			<div class="modal-content modbod">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">Search</h4>
-				</div>
-				<form method="POST" action = "<?php echo base_url(); ?>index.php/receive/search_receive" role="search">
-					<div class="modal-body">
-
-						<table style="width:100%">
-							<tr>
-								<td class="td-sclass"><label for="rdate">Receive Date:</label></td>
-								<td class="td-sclass">
-									<input type="date" name="rdate" class="form-control">
-								</td>
-							</tr>
-							<tr>
-								<td class="td-sclass"><label for="dr">DR No.:</label></td>
-								<td class="td-sclass">
-									<input type="text" name="dr" class="form-control">
-								</td>
-							</tr>
-							<tr>
-								<td class="td-sclass"><label for="po">PO No.:</label></td>
-								<td class="td-sclass">
-									<input type="text" name="po" class="form-control">
-								</td>
-							</tr>
-							 <tr>
-								<td class="td-sclass"><label for="jo">JO No.:</label></td>
-								<td class="td-sclass">
-									<input type="text" name="jo" class="form-control">
-								</td>
-							</tr> 
-							<tr>
-								<td class="td-sclass"><label for="si">SI No.:</label></td>
-								<td class="td-sclass">
-									<input type="text" name="si" class="form-control">
-								</td>
-							</tr>
-							<tr>
-								<td class="td-sclass"><label for="pr">PR No.:</label></td>
-								<td class="td-sclass">
-									<input type="text" name="pr" class="form-control">
-								</td>
-							</tr>
-							<tr>
-								<td class="td-sclass"><label for="enduse">End Use:</label></td>
-								<td class="td-sclass">
-									<select name="enduse" class="form-control">
-										<option value='' selected>-Choose End Use-</option>
-										<?php 
-											foreach($enduse AS $end){
-										?>
-										<option value = "<?php echo $end->enduse_id;?>"><?php echo $end->enduse_name;?></option>
-										<?php } ?>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td class="td-sclass"><label for="purpose">Purpose:</label></td>
-								<td class="td-sclass">
-									<select name="purpose" class="form-control">
-										<option value='' selected>-Choose Purpose-</option>
-										<?php 
-											foreach($purpose AS $pur){
-										?>
-										<option value = "<?php echo $pur->purpose_id?>"><?php echo $pur->purpose_desc?></option>
-										<?php } ?>
-									</select>
-								</td>
-							</tr>
-						</table>					
-					</div>
-					<div class="modal-footer">
-						<input type="submit" name="searchbtn" class="search-btn btn btn-default shadow" value="Search">
-					</div>
-					<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-				</form>
-			</div>
-		</div>
-	</div>-->
 	<div class="modal fade" id="returnhistory" tabindex="-1" role="dialog" aria-labelledby="returnhistory">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -354,7 +234,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">Filter</h4>
 				</div>
-				<form method="POST" action = "<?php echo base_url();?>index.php/gatepass/filter_gatepass_items">
+				<form method="POST" action = "<?php echo base_url();?>index.php/gatepass/filter_completed_gatepass_items">
 					<div class="modal-body">
 						<div class = "row">
 							<div class = "col-lg-6">

@@ -153,3 +153,12 @@ function readImage(input) {
           reader.readAsDataURL(input.files[0]);
       }
     }
+
+function history(id,baseurl) {
+  
+    var myWindow = window.open(baseurl+"index.php/gatepass/view_history/"+id, "Return History", "top=100,left=450,width=550,height=400");
+}
+
+function closePopup(){
+    window.close();
+}

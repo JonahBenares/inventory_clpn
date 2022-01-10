@@ -103,7 +103,9 @@
 							
 							</thead>
 							<tbody>
-								<?php foreach($gatepass as $gp){ ?>
+								<?php 
+									if(!empty($gatepass)){
+									foreach($gatepass as $gp){ ?>
 								<tr>
 									<!--<td align="center"><?php echo $x; ?></td>-->
 									<td align="center"><?php echo $gp['mgp_no'];?></td>
@@ -124,6 +126,10 @@
 										<a  href="<?php echo base_url();?>index.php/gatepass/view_gatepass/<?php echo $gp['gatepassid'];?>" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 
 									</td>
+								</tr>
+								<?php } } else { ?>
+								<tr>
+									<td align="center" colspan='9'><center>No Data Available.</center></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -146,7 +152,9 @@
 								
 								</thead>
 								<tbody>
-									<?php foreach($gatepass as $gp){ ?>
+									<?php 
+										if(!empty($gatepass)){
+										foreach($gatepass as $gp){ ?>
 									<tr>
 										<td align="center"><?php echo $gp['mgp_no'];?></td>
 										<td align="center"><?php echo $gp['company'];?></td>
@@ -161,7 +169,11 @@
 										<td align="center"><?php echo $gp['status'];?></td>
 										<?php } ?>-->
 										</tr>
-										<?php } ?>
+										<?php } } else { ?>
+								<tr>
+									<td align="center" colspan='9'><center>No Data Available.</center></td>
+								</tr>
+								<?php } ?>
 								</tbody>
 							</table>
 						</div>
