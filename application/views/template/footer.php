@@ -1,7 +1,7 @@
-		<div class="col-sm-12">
-				<p class="back-link">Warehouse Inventory System || <!-- <a href="http://www.cenpripower.com">CPGC</a> -->CPGC</p>
+		<!-- <div class="col-sm-12">
+				<p class="back-link">Warehouse Inventory System ||CPGC</p>
 			</div>
-		</div><!--/.row-->
+		</div> --><!--/.row-->
 	</div>	<!--/.main-->
 	</div>
 	<link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
