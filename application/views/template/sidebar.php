@@ -731,6 +731,11 @@
 						</a>
 						<ul class="children collapse" id="gatepass-sub">
 							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/gatepass/all_gatepass_items" >
+									<span class="fa fa-arrow-right">&nbsp;</span> Overall
+								</a>
+							</li>
+							<li>
 								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/gatepass/completed_gatepass_items" >
 									<span class="fa fa-arrow-right">&nbsp;</span> Completed
 								</a>
