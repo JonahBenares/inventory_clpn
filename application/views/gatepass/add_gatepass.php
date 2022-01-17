@@ -115,38 +115,8 @@
 							<br>
 							<div style="box-shadow: -1px 2px 10px 3px #eeeff5; padding:10px;border-radius:5px">
 								<?php if($saved=='0'){ ?>
-									<table class="table table-bordesred" style="margin-bottom:0px;color: #fff;" >
-										
-										<tr>
-											<td colspan="2">
-												<input placeholder="Item Name" type="text" name="item" id="items" class="form-control" >
-											</td>
-											<td>
-												<input placeholder="Qty" type="text" name="quantity" id="quantity" class="form-control" style="padding-right: 0px;" >
-											</td>
-											<td>
-												<input placeholder="Unit" type="text" name="unit" id="unit" class="form-control" style="padding-right: 0px;">
-											</td>
-											<td>
-												<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" style="padding-right: 0px;">
-											</td>
-											<td>
-												<select class="form-control" name="type" id="type">
-													<option>--- Select Type ---</option>
-													<option value = "Returnable">Returnable</option>
-													<option value = "Non-Returnable">Non-Returnable</option>
-												</select>
-											</td>
-											<td>
-												<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
-												<span id="img1-check" class='img-check'></span></td>
-											<td>
-												<div id='alrt' style="font-weight:bold"></div>		
-												<a type="button" onclick='add_item()' class="btn btn-warning btn-md" id = "submit"><span class="fa fa-plus"></span></a>
-												<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-											</td>
-										</tr>
-										<tr>
+									<table width="100%">
+										<!-- <tr>
 											<th width="2%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>#</th>
 											<th width="30%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Item Description</th>
 											<th width="10%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Qty</th>
@@ -155,8 +125,41 @@
 											<th width="18%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Type</th>
 											<th width="18%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;'>Image</th>
 											<th width="5%" style='padding-top: 0px;padding-bottom: 0px;text-align: center;' width="1%">Action</th>
+										</tr> -->
+										<tr>
+											<td width="50%" style="padding: 5px;">
+												<input placeholder="Item Name" type="text" name="item" id="items" class="form-control" >
+											</td>
+											<td width="15%" style="padding: 5px;">
+												<input placeholder="Qty" type="text" name="quantity" id="quantity" class="form-control" style="padding-right: 0px;" >
+											</td>
+											<td width="15%" style="padding: 5px;">
+												<input placeholder="Unit" type="text" name="unit" id="unit" class="form-control" style="padding-right: 0px;">
+											</td>
+											<td width="20%" style="padding: 5px;">
+												<select class="form-control" name="type" id="type">
+													<option>--- Select Type ---</option>
+													<option value = "Returnable">Returnable</option>
+													<option value = "Non-Returnable">Non-Returnable</option>
+												</select>
+											</td>
+										</table>
+										<table width="100%" >												
+											<td width="50%" style="padding: 5px;">
+												<input placeholder="Remarks" type="text" name="remarks" id="remarks" class="form-control" style="padding-right: 0px;">
+											</td>		
+											<td  width="45%" style="padding: 5px;"> 
+												<input class="form-control"  type="file" name="image" id="image" onchange="readImage(this);">
+												<span id="img1-check" class='img-check'></span></td>
+											<td  width="5%" style="padding: 5px;">
+												<div id='alrt' style="font-weight:bold"></div>		
+												<a type="button" onclick='add_item()' class="btn btn-warning btn-md" id = "submit"><span class="fa fa-plus"></span></a>
+												<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+											</td>
 										</tr>
+										
 									</table>
+									<hr>	
 								<?php } ?>					
 								<div class="row">
 									<div class="col-lg-12">
