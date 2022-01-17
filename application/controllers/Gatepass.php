@@ -85,6 +85,23 @@ class Gatepass extends CI_Controller {
             window.location.href ='<?php echo base_url(); ?>index.php/gatepass/gatepass_list/<?php echo $from; ?>/<?php echo $to; ?>/'</script> <?php
     }
 
+        public function filter_all_gatepass_items(){
+           if(!empty($this->input->post('from'))){
+                $from = $this->input->post('from');
+           } else {
+                $from = "null";
+           }
+
+           if(!empty($this->input->post('to'))){
+                $to = $this->input->post('to');
+           } else {
+                $to = "null";
+           }
+           ?>
+           <script>
+            window.location.href ='<?php echo base_url(); ?>index.php/gatepass/all_gatepass_items/<?php echo $from; ?>/<?php echo $to; ?>/'</script> <?php
+    }
+
         public function filter_completed_gatepass_items(){
            if(!empty($this->input->post('from'))){
                 $from = $this->input->post('from');
@@ -168,6 +185,78 @@ class Gatepass extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function all_gatepass_items(){
+        $from=$this->uri->segment(3);
+        $to=$this->uri->segment(4);
+        $data['from']=$this->uri->segment(3);
+        $data['to']=$this->uri->segment(4);
+        $data['filt']='';
+        $sql="";
+        if($from!='null' && $to!='null' || $from!='' && $to!=''){
+           $sql.= " WHERE gh.date_issued BETWEEN '$from' AND '$to' AND";
+        }
+
+        if($from!='' && $to!=''){
+            $query=substr($sql,0,-3);
+        }else{
+            $query='';
+        }
+        
+        $rows= $this->super_model->count_custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query);
+        if($rows!=0){
+        foreach($this->super_model->custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query) AS $gatepass_items){
+            $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gd_id", $gatepass_items->gd_id);
+            $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gd_id", $gatepass_items->gd_id);
+            $returned_remarks = $this->super_model->select_column_where("gp_returned_history", "remarks", "gd_id", $gatepass_items->gd_id);
+            $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
+            $quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id' AND type='Returnable'");
+             if($sum_qty==$quantity){
+                 $status = "Completed";
+            } else {
+                $status = "Incomplete";
+            }
+
+            $history='';
+            foreach($this->super_model->select_row_where("gp_returned_history","gd_id",$gatepass_items->gd_id) AS $ret){
+                if($gatepass_items->type=='Non-Returnable'){
+                    $history.=$gatepass_items->type;
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty==0 ){
+                    $history.='';
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty!=0){
+                    $history.="Date: ".$returned_date."<br>Qty: ".$returned_qty."<br><br>";
+                }
+            }
+                $data['all_items'][] = array(
+                    'gd_id'=>$gatepass_items->gd_id,
+                    'gatepass_id'=>$gatepass_items->gatepass_id,
+                    'item_name'=>$gatepass_items->item_name,
+                    'quantity'=>$gatepass_items->quantity,
+                    'unit'=>$gatepass_items->unit,
+                    'type'=>$gatepass_items->type,
+                    'remarks'=>$gatepass_items->remarks,
+                    'type'=>$gatepass_items->type,
+                    'mgp_no'=>$gatepass_items->mgp_no,
+                    'destination'=>$gatepass_items->destination,
+                    'date_issued'=>$gatepass_items->date_issued,
+                    'sum_qty'=>$sum_qty,
+                    'status'=>$status,
+                    'returned_date'=>$returned_date,
+                    'returned_qty'=>$returned_qty,
+                    'returned_remarks'=>$returned_remarks,
+                    'history'=>$history,
+
+                );
+            }
+ 
+        } else {
+            $data['all_items']=array();
+        }
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('gatepass/all_gatepass_items',$data);
+        $this->load->view('template/footer');
+    }
+
     public function completed_gatepass_items(){
         $from=$this->uri->segment(3);
         $to=$this->uri->segment(4);
@@ -192,7 +281,8 @@ class Gatepass extends CI_Controller {
             $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gd_id", $gatepass_items->gd_id);
             $returned_remarks = $this->super_model->select_column_where("gp_returned_history", "remarks", "gd_id", $gatepass_items->gd_id);
             $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
-             if($sum_qty==$gatepass_items->quantity){
+            $quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id' AND type='Returnable'");
+             if($sum_qty==$quantity){
                  $status = "Completed";
             } else {
                 $status = "Incomplete";
@@ -324,6 +414,171 @@ class Gatepass extends CI_Controller {
         $this->load->view('gatepass/view_history',$data);
     }
 
+    public function export_all_gatepass(){
+        $from=$this->uri->segment(3);
+        $to=$this->uri->segment(4);
+        $data['from']=$this->uri->segment(3);
+        $data['to']=$this->uri->segment(4);
+        $sql="";
+        if($from!='null' && $to!='null' || $from!='' && $to!=''){
+           $sql.= " WHERE gh.date_issued BETWEEN '$from' AND '$to' AND";
+        }
+
+        if($from!='' && $to!=''){
+            $query=substr($sql,0,-3);
+        }else{
+            $query='';
+        }
+        require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
+        $objPHPExcel = new PHPExcel();
+        $exportfilename="Materials Gatepass Report(Overall).xlsx";
+
+        /*$objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+        $objDrawing->setName('Sample image');
+        $objDrawing->setDescription('Sample image');
+        $objDrawing->setImageResource($gdImage);
+        $objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+        $objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+        $objDrawing->setHeight(35);
+        $objDrawing->setCoordinates('A2');
+        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());*/
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save(str_replace('.php', '.xlsx', __FILE__));
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "CALAPAN POWER GENERATION CORPORATION");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', "MATERIALS GATEPASS SUMMARY (OVERALL)");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', "$from - $to");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A5', "Date Issued");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "Item Description");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F5', "U/M");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "Quantity");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H5', "Remaining Qty");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K5', "Total Returned Qty");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M5', "Remarks");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P5', "Type");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R5', "MGP No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S5', "Destination");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U5', "Vehicle No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W5', "Returned History");
+        $num=6;
+
+        $x = 1;
+        $styleArray = array(
+          'borders' => array(
+            'allborders' => array(
+              'style' => PHPExcel_Style_Border::BORDER_THIN
+            )
+          )
+        );
+        foreach($this->super_model->custom_query("SELECT gh.*, gd.* FROM gatepass_head gh INNER JOIN gatepass_details gd ON gh.gatepass_id = gd.gatepass_id ".$query) AS $gatepass_items){
+            $returned_date = $this->super_model->select_column_where("gp_returned_history", "date_returned", "gp_rh_id", $gatepass_items->gatepass_id);
+            $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gatepass_items->gatepass_id);
+            $total_qty = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id'");
+            $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
+            $quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id' AND type='Returnable'");
+            $balance=$total_qty-$sum_qty;
+            if($sum_qty==$quantity){
+             $status = "Completed";
+            } else {
+            $status = "Incomplete";
+             }
+
+            $history='';
+            foreach($this->super_model->select_row_where("gp_returned_history","gd_id",$gatepass_items->gd_id) AS $ret){
+                if($gatepass_items->type=='Non-Returnable'){
+                    $history.=$gatepass_items->type;
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty==0 ){
+                    $history.='';
+                } else if($gatepass_items->type=='Returnable' &&  $sum_qty!=0){
+                    $history.="Date: ".$ret->date_returned." Qty: ".$ret->qty."\n\n";
+                }
+            }
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $gatepass_items->date_issued);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$num, $gatepass_items->item_name);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$num, $gatepass_items->unit);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $gatepass_items->quantity);
+            if($gatepass_items->type=='Returnable'){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $balance);
+            }else{
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num);
+            }
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$num, $sum_qty);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$num, $gatepass_items->remarks);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $gatepass_items->type);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $gatepass_items->mgp_no);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $gatepass_items->destination);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $gatepass_items->vehicle_no);
+            if($gatepass_items->type=='Non-Returnable'){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $gatepass_items->type);
+            }else{
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $history);
+            }
+            $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);    
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Y".$num)->applyFromArray($styleArray);
+            $objPHPExcel->getActiveSheet()->getStyle('G'.$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+            $objPHPExcel->getActiveSheet()->getStyle('H'.$num.":J".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+            $objPHPExcel->getActiveSheet()->getStyle('K'.$num.":L".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+           
+            $objPHPExcel->getActiveSheet()->mergeCells('A5:B5');
+            $objPHPExcel->getActiveSheet()->mergeCells('A'.$num.":B".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('C5:E5');
+            $objPHPExcel->getActiveSheet()->mergeCells('C'.$num.":E".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('H5:J5');
+            $objPHPExcel->getActiveSheet()->mergeCells('H'.$num.":J".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('K5:L5');
+            $objPHPExcel->getActiveSheet()->mergeCells('K'.$num.":L".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('M5:O5');
+            $objPHPExcel->getActiveSheet()->mergeCells('M'.$num.":O".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('P5:Q5');
+            $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('S5:T5');
+            $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('U5:V5');
+            $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('W5:Y5');
+            $objPHPExcel->getActiveSheet()->mergeCells('W'.$num.":Y".$num);
+            $objPHPExcel->getActiveSheet()->getStyle('W'.$num.":Y".$num)->getAlignment()->setWrapText(true);
+            //$objPHPExcel->getActiveSheet()->getStyle('A6:Y6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":V".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $num++;
+            } 
+
+
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:Y1');
+        $objPHPExcel->getActiveSheet()->mergeCells('A2:Y2');
+        $objPHPExcel->getActiveSheet()->mergeCells('A3:Y3');
+        $objPHPExcel->getActiveSheet()->mergeCells('A5:B5');
+        $objPHPExcel->getActiveSheet()->mergeCells('C5:E5');
+        $objPHPExcel->getActiveSheet()->mergeCells('H5:J5');
+        $objPHPExcel->getActiveSheet()->mergeCells('K5:L5');
+        $objPHPExcel->getActiveSheet()->mergeCells('M5:O5');
+        $objPHPExcel->getActiveSheet()->mergeCells('P5:Q5');
+        $objPHPExcel->getActiveSheet()->mergeCells('S5:T5');
+        $objPHPExcel->getActiveSheet()->mergeCells('U5:V5');
+        $objPHPExcel->getActiveSheet()->mergeCells('W5:Y5');
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Y1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:Y2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:Y3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Y1')->getFont()->setBold(true);
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        if (file_exists($exportfilename))
+        unlink($exportfilename);
+        $objWriter->save($exportfilename);
+        unset($objPHPExcel);
+        unset($objWriter);   
+        ob_end_clean();
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Materials Gatepass Report(Overall).xlsx"');
+        readfile($exportfilename);
+    }
+
         public function export_completed_gatepass(){
         $from=$this->uri->segment(3);
         $to=$this->uri->segment(4);
@@ -341,9 +596,9 @@ class Gatepass extends CI_Controller {
         }
         require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
         $objPHPExcel = new PHPExcel();
-        $exportfilename="Materials Gatepass Report.xlsx";
+        $exportfilename="Materials Gatepass Report(Completed).xlsx";
 
-        $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+       /* $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
         $objDrawing->setDescription('Sample image');
         $objDrawing->setImageResource($gdImage);
@@ -351,21 +606,25 @@ class Gatepass extends CI_Controller {
         $objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
         $objDrawing->setHeight(35);
         $objDrawing->setCoordinates('A2');
-        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());*/
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save(str_replace('.php', '.xlsx', __FILE__));
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "Date Issued");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', "Item Description");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', "U/M");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G1', "Quantity");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H1', "Remaining Qty");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K1', "Total Returned Qty");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M1', "Remarks");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P1', "Type");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R1', "MGP No");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S1', "Destination");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U1', "Returned History");
-        $num=2;
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "CALAPAN POWER GENERATION CORPORATION");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', "MATERIALS GATEPASS SUMMARY (COMPLETED)");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', "$from - $to");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A5', "Date Issued");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "Item Description");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F5', "U/M");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "Quantity");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H5', "Remaining Qty");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K5', "Total Returned Qty");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M5', "Remarks");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P5', "Type");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R5', "MGP No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S5', "Destination");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U5', "Vehicle No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W5', "Returned History");
+        $num=6;
 
         $x = 1;
         $styleArray = array(
@@ -380,8 +639,9 @@ class Gatepass extends CI_Controller {
             $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gatepass_items->gatepass_id);
             $total_qty = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id'");
             $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
+            $quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id' AND type='Returnable'");
             $balance=$total_qty-$sum_qty;
-            if($sum_qty==$gatepass_items->quantity){
+            if($sum_qty==$quantity){
              $status = "Completed";
             } else {
             $status = "Incomplete";
@@ -395,68 +655,82 @@ class Gatepass extends CI_Controller {
                 } else if($gatepass_items->type=='Returnable' &&  $sum_qty==0 ){
                     $history.='';
                 } else if($gatepass_items->type=='Returnable' &&  $sum_qty!=0){
-                    $history.="Date: ".$ret->date_returned." \n\n Qty: ".$ret->qty."\n\n";
+                    $history.="Date: ".$ret->date_returned." Qty: ".$ret->qty."\n\n";
                 }
             }
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $gatepass_items->date_issued);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$num, $gatepass_items->item_name);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$num, $gatepass_items->unit);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $gatepass_items->quantity);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $balance);
+            if($gatepass_items->type=='Returnable'){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $balance);
+            }else{
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num);
+            }
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$num, $sum_qty);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$num, $gatepass_items->remarks);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $gatepass_items->type);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $gatepass_items->mgp_no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $gatepass_items->destination);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $gatepass_items->vehicle_no);
             if($gatepass_items->type=='Non-Returnable'){
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $gatepass_items->type);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $gatepass_items->type);
             }else{
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $history);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $history);
             }
             $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);    
-            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":W".$num)->applyFromArray($styleArray);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Y".$num)->applyFromArray($styleArray);
             $objPHPExcel->getActiveSheet()->getStyle('G'.$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
             $objPHPExcel->getActiveSheet()->getStyle('H'.$num.":J".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
             $objPHPExcel->getActiveSheet()->getStyle('K'.$num.":L".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-            $num++;
-            $objPHPExcel->getActiveSheet()->mergeCells('A1:B1');
+            $objPHPExcel->getActiveSheet()->mergeCells('A5:B5');
             $objPHPExcel->getActiveSheet()->mergeCells('A'.$num.":B".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('C1:E1');
+            $objPHPExcel->getActiveSheet()->mergeCells('C5:E5');
             $objPHPExcel->getActiveSheet()->mergeCells('C'.$num.":E".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('H1:J1');
+            $objPHPExcel->getActiveSheet()->mergeCells('H5:J5');
             $objPHPExcel->getActiveSheet()->mergeCells('H'.$num.":J".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('K1:L1');
+            $objPHPExcel->getActiveSheet()->mergeCells('K5:L5');
             $objPHPExcel->getActiveSheet()->mergeCells('K'.$num.":L".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('M1:O1');
+            $objPHPExcel->getActiveSheet()->mergeCells('M5:O5');
             $objPHPExcel->getActiveSheet()->mergeCells('M'.$num.":O".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('P1:Q1');
+            $objPHPExcel->getActiveSheet()->mergeCells('P5:Q5');
             $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('S1:T1');
+            $objPHPExcel->getActiveSheet()->mergeCells('S5:T5');
             $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('U1:W1');
-            $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":W".$num);
-            $objPHPExcel->getActiveSheet()->getStyle('U'.$num.":W".$num)->getAlignment()->setWrapText(true);
-            $objPHPExcel->getActiveSheet()->getStyle('A2:W2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":T".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->mergeCells('U5:V5');
+            $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('W5:Y5');
+            $objPHPExcel->getActiveSheet()->mergeCells('W'.$num.":Y".$num);
+            $objPHPExcel->getActiveSheet()->getStyle('W'.$num.":Y".$num)->getAlignment()->setWrapText(true);
+            //$objPHPExcel->getActiveSheet()->getStyle('A6:Y6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":V".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $num++;
             }
+
         }
-
-
-        $objPHPExcel->getActiveSheet()->mergeCells('A2:B2');
-        $objPHPExcel->getActiveSheet()->mergeCells('C2:E2');
-        $objPHPExcel->getActiveSheet()->mergeCells('H2:J2');
-        $objPHPExcel->getActiveSheet()->mergeCells('K2:L2');
-        $objPHPExcel->getActiveSheet()->mergeCells('M2:O2');
-        $objPHPExcel->getActiveSheet()->mergeCells('P2:Q2');
-        $objPHPExcel->getActiveSheet()->mergeCells('S2:T2');
-        $objPHPExcel->getActiveSheet()->mergeCells('U2:W2');
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->applyFromArray($styleArray);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:Y1');
+        $objPHPExcel->getActiveSheet()->mergeCells('A2:Y2');
+        $objPHPExcel->getActiveSheet()->mergeCells('A3:Y3');
+        $objPHPExcel->getActiveSheet()->mergeCells('A5:B5');
+        $objPHPExcel->getActiveSheet()->mergeCells('C5:E5');
+        $objPHPExcel->getActiveSheet()->mergeCells('H5:J5');
+        $objPHPExcel->getActiveSheet()->mergeCells('K5:L5');
+        $objPHPExcel->getActiveSheet()->mergeCells('M5:O5');
+        $objPHPExcel->getActiveSheet()->mergeCells('P5:Q5');
+        $objPHPExcel->getActiveSheet()->mergeCells('S5:T5');
+        $objPHPExcel->getActiveSheet()->mergeCells('U5:V5');
+        $objPHPExcel->getActiveSheet()->mergeCells('W5:Y5');
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Y1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:Y2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:Y3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Y1')->getFont()->setBold(true);
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         if (file_exists($exportfilename))
@@ -487,9 +761,10 @@ class Gatepass extends CI_Controller {
         }
         require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
         $objPHPExcel = new PHPExcel();
-        $exportfilename="Incomplete Materials Gatepass Report(Incomplete).xlsx";
+        $exportfilename="Materials Gatepass Report(Incomplete).xlsx";
 
-        $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+
+       /* $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
         $objDrawing->setDescription('Sample image');
         $objDrawing->setImageResource($gdImage);
@@ -497,21 +772,25 @@ class Gatepass extends CI_Controller {
         $objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
         $objDrawing->setHeight(35);
         $objDrawing->setCoordinates('A2');
-        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());*/
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save(str_replace('.php', '.xlsx', __FILE__));
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "Date Issued");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', "Item Description");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', "U/M");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G1', "Quantity");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H1', "Remaining Qty");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K1', "Total Returned Qty");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M1', "Remarks");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P1', "Type");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R1', "MGP No");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S1', "Destination");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U1', "Returned History");
-        $num=2;
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "CALAPAN POWER GENERATION CORPORATION");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', "MATERIALS GATEPASS SUMMARY (INCOMPLETE)");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', "$from - $to");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A5', "Date Issued");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "Item Description");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F5', "U/M");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "Quantity");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H5', "Remaining Qty");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K5', "Total Returned Qty");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M5', "Remarks");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P5', "Type");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R5', "MGP No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S5', "Destination");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U5', "Vehicle No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W5', "Returned History");
+        $num=6;
 
         $x = 1;
         $styleArray = array(
@@ -526,8 +805,9 @@ class Gatepass extends CI_Controller {
             $returned_qty = $this->super_model->select_column_where("gp_returned_history", "qty", "gp_rh_id", $gatepass_items->gatepass_id);
             $total_qty = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id'");
             $sum_qty = $this->super_model->select_sum_where("gp_returned_history", "qty", "gd_id='$gatepass_items->gd_id'");
+            $quantity = $this->super_model->select_sum_where("gatepass_details", "quantity", "gd_id='$gatepass_items->gd_id' AND type='Returnable'");
             $balance=$total_qty-$sum_qty;
-            if($sum_qty==$gatepass_items->quantity){
+            if($sum_qty==$quantity){
              $status = "Completed";
             } else {
             $status = "Incomplete";
@@ -541,68 +821,82 @@ class Gatepass extends CI_Controller {
                 } else if($gatepass_items->type=='Returnable' &&  $sum_qty==0 ){
                     $history.='';
                 } else if($gatepass_items->type=='Returnable' &&  $sum_qty!=0){
-                    $history.="Date: ".$ret->date_returned." \n\n Qty: ".$ret->qty."\n\n";
+                    $history.="Date: ".$ret->date_returned." Qty: ".$ret->qty."\n\n";
                 }
             }
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $gatepass_items->date_issued);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$num, $gatepass_items->item_name);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$num, $gatepass_items->unit);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $gatepass_items->quantity);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $balance);
+            if($gatepass_items->type=='Returnable'){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $balance);
+            }else{
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num);
+            }
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$num, $sum_qty);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$num, $gatepass_items->remarks);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $gatepass_items->type);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $gatepass_items->mgp_no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $gatepass_items->destination);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $gatepass_items->vehicle_no);
             if($gatepass_items->type=='Non-Returnable'){
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $gatepass_items->type);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $gatepass_items->type);
             }else{
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $history);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $history);
             }
             $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);    
-            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":W".$num)->applyFromArray($styleArray);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Y".$num)->applyFromArray($styleArray);
             $objPHPExcel->getActiveSheet()->getStyle('G'.$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
             $objPHPExcel->getActiveSheet()->getStyle('H'.$num.":J".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
             $objPHPExcel->getActiveSheet()->getStyle('K'.$num.":L".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-            $num++;
-            $objPHPExcel->getActiveSheet()->mergeCells('A1:B1');
+            $objPHPExcel->getActiveSheet()->mergeCells('A5:B5');
             $objPHPExcel->getActiveSheet()->mergeCells('A'.$num.":B".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('C1:E1');
+            $objPHPExcel->getActiveSheet()->mergeCells('C5:E5');
             $objPHPExcel->getActiveSheet()->mergeCells('C'.$num.":E".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('H1:J1');
+            $objPHPExcel->getActiveSheet()->mergeCells('H5:J5');
             $objPHPExcel->getActiveSheet()->mergeCells('H'.$num.":J".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('K1:L1');
+            $objPHPExcel->getActiveSheet()->mergeCells('K5:L5');
             $objPHPExcel->getActiveSheet()->mergeCells('K'.$num.":L".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('M1:O1');
+            $objPHPExcel->getActiveSheet()->mergeCells('M5:O5');
             $objPHPExcel->getActiveSheet()->mergeCells('M'.$num.":O".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('P1:Q1');
+            $objPHPExcel->getActiveSheet()->mergeCells('P5:Q5');
             $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('S1:T1');
+            $objPHPExcel->getActiveSheet()->mergeCells('S5:T5');
             $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('U1:W1');
-            $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":W".$num);
-            $objPHPExcel->getActiveSheet()->getStyle('U'.$num.":W".$num)->getAlignment()->setWrapText(true);
-            $objPHPExcel->getActiveSheet()->getStyle('A2:W2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":T".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->mergeCells('U5:V5');
+            $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('W5:Y5');
+            $objPHPExcel->getActiveSheet()->mergeCells('W'.$num.":Y".$num);
+            $objPHPExcel->getActiveSheet()->getStyle('W'.$num.":Y".$num)->getAlignment()->setWrapText(true);
+            //$objPHPExcel->getActiveSheet()->getStyle('A6:Y6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":V".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $num++;
             }
+
         }
-
-
-        $objPHPExcel->getActiveSheet()->mergeCells('A2:B2');
-        $objPHPExcel->getActiveSheet()->mergeCells('C2:E2');
-        $objPHPExcel->getActiveSheet()->mergeCells('H2:J2');
-        $objPHPExcel->getActiveSheet()->mergeCells('K2:L2');
-        $objPHPExcel->getActiveSheet()->mergeCells('M2:O2');
-        $objPHPExcel->getActiveSheet()->mergeCells('P2:Q2');
-        $objPHPExcel->getActiveSheet()->mergeCells('S2:T2');
-        $objPHPExcel->getActiveSheet()->mergeCells('U2:W2');
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->applyFromArray($styleArray);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:W1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:Y1');
+        $objPHPExcel->getActiveSheet()->mergeCells('A2:Y2');
+        $objPHPExcel->getActiveSheet()->mergeCells('A3:Y3');
+        $objPHPExcel->getActiveSheet()->mergeCells('A5:B5');
+        $objPHPExcel->getActiveSheet()->mergeCells('C5:E5');
+        $objPHPExcel->getActiveSheet()->mergeCells('H5:J5');
+        $objPHPExcel->getActiveSheet()->mergeCells('K5:L5');
+        $objPHPExcel->getActiveSheet()->mergeCells('M5:O5');
+        $objPHPExcel->getActiveSheet()->mergeCells('P5:Q5');
+        $objPHPExcel->getActiveSheet()->mergeCells('S5:T5');
+        $objPHPExcel->getActiveSheet()->mergeCells('U5:V5');
+        $objPHPExcel->getActiveSheet()->mergeCells('W5:Y5');
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Y1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:Y2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:Y3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:Y5')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Y1')->getFont()->setBold(true);
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         if (file_exists($exportfilename))
