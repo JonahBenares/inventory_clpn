@@ -159,7 +159,7 @@
 										</tr>
 										
 									</table>
-									<hr>	
+									<br>	
 								<?php } ?>					
 								<div class="row">
 									<div class="col-lg-12">
