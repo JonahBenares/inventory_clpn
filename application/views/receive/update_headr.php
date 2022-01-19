@@ -6,24 +6,24 @@
 				<table>
 				<?php foreach($head AS $h){ ?>
 					<tr>
-						<td width="10%"><label>Date:</label></td>
-						<td width="90%"><input type = "date" disabled="" name = "receive_date" class = "form-control" value = "<?php echo $h->receive_date;?>"><br></td>
+						<td width="15%"><label>Date:</label></td>
+						<td width="85%"><input type = "date" disabled="" name = "receive_date" class = "form-control" value = "<?php echo $h->receive_date;?>"><br></td>
 					</tr>
 					<tr>
-						<td width="10%"><label>DR#:</label></td>
-						<td width="90%"><input type = "text" name = "dr_no" class = "form-control" value = "<?php echo $h->dr_no;?>" autocomplete='off'><br></td>
+						<td width="15%"><label>DR#:</label></td>
+						<td width="85%"><input type = "text" name = "dr_no" class = "form-control" value = "<?php echo $h->dr_no;?>" autocomplete='off'><br></td>
 					</tr>
 					<tr>
-						<td width="10%"><label>PO#:</label></td>
-						<td width="90%"><input type = "text" name = "po_no" class = "form-control" value = "<?php echo $h->po_no;?>" autocomplete='off'><br></td>
+						<td width="15%"><label>PO#:</label></td>
+						<td width="85%"><input type = "text" name = "po_no" class = "form-control" value = "<?php echo $h->po_no;?>" autocomplete='off'><br></td>
 					</tr>
 					<tr>
-						<td width="10%"><label>SI#/OR#:</label></td>
-						<td width="90%"><input type = "text" name = "si_no" class = "form-control" value = "<?php echo $h->si_no;?>" autocomplete='off'><br></td>
+						<td width="15%"><label>SI#/OR#:</label></td>
+						<td width="85%"><input type = "text" name = "si_no" class = "form-control" value = "<?php echo $h->si_no;?>" autocomplete='off'><br></td>
 					</tr>
 					<tr>
-						<td width="10%"><label>WAYBILL#:</label></td>
-						<td width="90%"><input type = "text" name = "waybill_no" class = "form-control" value = "<?php echo $h->waybill_no;?>" autocomplete='off'><br></td>
+						<td width="15%"><label>WAYBILL#:</label></td>
+						<td width="85%"><input type = "text" name = "waybill_no" class = "form-control" value = "<?php echo $h->waybill_no;?>" autocomplete='off'><br></td>
 					</tr>
 					<tr>
 						<td><label>PCF:</label></td>

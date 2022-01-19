@@ -64,7 +64,7 @@
 							</tr>
 							<tr>
 								<td></td>
-								<td><p class="nomarg">DR #:</p></td>
+								<td><p class="nomarg">WAYBILL #:</p></td>
 								<td> <h5 class="nomarg"><?php echo $h->waybill_no; ?></h5></td>
 							</tr>
 							<?php } ?>
