@@ -180,10 +180,10 @@
             ?>
             <table width="100%">
                 <tr>
-                    <td width="5%"><h6 class="nomarg">Date</h6></td>
+                    <td width="8%"><h6 class="nomarg">Date</h6></td>
                     <td width="15%" ><label class="nomarg">:&nbsp;<?php echo $date?></label></td>
                     <td width="10%"><h6 class="nomarg pull-right">MRF NO.  &nbsp </h6></td>
-                    <td width="70%" > <label class="nomarg">:&nbsp;<?php echo $mrec; ?></label></td>
+                    <td width="67%" > <label class="nomarg">:&nbsp;<?php echo $mrec; ?></label></td>
                 </tr>
                 <tr>
                     <td><h6 class="nomarg">DR #&nbsp</h6></td>

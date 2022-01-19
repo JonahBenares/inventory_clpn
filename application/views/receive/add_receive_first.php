@@ -37,7 +37,7 @@
 							</tr>
 							<tr>
 								<td width="5%"></td>
-								<td width="5%"><p class="nomarg">Date:</p></td>
+								<td width="8%"><p class="nomarg">Date:</p></td>
 								<td width="20%"><label class="labelStyle"><?php echo date('F j, Y',strtotime($li->receive_date)); ?></label></td>
 								<td width="5%"></td>
 								<?php if($li->saved==0){ ?> 
