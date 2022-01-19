@@ -22,6 +22,10 @@
 						<td width="90%"><input type = "text" name = "si_no" class = "form-control" value = "<?php echo $h->si_no;?>" autocomplete='off'><br></td>
 					</tr>
 					<tr>
+						<td width="10%"><label>WAYBILL#:</label></td>
+						<td width="90%"><input type = "text" name = "waybill_no" class = "form-control" value = "<?php echo $h->waybill_no;?>" autocomplete='off'><br></td>
+					</tr>
+					<tr>
 						<td><label>PCF:</label></td>
 						<?php if($h->pcf == '0'){ ?>
 						<td><input type = "checkbox" name = "pcf" value = "1" class = "form-control " style="width:30px"></td>

@@ -62,6 +62,11 @@
 								<td><p class="nomarg">PCF:</p></td>
 								<td> <h5 class="nomarg"><?php if($h->pcf == '1'){ echo "Yes"; }else { echo ""; } ?></h5></td>
 							</tr>
+							<tr>
+								<td></td>
+								<td><p class="nomarg">DR #:</p></td>
+								<td> <h5 class="nomarg"><?php echo $h->waybill_no; ?></h5></td>
+							</tr>
 							<?php } ?>
 						</table>
 						<div class="col-lg-12">

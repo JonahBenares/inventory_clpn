@@ -62,6 +62,11 @@
 								<td><p class="nomarg">PCF:</p></td>
 								<td> <h5 class="nomarg"><?php if($li->pcf == '1'){ echo "Yes"; }else { echo ""; } ?></h5></td>
 							</tr>
+							<tr>
+								<td></td>
+								<td><p class="nomarg">WAYBILL #:</p></td>
+								<td> <h5 class="nomarg"><?php echo $li->waybill_no; ?></h5></td>
+							</tr>
 							<?php if($li->saved==0){ ?>
 							<tr>								
 								<td></td>

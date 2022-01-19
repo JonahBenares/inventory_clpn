@@ -91,7 +91,7 @@
 							</tr>
 							<tr>
 								<td width="15%"><label>WAYBILL#:</label></td>
-								<td width="85%"><input type = "text" name = "waybill" class = "form-control" autocomplete='off'><br></td>
+								<td width="85%"><input type = "text" name = "waybill_no" class = "form-control" autocomplete='off'><br></td>
 							</tr>
 							<tr>
 								<td><label>PCF:</label></td>

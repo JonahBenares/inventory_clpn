@@ -189,6 +189,10 @@
 								<td width="10%"><label>SI#:</label></td>
 								<td width="90%"><input type = "text" name = "si_no" class = "form-control"><br></td>
 							</tr>
+							<tr>
+								<td width="15%"><label>WAYBILL#:</label></td>
+								<td width="85%"><input type = "text" name = "waybill_no" class = "form-control" autocomplete='off'><br></td>
+							</tr>
 						</table>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

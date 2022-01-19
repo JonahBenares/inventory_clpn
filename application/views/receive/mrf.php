@@ -171,6 +171,7 @@
                     $po= $hd->po_no;
                     $pcf= $hd->pcf;
                     $si= $hd->si_no;
+                    $waybill= $hd->waybill_no;
                     $delivered= $hd->delivered_by;
                     $received= $hd->received_by;
                     $acknowledged= $hd->acknowledged_by;
@@ -195,6 +196,10 @@
                     <td><label class="nomarg">:&nbsp;<?php echo $si;?></label></td>
                     <td><h6 class="nomarg pull-right">PCF #&nbsp </h6></td>
                     <td><label class="nomarg">:&nbsp;<?php if ($pcf == 1) {echo 'Yes';};?></label></td>
+                </tr>
+                <tr>
+                    <td><h6 class="nomarg">WAYBILL #&nbsp</h6></td>
+                    <td><label class="nomarg">:&nbsp;<?php echo $waybill;?></label></td>
                 </tr>
             </table>
                 

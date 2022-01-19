@@ -460,6 +460,7 @@ class Receive extends CI_Controller {
             'dr_no'=>$this->input->post('dr_no'),
             'po_no'=>$this->input->post('po_no'),
             'si_no'=>$this->input->post('si_no'),
+            'waybill_no'=>$this->input->post('waybill_no'),
             'pcf'=>$this->input->post('pcf'),
         );
         $id = $this->input->post('id');
@@ -483,6 +484,7 @@ class Receive extends CI_Controller {
         $pono=$this->input->post('po_no');
         /*$jono=$this->input->post('jo_no');*/
         $sino=$this->input->post('si_no');
+        $waybillno=$this->input->post('waybill_no');
         $userid=$this->input->post('userid');
 
         $year=date('Y-m');
@@ -525,6 +527,7 @@ class Receive extends CI_Controller {
            /*'jo_no'=> $jono,*/
            'po_no'=> $pono,
            'si_no'=> $sino,
+           'waybill_no'=> $waybillno,
            'user_id'=> $userid
         );
         if($this->super_model->insert_into("receive_head", $data)){
