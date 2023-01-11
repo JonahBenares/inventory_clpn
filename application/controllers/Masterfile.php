@@ -29,12 +29,14 @@ class Masterfile extends CI_Controller {
       }
       
         
-       foreach($this->super_model->select_custom_where_group("receive_details", "closed=0", "pr_no") AS $dtls){
-            foreach($this->super_model->select_custom_where("receive_head", "receive_id = '$dtls->receive_id'") AS $gt){
-               if($gt->saved=='1'){
+       foreach($this->super_model->custom_query("SELECT * FROM `receive_details` rd INNER JOIN receive_head rh ON rh.receive_id = rd.receive_id where saved = '1' GROUP BY pr_no ") AS $dtls){
+
+
+            //foreach($this->super_model->select_custom_where("receive_head", "receive_id = '$dtls->receive_id'") AS $gt){
+               //if($gt->saved=='1'){
                     $this->dropdown['prno'][] = $dtls->pr_no;
-               }
-            }  
+              // }
+//}  
         }
 
         function arrayToObject($array){
